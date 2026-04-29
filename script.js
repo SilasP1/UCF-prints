@@ -1,9 +1,16 @@
 const DAILY_CAPACITY_HOURS = 12;
 const WARNING_THRESHOLD = 85;
 const BASE_SETUP_FEE = 5;
-const FILAMENT_COST_PER_GRAM = 0.10;
 const MACHINE_TIME_COST_PER_HOUR = 1.5;
 const MINIMUM_ESTIMATED_ORDER = 12;
+const SPECIAL_MATERIAL_HANDLING_FEE = 5;
+const materialRates = {
+  PLA: 0.10,
+  PETG: 0.13,
+  TPU: 0.16,
+  ABS: 0.14,
+  Other: 0.18
+};
 
 const sampleOrders = [
   { day: "Mon", file: "gearbox_mount_v3.stl", hours: 3.5, tier: "Standard", status: "Pending" },
@@ -96,8 +103,10 @@ function updatePricingEstimate() {
   const filamentRange = document.querySelector("#filamentSlider");
   const timeRange = document.querySelector("#timeSlider");
   const leadTimeSelect = document.querySelector("#leadTimeSelect");
+  const filamentTypeSelect = document.querySelector("#filamentTypeSelect");
+  const filamentColorSelect = document.querySelector("#filamentColorSelect");
 
-  if (!filamentRange || !timeRange || !leadTimeSelect) {
+  if (!filamentRange || !timeRange || !leadTimeSelect || !filamentTypeSelect || !filamentColorSelect) {
     return;
   }
 
@@ -106,10 +115,16 @@ function updatePricingEstimate() {
   const isImmediate = leadTimeSelect.value === "custom";
   const multiplierValue = isImmediate ? null : Number(leadTimeSelect.value);
   const leadTimeText = leadTimeSelect.options[leadTimeSelect.selectedIndex].text;
+  const filamentType = filamentTypeSelect.value;
+  const filamentColor = filamentColorSelect.value;
+  const materialRate = materialRates[filamentType] ?? materialRates.Other;
+  const inStock = filamentType === "PLA" && filamentColor === "Black";
+  const isSpecialRequest = !inStock;
+  const specialMaterialFee = isSpecialRequest ? SPECIAL_MATERIAL_HANDLING_FEE : 0;
 
-  const filamentCost = filamentValue * FILAMENT_COST_PER_GRAM;
+  const filamentCost = filamentValue * materialRate;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
-  const subtotal = BASE_SETUP_FEE + filamentCost + timeCost;
+  const subtotal = BASE_SETUP_FEE + filamentCost + timeCost + specialMaterialFee;
   const rawEstimate = isImmediate ? null : subtotal * multiplierValue;
   const estimateTotal = isImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
 
@@ -118,11 +133,34 @@ function updatePricingEstimate() {
 
   document.querySelector("#filamentValue").textContent = `${filamentValue}`;
   document.querySelector("#timeValue").textContent = `${timeValue}`;
+  document.querySelector("#materialRate").textContent = `${formatCurrency(materialRate)}/g`;
   document.querySelector("#setupCost").textContent = formatCurrency(BASE_SETUP_FEE);
   document.querySelector("#filamentCost").textContent = formatCurrency(filamentCost);
   document.querySelector("#machineCost").textContent = formatCurrency(timeCost);
+  document.querySelector("#specialMaterialFee").textContent = formatCurrency(specialMaterialFee);
   document.querySelector("#leadMultiplier").textContent = isImmediate ? "Custom" : `${multiplierValue.toFixed(2)}x`;
   document.querySelector("#estimatedTotal").textContent = isImmediate ? "Custom quote" : formatCurrency(estimateTotal);
+
+  const specialFeeRow = document.querySelector("#specialMaterialFeeRow");
+  specialFeeRow.classList.toggle("is-hidden", !isSpecialRequest);
+
+  const inventoryBadge = document.querySelector("#inventoryBadge");
+  const inventoryMessage = document.querySelector("#inventoryMessage");
+  const turnaroundNote = document.querySelector("#turnaroundNote");
+
+  inventoryBadge.classList.remove("inventory-in-stock", "inventory-special");
+
+  if (inStock) {
+    inventoryBadge.textContent = "In stock";
+    inventoryBadge.classList.add("inventory-in-stock");
+    inventoryMessage.textContent = "Black PLA is currently available for standard quoting.";
+    turnaroundNote.textContent = "Standard stocked materials support the fastest quoting and scheduling.";
+  } else {
+    inventoryBadge.textContent = "Special request";
+    inventoryBadge.classList.add("inventory-special");
+    inventoryMessage.textContent = "This material or color is not currently stocked. Final quote may change based on ordering time, material cost, and availability.";
+    turnaroundNote.textContent = "Turnaround may be longer for materials or colors not currently stocked.";
+  }
 
   const warningElement = document.querySelector("#pricingWarning");
   warningElement.classList.remove("warning", "danger");
@@ -131,6 +169,10 @@ function updatePricingEstimate() {
   const isOverTwelveHours = timeValue > 12;
   const isRush = leadTimeText.startsWith("Rush");
   const isLargePart = filamentValue > 300;
+  const isPETG = filamentType === "PETG";
+  const isTPU = filamentType === "TPU";
+  const isABS = filamentType === "ABS";
+  const isOtherMaterial = filamentType === "Other";
 
   if (isImmediate) {
     warningElement.textContent = isOverTwelveHours ? "Long urgent prints require custom pricing." : "Immediate jobs require a custom quote.";
@@ -141,8 +183,23 @@ function updatePricingEstimate() {
   } else if (isOverTwelveHours) {
     warningElement.textContent = "Over 12 hours - special quote required.";
     warningElement.classList.add("danger");
+  } else if (isOtherMaterial) {
+    warningElement.textContent = "Custom materials require manual approval before quoting.";
+    warningElement.classList.add("warning");
+  } else if (isTPU) {
+    warningElement.textContent = "TPU is flexible and may require slower print speeds or custom review.";
+    warningElement.classList.add("warning");
+  } else if (isABS) {
+    warningElement.textContent = "ABS may require custom review due to warping, ventilation, and print-risk concerns.";
+    warningElement.classList.add("warning");
+  } else if (isPETG) {
+    warningElement.textContent = "PETG may cost more due to material price and print tuning.";
+    warningElement.classList.add("warning");
   } else if (isLargePart && isLongPrint) {
     warningElement.textContent = "Large, long print - custom quote likely.";
+    warningElement.classList.add("warning");
+  } else if (isSpecialRequest) {
+    warningElement.textContent = "Special material/color request - quote may change based on ordering time, material cost, and availability.";
     warningElement.classList.add("warning");
   } else if (isRush) {
     warningElement.textContent = "Rush jobs require manual approval and may cost more depending on queue availability.";
@@ -160,6 +217,8 @@ function updatePricingEstimate() {
   const quoteButton = document.querySelector("#calculatorQuoteButton");
   if (quoteButton) {
     const params = new URLSearchParams({
+      material: filamentType,
+      color: filamentColor,
       filament: `${filamentValue}g`,
       time: `${timeValue} hours`,
       lead: leadTimeText,
@@ -174,10 +233,9 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCapacityCards();
   updatePricingEstimate();
 
-  const estimateInputs = document.querySelectorAll("#filamentSlider, #timeSlider, #leadTimeSelect");
+  const estimateInputs = document.querySelectorAll("#filamentSlider, #timeSlider, #leadTimeSelect, #filamentTypeSelect, #filamentColorSelect");
   estimateInputs.forEach((input) => {
     input.addEventListener("input", updatePricingEstimate);
     input.addEventListener("change", updatePricingEstimate);
   });
 });
-
