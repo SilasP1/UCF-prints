@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCF Prints | Capacity Planner</title>
+  <meta
+    name="description"
+    content="Internal-style weekly capacity planner for UCF Prints showing booked hours, remaining hours, weekly load, and sample order status."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-mark"></span>
+          <span>UCF Prints</span>
+        </a>
+        <nav class="nav">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="pricing.html">Pricing</a>
+          <a class="nav-link active" href="capacity.html">Capacity</a>
+        </nav>
+        <a class="button button-primary button-small" href="mailto:ucfprints@example.com?subject=Request%20a%20Print%20Quote">Request a Print Quote</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section hero-compact">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Internal capacity view</p>
+            <h1>Weekly Print Capacity</h1>
+            <p class="hero-subtitle">A simple planner for managing queue load, remaining hours, and approval risk.</p>
+            <p class="hero-description">
+              This is an operations-style overview for balancing standard, priority, and rush jobs against a fixed 12-hour daily print limit.
+            </p>
+          </div>
+          <div class="card summary-card">
+            <span class="note-label">Capacity rules</span>
+            <div class="summary-metrics">
+              <div>
+                <span>Total daily capacity</span>
+                <strong>12 hours</strong>
+              </div>
+              <div>
+                <span>Warning threshold</span>
+                <strong>85%</strong>
+              </div>
+              <div>
+                <span>Overbooked status</span>
+                <strong>Manual approval</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Weekly planner</p>
+            <h2>Mon through Sun utilization</h2>
+            <p>Booked hours, remaining capacity, and warnings are calculated automatically from the sample job list.</p>
+          </div>
+
+          <div class="weekly-grid" id="capacity-grid">
+            <article class="card capacity-card" data-day="Mon">
+              <div class="capacity-head">
+                <h3>Mon</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Tue">
+              <div class="capacity-head">
+                <h3>Tue</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Wed">
+              <div class="capacity-head">
+                <h3>Wed</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Thu">
+              <div class="capacity-head">
+                <h3>Thu</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Fri">
+              <div class="capacity-head">
+                <h3>Fri</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Sat">
+              <div class="capacity-head">
+                <h3>Sat</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+            <article class="card capacity-card" data-day="Sun">
+              <div class="capacity-head">
+                <h3>Sun</h3>
+                <span class="day-state">Loading</span>
+              </div>
+              <div class="capacity-stats">
+                <div><span>Total capacity</span><strong>12h</strong></div>
+                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
+                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
+                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
+              </div>
+              <div class="progress-track"><span class="progress-fill"></span></div>
+              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Sample queue</p>
+            <h2>Current order mix</h2>
+            <p>Example jobs show how different tiers and statuses feed into weekly capacity usage.</p>
+          </div>
+
+          <div class="orders-grid" id="orders-grid">
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>gearbox_mount_v3.stl</h3>
+                <span class="chip chip-standard">Standard</span>
+              </div>
+              <p class="order-meta">Estimated print time: 3.5h</p>
+              <div class="order-footer">
+                <span class="chip chip-pending">Pending</span>
+                <span class="order-day">Mon</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>wind_tunnel_fixture.stl</h3>
+                <span class="chip chip-priority">Priority</span>
+              </div>
+              <p class="order-meta">Estimated print time: 5h</p>
+              <div class="order-footer">
+                <span class="chip chip-approved">Approved</span>
+                <span class="order-day">Tue</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>robot_arm_bracket.stl</h3>
+                <span class="chip chip-rush">Rush</span>
+              </div>
+              <p class="order-meta">Estimated print time: 4.5h</p>
+              <div class="order-footer">
+                <span class="chip chip-printing">Printing</span>
+                <span class="order-day">Wed</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>drone_frame_plate.stl</h3>
+                <span class="chip chip-standard">Standard</span>
+              </div>
+              <p class="order-meta">Estimated print time: 2.5h</p>
+              <div class="order-footer">
+                <span class="chip chip-ready">Ready</span>
+                <span class="order-day">Thu</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>capstone_housing_revB.stl</h3>
+                <span class="chip chip-priority">Priority</span>
+              </div>
+              <p class="order-meta">Estimated print time: 10h</p>
+              <div class="order-footer">
+                <span class="chip chip-approved">Approved</span>
+                <span class="order-day">Fri</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>sensor_mount_array.stl</h3>
+                <span class="chip chip-rush">Rush</span>
+              </div>
+              <p class="order-meta">Estimated print time: 6h</p>
+              <div class="order-footer">
+                <span class="chip chip-pending">Pending</span>
+                <span class="order-day">Fri</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>lab_demo_handle.stl</h3>
+                <span class="chip chip-standard">Standard</span>
+              </div>
+              <p class="order-meta">Estimated print time: 8.5h</p>
+              <div class="order-footer">
+                <span class="chip chip-approved">Approved</span>
+                <span class="order-day">Sat</span>
+              </div>
+            </article>
+            <article class="card order-card">
+              <div class="order-top">
+                <h3>presentation_mockup.stl</h3>
+                <span class="chip chip-priority">Priority</span>
+              </div>
+              <p class="order-meta">Estimated print time: 11h</p>
+              <div class="order-footer">
+                <span class="chip chip-printing">Printing</span>
+                <span class="order-day">Sun</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
