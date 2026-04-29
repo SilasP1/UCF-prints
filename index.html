@@ -1,38 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Fast UCF 3D Printing</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fast 3D Printing for UCF Students</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <div class="logo">UCF Prints</div>
+      <nav class="nav-links">
+        <a href="#benefits">Benefits</a>
+        <a href="#availability">Availability</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-<h1>Fast UCF 3D Printing</h1>
-<p>If campus printers are booked or you're on a deadline, I can print faster.</p>
+  <main>
+    <section class="hero" id="top">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Student-run · UCF-focused · Deadline-friendly</p>
+          <h1>Fast 3D Printing for UCF Students</h1>
+          <p class="subheadline">When campus printers are booked, limited, or too slow, get your prototype printed faster.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Request a Quote</a>
+            <a class="btn btn-secondary" href="#availability">View Availability</a>
+          </div>
+        </div>
+        <div class="hero-card card">
+          <h2>Why students choose this service</h2>
+          <ul>
+            <li>Reliable turnaround when lab queues are full.</li>
+            <li>Flexible options for class and club project timelines.</li>
+            <li>Clear communication and quote updates before printing.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-<h2>Availability</h2>
-<ul>
-  <li>Rush (same/next day): 🟢 1 slot</li>
-  <li>Priority (2–3 days): 🟡 2 slots</li>
-  <li>Standard (4–7 days): 🟢 4 slots</li>
-</ul>
+    <section id="benefits" class="section">
+      <div class="container">
+        <h2>Built for real student deadlines</h2>
+        <p class="section-intro">This service is designed for speed, reliability, and flexibility—not bargain-bin printing. If campus options are backed up, you still have a path to finish on time.</p>
+        <div class="card-grid">
+          <article class="card"><h3>Faster turnaround</h3><p>Get parts printed sooner when timing matters most.</p></article>
+          <article class="card"><h3>Flexible scheduling</h3><p>Choose service tiers based on your deadline and urgency.</p></article>
+          <article class="card"><h3>No booked-lab bottlenecks</h3><p>Avoid waiting on limited campus printer availability.</p></article>
+          <article class="card"><h3>Print-prep support</h3><p>Get help with common STL/3MF setup and file issues.</p></article>
+          <article class="card"><h3>Filament ready</h3><p>Common materials are already stocked for quick starts.</p></article>
+          <article class="card"><h3>Rush options</h3><p>Need it urgently? Priority and rush options are available.</p></article>
+        </div>
+      </div>
+    </section>
 
-<h2>Pricing</h2>
-<ul>
-  <li>Small parts: $15–$25</li>
-  <li>Medium: $25–$50</li>
-  <li>Large: $50+</li>
-  <li>Rush: +50–100%</li>
-</ul>
+    <section id="availability" class="section alt-bg">
+      <div class="container">
+        <h2>Current availability</h2>
+        <p class="section-intro">Availability updates as capacity changes. Reach out early for best turnaround.</p>
+        <div id="availabilityCards" class="card-grid"></div>
+      </div>
+    </section>
 
-<h2>Contact</h2>
-<p>Send STL + deadline:</p>
-<p>Email: your@email.com</p>
+    <section id="pricing" class="section">
+      <div class="container">
+        <h2>Estimated pricing ranges</h2>
+        <div class="pricing-wrap">
+          <article class="card pricing-card"><h3>Small parts</h3><p class="price">$15–$25</p></article>
+          <article class="card pricing-card"><h3>Medium parts</h3><p class="price">$25–$50</p></article>
+          <article class="card pricing-card"><h3>Large parts</h3><p class="price">Quoted individually</p></article>
+          <article class="card pricing-card"><h3>TPU / Flexible</h3><p class="price">Premium quote</p></article>
+          <article class="card pricing-card"><h3>Rush orders</h3><p class="price">+50–100%</p></article>
+        </div>
+        <p class="fine-print">Final price depends on print time, material, size, urgency, and file condition.</p>
+      </div>
+    </section>
 
-<h2>Notes</h2>
-<ul>
-  <li>Payment before printing</li>
-  <li>Quote may change after file review</li>
-</ul>
+    <section id="how-it-works" class="section alt-bg">
+      <div class="container">
+        <h2>How it works</h2>
+        <div class="steps">
+          <article class="card"><span class="step-num">1</span><h3>Send file + deadline</h3><p>Share your STL/3MF and when you need the part.</p></article>
+          <article class="card"><span class="step-num">2</span><h3>Get quote</h3><p>Receive a quote based on material, size, and urgency.</p></article>
+          <article class="card"><span class="step-num">3</span><h3>Pay before print</h3><p>Payment confirms your slot and print queue placement.</p></article>
+          <article class="card"><span class="step-num">4</span><h3>Pick up near campus</h3><p>Collect your completed print on or near campus.</p></article>
+        </div>
+      </div>
+    </section>
 
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Request a quote</h2>
+        <p class="section-intro">Send your file, deadline, material preference, and any notes for a quote.</p>
+        <div class="card contact-card">
+          <p><strong>Email:</strong> yourname@ucf.edu</p>
+          <p><strong>Phone (optional):</strong> (555) 123-4567</p>
+          <p><strong>Instagram (optional):</strong> @ucfprints</p>
+          <p><strong>Discord (optional):</strong> UCFPrints#0000</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="terms" class="section alt-bg">
+      <div class="container">
+        <h2>Service terms</h2>
+        <ul class="terms-list card">
+          <li>Payment is required before printing begins.</li>
+          <li>Quotes may change after full file review.</li>
+          <li>Failed prints caused by file/design issues may require a re-quote.</li>
+          <li>No unsafe, weapon, prohibited, or academic dishonesty-related prints.</li>
+          <li>Service availability depends on current printer capacity.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> UCF Prints · Student-run 3D printing support for UCF projects.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
