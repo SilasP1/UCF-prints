@@ -23,6 +23,14 @@ function formatCurrency(value) {
   return `$${value.toFixed(2)}`;
 }
 
+function setSliderProgress(slider) {
+  const min = Number(slider.min || 0);
+  const max = Number(slider.max || 100);
+  const value = Number(slider.value);
+  const progress = ((value - min) / (max - min)) * 100;
+  slider.style.setProperty("--slider-progress", `${progress}%`);
+}
+
 function getBookedHoursByDay(orders) {
   return orders.reduce((totals, order) => {
     totals[order.day] = (totals[order.day] || 0) + order.hours;
@@ -84,9 +92,9 @@ function updateCapacityCards() {
 }
 
 function updatePricingEstimate() {
-  const filamentRange = document.querySelector("#filament-range");
-  const timeRange = document.querySelector("#time-range");
-  const leadTimeSelect = document.querySelector("#lead-time");
+  const filamentRange = document.querySelector("#filamentSlider");
+  const timeRange = document.querySelector("#timeSlider");
+  const leadTimeSelect = document.querySelector("#leadTimeSelect");
 
   if (!filamentRange || !timeRange || !leadTimeSelect) {
     return;
@@ -94,31 +102,37 @@ function updatePricingEstimate() {
 
   const filamentValue = Number(filamentRange.value);
   const timeValue = Number(timeRange.value);
-  const multiplierValue = Number(leadTimeSelect.value);
+  const isImmediate = leadTimeSelect.value === "custom";
+  const multiplierValue = isImmediate ? null : Number(leadTimeSelect.value);
   const leadTimeText = leadTimeSelect.options[leadTimeSelect.selectedIndex].text;
 
   const filamentCost = filamentValue * FILAMENT_COST_PER_GRAM;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
   const subtotal = BASE_SETUP_FEE + filamentCost + timeCost;
-  const estimateTotal = subtotal * multiplierValue;
+  const estimateTotal = isImmediate ? null : subtotal * multiplierValue;
 
-  document.querySelector("#filament-value").textContent = `${filamentValue}`;
-  document.querySelector("#time-value").textContent = `${timeValue}`;
-  document.querySelector("#lead-time-label").textContent = leadTimeText.split(":")[0];
-  document.querySelector("#setup-fee").textContent = formatCurrency(BASE_SETUP_FEE);
-  document.querySelector("#filament-cost").textContent = formatCurrency(filamentCost);
-  document.querySelector("#time-cost").textContent = formatCurrency(timeCost);
-  document.querySelector("#lead-multiplier").textContent = `${multiplierValue.toFixed(2)}x`;
-  document.querySelector("#estimate-price").textContent = formatCurrency(estimateTotal);
+  setSliderProgress(filamentRange);
+  setSliderProgress(timeRange);
 
-  const warningElement = document.querySelector("#estimate-warning");
+  document.querySelector("#filamentValue").textContent = `${filamentValue}`;
+  document.querySelector("#timeValue").textContent = `${timeValue}`;
+  document.querySelector("#setupCost").textContent = formatCurrency(BASE_SETUP_FEE);
+  document.querySelector("#filamentCost").textContent = formatCurrency(filamentCost);
+  document.querySelector("#machineCost").textContent = formatCurrency(timeCost);
+  document.querySelector("#leadMultiplier").textContent = isImmediate ? "Custom" : `${multiplierValue.toFixed(2)}x`;
+  document.querySelector("#estimatedTotal").textContent = isImmediate ? "Custom quote" : formatCurrency(estimateTotal);
+
+  const warningElement = document.querySelector("#pricingWarning");
   warningElement.classList.remove("warning", "danger");
 
   const isLongPrint = timeValue > 12;
   const isRush = leadTimeText.startsWith("Rush");
 
-  if (isRush && isLongPrint) {
-    warningElement.textContent = "Rush long prints require custom pricing.";
+  if (isLongPrint && (isRush || isImmediate)) {
+    warningElement.textContent = "Long urgent prints require custom pricing.";
+    warningElement.classList.add("danger");
+  } else if (isImmediate) {
+    warningElement.textContent = "Immediate jobs require a custom quote.";
     warningElement.classList.add("danger");
   } else if (isRush) {
     warningElement.textContent = "Rush jobs require manual approval and may cost more depending on queue availability.";
@@ -130,23 +144,28 @@ function updatePricingEstimate() {
     warningElement.textContent = "Standard scheduling estimate based on current assumptions.";
   }
 
-  const cta = document.querySelector("#estimate-cta");
-  const bodyLines = [
-    "Estimated print details:",
-    `Filament: ${filamentValue}g`,
-    `Print time: ${timeValue} hours`,
-    `Lead time: ${leadTimeText}`,
-    `Estimated price: ${formatCurrency(estimateTotal)}`
-  ];
+  const quoteButton = document.querySelector("#calculatorQuoteButton");
+  if (quoteButton) {
+    const emailBody = [
+      "UCF Prints quote request",
+      "",
+      `Filament amount: ${filamentValue}g`,
+      `Print time: ${timeValue} hours`,
+      `Lead time: ${leadTimeText}`,
+      `Estimated total: ${isImmediate ? "Custom quote" : formatCurrency(estimateTotal)}`,
+      "",
+      "I understand this calculator provides an estimate only and final pricing may change after file review."
+    ].join("\n");
 
-  cta.href = `mailto:ucfprints@example.com?subject=${encodeURIComponent("Request Quote With These Details")}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+    quoteButton.href = `mailto:ucfprints@example.com?subject=${encodeURIComponent("Request a Print Quote")}&body=${encodeURIComponent(emailBody)}`;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCapacityCards();
   updatePricingEstimate();
 
-  const estimateInputs = document.querySelectorAll("#filament-range, #time-range, #lead-time");
+  const estimateInputs = document.querySelectorAll("#filamentSlider, #timeSlider, #leadTimeSelect");
   estimateInputs.forEach((input) => {
     input.addEventListener("input", updatePricingEstimate);
     input.addEventListener("change", updatePricingEstimate);
