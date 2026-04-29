@@ -107,6 +107,72 @@
         </div>
       </section>
 
+      <section class="section section-alt">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Estimate calculator</p>
+            <h2>Budget your print before submitting</h2>
+            <p>This estimate helps students budget before uploading files. Final pricing still requires file review, print validation, and queue confirmation.</p>
+          </div>
+
+          <div class="calculator-layout card">
+            <div class="calculator-controls">
+              <article class="calculator-field">
+                <div class="field-top">
+                  <label for="filament-range">Filament amount</label>
+                  <strong><span id="filament-value">75</span>g</strong>
+                </div>
+                <input id="filament-range" class="range-input" type="range" min="10" max="500" value="75" step="5">
+                <p>Use the estimated total filament consumed by the part, including practical material waste.</p>
+              </article>
+
+              <article class="calculator-field">
+                <div class="field-top">
+                  <label for="time-range">Print time</label>
+                  <strong><span id="time-value">4</span> hours</strong>
+                </div>
+                <input id="time-range" class="range-input" type="range" min="1" max="24" value="4" step="1">
+                <p>Enter expected machine runtime so the estimate reflects actual scheduler impact.</p>
+              </article>
+
+              <article class="calculator-field">
+                <div class="field-top">
+                  <label for="lead-time">Lead time / urgency</label>
+                  <strong id="lead-time-label">Standard</strong>
+                </div>
+                <select id="lead-time" class="select-input">
+                  <option value="1" selected>Standard: 3-5 days</option>
+                  <option value="1.35">Priority: 1-2 days</option>
+                  <option value="1.75">Rush / Same-Day</option>
+                </select>
+                <p>Faster delivery windows increase queue pressure and raise the planning estimate.</p>
+              </article>
+            </div>
+
+            <div class="calculator-summary">
+              <span class="note-label">Estimate only</span>
+              <div class="estimate-price" id="estimate-price">$22.00</div>
+              <p class="estimate-disclaimer">This is not a final quote. Every part is reviewed before approval and print start.</p>
+
+              <div class="estimate-breakdown">
+                <div><span>Setup fee</span><strong id="setup-fee">$5.00</strong></div>
+                <div><span>Filament estimate</span><strong id="filament-cost">$9.00</strong></div>
+                <div><span>Print time estimate</span><strong id="time-cost">$8.00</strong></div>
+                <div><span>Lead time multiplier</span><strong id="lead-multiplier">1.00x</strong></div>
+              </div>
+
+              <div class="estimate-warning" id="estimate-warning">
+                Standard scheduling estimate based on current assumptions.
+              </div>
+
+              <a class="button button-primary estimate-cta" id="estimate-cta" href="mailto:ucfprints@example.com?subject=Request%20Quote%20With%20These%20Details">
+                Request Quote With These Details
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section">
         <div class="container">
           <div class="section-heading">
@@ -144,3 +210,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
