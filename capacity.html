@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCF Prints | Capacity Planner</title>
+  <title>UCF Prints | Reliable 3D Printing</title>
   <meta
     name="description"
-    content="Internal-style weekly capacity planner for UCF Prints showing booked hours, remaining hours, weekly load, and sample order status."
+    content="UCF Prints provides reliable student-focused 3D printing with flexible turnaround, print-prep support, and rush capacity for real deadlines."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,39 +22,58 @@
           <span>UCF Prints</span>
         </a>
         <nav class="nav">
-          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link active" href="index.html">Home</a>
           <a class="nav-link" href="pricing.html">Pricing</a>
-          <a class="nav-link active" href="capacity.html">Capacity</a>
+          <a class="nav-link" href="capacity.html">Capacity</a>
         </nav>
         <a class="button button-primary button-small" href="quote.html">Request a Print Quote</a>
       </div>
     </header>
 
     <main>
-      <section class="hero-section hero-compact">
+      <section class="hero-section">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Internal capacity view</p>
-            <h1>Weekly Print Capacity</h1>
-            <p class="hero-subtitle">A simple planner for managing queue load, remaining hours, and approval risk.</p>
+            <p class="eyebrow">Student-run manufacturing support</p>
+            <h1>UCF Prints</h1>
+            <p class="hero-subtitle">Reliable 3D printing for real student deadlines</p>
             <p class="hero-description">
-              This is an operations-style overview for balancing standard, priority, and rush jobs against a fixed 12-hour daily print limit.
+              Skip crowded campus labs and get dependable turnaround when project timelines are tight. UCF Prints helps you move from STL to pickup with clear communication, prepared material, and fast queue management.
             </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="quote.html">Request a Print Quote</a>
+              <a class="button button-secondary" href="capacity.html">View Capacity</a>
+            </div>
           </div>
-          <div class="card summary-card">
-            <span class="note-label">Capacity rules</span>
-            <div class="summary-metrics">
-              <div>
-                <span>Total daily capacity</span>
-                <strong>12 hours</strong>
+
+          <div class="hero-panel card metric-panel">
+            <div class="metric-row">
+              <span class="metric-label">Queue focus</span>
+              <span class="metric-pill">Engineering deadlines</span>
+            </div>
+            <div class="metric-stack">
+              <div class="metric-card">
+                <span class="metric-title">Priority-ready workflow</span>
+                <strong>Quote, approve, print</strong>
+                <p>Built for students who need dependable communication and fewer production surprises.</p>
               </div>
-              <div>
-                <span>Warning threshold</span>
-                <strong>85%</strong>
-              </div>
-              <div>
-                <span>Overbooked status</span>
-                <strong>Manual approval</strong>
+              <div class="metric-grid">
+                <div class="mini-stat">
+                  <span>Rush window</span>
+                  <strong>Limited</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Filament stock</span>
+                  <strong>Ready</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Prep support</span>
+                  <strong>Included</strong>
+                </div>
+                <div class="mini-stat">
+                  <span>Capacity model</span>
+                  <strong>12h/day</strong>
+                </div>
               </div>
             </div>
           </div>
@@ -64,109 +83,34 @@
       <section class="section">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">Weekly planner</p>
-            <h2>Mon through Sun utilization</h2>
-            <p>Booked hours, remaining capacity, and warnings are calculated automatically from the sample job list.</p>
+            <p class="eyebrow">Why students use us</p>
+            <h2>Built to keep projects moving</h2>
+            <p>Every step is designed to reduce queue friction and give you a clearer path to a finished part.</p>
           </div>
-
-          <div class="weekly-grid" id="capacity-grid">
-            <article class="card capacity-card" data-day="Mon">
-              <div class="capacity-head">
-                <h3>Mon</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+          <div class="card-grid three-up">
+            <article class="card feature-card">
+              <h3>Faster turnaround</h3>
+              <p>Shorter response times and active queue management help you avoid last-minute fabrication stress.</p>
             </article>
-            <article class="card capacity-card" data-day="Tue">
-              <div class="capacity-head">
-                <h3>Tue</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            <article class="card feature-card">
+              <h3>Flexible scheduling</h3>
+              <p>We align print timing around class schedules, project reviews, and realistic pickup windows.</p>
             </article>
-            <article class="card capacity-card" data-day="Wed">
-              <div class="capacity-head">
-                <h3>Wed</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            <article class="card feature-card">
+              <h3>No booked-lab bottlenecks</h3>
+              <p>Bypass overbooked shared printers and move your file into a managed production queue.</p>
             </article>
-            <article class="card capacity-card" data-day="Thu">
-              <div class="capacity-head">
-                <h3>Thu</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            <article class="card feature-card">
+              <h3>Print-prep support</h3>
+              <p>We help review orientation, support assumptions, and practical setup before the printer starts.</p>
             </article>
-            <article class="card capacity-card" data-day="Fri">
-              <div class="capacity-head">
-                <h3>Fri</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            <article class="card feature-card">
+              <h3>Filament ready</h3>
+              <p>Core material inventory stays on hand so standard jobs can move quickly without sourcing delays.</p>
             </article>
-            <article class="card capacity-card" data-day="Sat">
-              <div class="capacity-head">
-                <h3>Sat</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Sun">
-              <div class="capacity-head">
-                <h3>Sun</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
+            <article class="card feature-card">
+              <h3>Rush options</h3>
+              <p>Urgent requests can be evaluated for same-day handling when capacity and print risk allow.</p>
             </article>
           </div>
         </div>
@@ -175,99 +119,34 @@
       <section class="section section-alt">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">Sample queue</p>
-            <h2>Current order mix</h2>
-            <p>Example jobs show how different tiers and statuses feed into weekly capacity usage.</p>
+            <p class="eyebrow">Current service windows</p>
+            <h2>Availability at a glance</h2>
+            <p>Choose the turnaround lane that matches your deadline and budget.</p>
           </div>
-
-          <div class="orders-grid" id="orders-grid">
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>gearbox_mount_v3.stl</h3>
-                <span class="chip chip-standard">Standard</span>
+          <div class="card-grid three-up">
+            <article class="card status-card">
+              <div class="status-top">
+                <h3>Rush</h3>
+                <span class="status-badge status-limited">Limited</span>
               </div>
-              <p class="order-meta">Estimated print time: 3.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-pending">Pending</span>
-                <span class="order-day">Mon</span>
-              </div>
+              <p class="status-time">Same-day or immediate review</p>
+              <p>Reserved for urgent deadlines that require rapid approval and direct scheduling.</p>
             </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>wind_tunnel_fixture.stl</h3>
-                <span class="chip chip-priority">Priority</span>
+            <article class="card status-card">
+              <div class="status-top">
+                <h3>Priority</h3>
+                <span class="status-badge status-open">Open</span>
               </div>
-              <p class="order-meta">Estimated print time: 5h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Tue</span>
-              </div>
+              <p class="status-time">Accelerated queue placement</p>
+              <p>Best for team reviews, lab demos, and project milestones that need faster movement.</p>
             </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>robot_arm_bracket.stl</h3>
-                <span class="chip chip-rush">Rush</span>
+            <article class="card status-card">
+              <div class="status-top">
+                <h3>Standard</h3>
+                <span class="status-badge status-open">Open</span>
               </div>
-              <p class="order-meta">Estimated print time: 4.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-printing">Printing</span>
-                <span class="order-day">Wed</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>drone_frame_plate.stl</h3>
-                <span class="chip chip-standard">Standard</span>
-              </div>
-              <p class="order-meta">Estimated print time: 2.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-ready">Ready</span>
-                <span class="order-day">Thu</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>capstone_housing_revB.stl</h3>
-                <span class="chip chip-priority">Priority</span>
-              </div>
-              <p class="order-meta">Estimated print time: 10h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Fri</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>sensor_mount_array.stl</h3>
-                <span class="chip chip-rush">Rush</span>
-              </div>
-              <p class="order-meta">Estimated print time: 6h</p>
-              <div class="order-footer">
-                <span class="chip chip-pending">Pending</span>
-                <span class="order-day">Fri</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>lab_demo_handle.stl</h3>
-                <span class="chip chip-standard">Standard</span>
-              </div>
-              <p class="order-meta">Estimated print time: 8.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Sat</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>presentation_mockup.stl</h3>
-                <span class="chip chip-priority">Priority</span>
-              </div>
-              <p class="order-meta">Estimated print time: 11h</p>
-              <div class="order-footer">
-                <span class="chip chip-printing">Printing</span>
-                <span class="order-day">Sun</span>
-              </div>
+              <p class="status-time">Scheduled in available capacity</p>
+              <p>Cost-efficient printing for routine parts, prototypes, and lower-urgency coursework.</p>
             </article>
           </div>
         </div>
