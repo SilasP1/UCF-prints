@@ -451,6 +451,8 @@ img {
 .comparison-table {
   width: 100%;
   border-collapse: collapse;
+  overflow: hidden;
+  border-radius: var(--radius-md);
 }
 
 .comparison-table th,
@@ -464,45 +466,19 @@ img {
 .comparison-table th {
   color: var(--panel-strong);
   font-size: 0.92rem;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .comparison-table tbody tr:last-child td {
   border-bottom: 0;
 }
 
+.comparison-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .comparison-table .ucf-column {
   background: rgba(255, 201, 4, 0.08);
-}
-
-.comparison-cards {
-  display: none;
-  gap: var(--space-4);
-}
-
-.comparison-card {
-  border-color: rgba(255, 201, 4, 0.24);
-}
-
-.comparison-meta {
-  margin: 0.5rem 0 1rem;
-  color: var(--text-muted);
-}
-
-.comparison-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--line);
-}
-
-.comparison-row span {
-  color: var(--text-muted);
-}
-
-.comparison-row strong {
-  color: var(--panel-strong);
-  text-align: right;
 }
 
 .comparison-disclaimer {
@@ -522,6 +498,17 @@ img {
 .comparison-value-card h3 {
   margin: 0 0 var(--space-4);
   font-size: 1.35rem;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.faq-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.15rem;
 }
 
 .calculator-control-head {
@@ -988,12 +975,8 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .comparison-table-wrap {
-    display: none;
-  }
-
-  .comparison-cards {
-    display: grid;
+  .faq-grid {
+    grid-template-columns: 1fr;
   }
 }
 
