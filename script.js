@@ -204,7 +204,8 @@ function updatePricingEstimate() {
   const filamentCost = filamentValue * materialRate;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
   const subtotal = BASE_SETUP_FEE + filamentCost + timeCost + specialMaterialFee;
-  const rawEstimate = isImmediate ? null : subtotal * multiplierValue;
+  const billableBase = isImmediate ? null : Math.max(subtotal, MINIMUM_ESTIMATED_ORDER);
+  const rawEstimate = isImmediate ? null : billableBase * multiplierValue;
   const estimateTotal = isImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
 
   setSliderProgress(filamentRange);
