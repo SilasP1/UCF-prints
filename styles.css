@@ -241,6 +241,7 @@ img {
 
 .hero-grid-single {
   grid-template-columns: minmax(0, 46rem);
+  justify-content: center;
 }
 
 .hero-copy h1,
@@ -283,20 +284,18 @@ img {
   margin-top: var(--space-5);
 }
 
-.hero-summary-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
-  margin-top: var(--space-5);
+.hero-copy-centered {
+  text-align: center;
+  margin-inline: auto;
 }
 
-.hero-summary-card {
-  min-height: 100%;
+.hero-copy-centered .hero-subtitle,
+.hero-copy-centered .hero-description {
+  margin-inline: auto;
 }
 
-.hero-summary-card h3 {
-  margin: 0.75rem 0;
-  font-size: 1.15rem;
+.hero-copy-centered .hero-actions {
+  justify-content: center;
 }
 
 .eyebrow,
@@ -1001,10 +1000,6 @@ img {
   .three-up,
   .two-up,
   .orders-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-summary-grid {
     grid-template-columns: 1fr;
   }
 
