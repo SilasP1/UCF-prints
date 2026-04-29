@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCF Prints | Request a Quote</title>
+  <title>UCF Prints | Get a Print Quote</title>
   <meta
     name="description"
-    content="Contact UCF Prints to request a 3D printing quote through email or Instagram."
+    content="Estimate your print cost before submitting your file with the UCF Prints quote calculator."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,10 +24,10 @@
         <nav class="nav">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link" href="pricing.html">Pricing</a>
+          <a class="nav-link nav-link-highlight active" href="quote.html">Get a Quote</a>
           <a class="nav-link" href="capacity.html">Capacity</a>
-          <a class="nav-link active" href="quote.html">Quote</a>
         </nav>
-        <a class="button button-primary button-small" href="quote.html">Request a Print Quote</a>
+        <a class="button button-primary button-small" href="quote.html#pricing-calculator">Get a Quote</a>
       </div>
     </header>
 
@@ -35,18 +35,156 @@
       <section class="hero-section hero-compact">
         <div class="container hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Quote request</p>
-            <h1>Request a Print Quote</h1>
-            <p class="hero-subtitle">Send your file details directly and get a real response from UCF Prints.</p>
+            <p class="eyebrow">Calculator-first quoting</p>
+            <h1>Get a Print Quote</h1>
+            <p class="hero-subtitle">Estimate your print cost before submitting your file.</p>
             <p class="hero-description">
-              Reach out with your STL, timeline, material preferences, and any deadline constraints. This page gives students a clear place to contact you without relying on placeholder links.
+              Choose your material, color, queue tier, print time, and filament amount here first, then send your quote request with the estimate details already prepared.
             </p>
           </div>
 
           <div class="card note-card">
             <span class="note-label">Best results</span>
-            <h3>Include the essentials</h3>
-            <p>Share your file name, estimated size, print deadline, and whether you need standard, priority, or rush handling.</p>
+            <h3>Use the calculator before submitting</h3>
+            <p>Action comes first on this page so students can estimate quickly before sending a file or asking follow-up questions.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing-calculator">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Estimate Your Print Cost</h2>
+            <p>This calculator is an estimate only. Final pricing happens after file review so standard prints can stay affordable while larger or urgent jobs are reviewed more carefully.</p>
+          </div>
+
+          <div class="calculator-shell card">
+            <div class="calculator-inputs">
+              <div class="calculator-formula">
+                <h3>How estimates are calculated</h3>
+                <p>Subtotal = $5 setup fee + material cost + ($1.50 per estimated print hour). Estimated total reflects queue tier rules, minimum pricing, and custom-review conditions where needed.</p>
+                <ul class="policy-list">
+                  <li>Economy, 7-10 days: lowest cost with flexible queue placement</li>
+                  <li>Standard, 3-5 days: 1.00x</li>
+                  <li>Priority, 1-2 days: 1.35x</li>
+                  <li>Rush / same-day: 1.75x</li>
+                  <li>Immediate / emergency: custom quote only</li>
+                </ul>
+              </div>
+
+              <div class="calculator-stock-note">
+                Currently stocked filament is limited. Black PLA is available now. Other materials or colors may require ordering time and custom pricing.
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="filamentTypeSelect">Filament type</label>
+                  <span><strong id="materialRatePreview">$0.10/g</strong></span>
+                </div>
+                <select id="filamentTypeSelect">
+                  <option value="PLA" selected>PLA</option>
+                  <option value="PETG">PETG</option>
+                  <option value="TPU">TPU</option>
+                  <option value="ABS">ABS</option>
+                  <option value="Other">Custom / Other</option>
+                </select>
+                <p id="materialTypeNote">PLA is the most student-friendly option and is priced for standard quoting.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="filamentColorSelect">Color</label>
+                </div>
+                <select id="filamentColorSelect">
+                  <option value="Black" selected>Black</option>
+                  <option value="White">White</option>
+                  <option value="Gray">Gray</option>
+                  <option value="Gold">Gold</option>
+                  <option value="Red">Red</option>
+                  <option value="Blue">Blue</option>
+                  <option value="Other">Custom / Other</option>
+                </select>
+              </div>
+
+              <div class="calculator-control inventory-card">
+                <div class="calculator-control-head">
+                  <label>Inventory status</label>
+                  <span class="inventory-badge inventory-in-stock" id="inventoryBadge">In stock</span>
+                </div>
+                <p id="inventoryMessage">Black PLA is currently available for standard quoting.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="filamentSlider">Filament amount</label>
+                  <span><strong id="filamentValue">75</strong> g</span>
+                </div>
+                <input type="range" id="filamentSlider" min="10" max="500" value="75">
+                <p>Estimate the total filament used by the print.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="timeSlider">Print time</label>
+                  <span><strong id="timeValue">4</strong> hours</span>
+                </div>
+                <input type="range" id="timeSlider" min="1" max="24" value="4">
+                <p>Use expected machine runtime for the most accurate estimate.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="leadTimeSelect">Lead time</label>
+                </div>
+                <select id="leadTimeSelect">
+                  <option value="economy">Economy - Lowest cost - extended 7-10 day lead time</option>
+                  <option value="1" selected>Standard, 3-5 days</option>
+                  <option value="1.35">Priority, 1-2 days</option>
+                  <option value="1.75">Rush / same-day</option>
+                  <option value="custom">Immediate / emergency</option>
+                </select>
+                <p>Slower and less predictable queue timing can reduce cost. Faster tiers cost more because they consume schedule flexibility.</p>
+              </div>
+            </div>
+
+            <div class="calculator-results">
+              <span class="note-label">Estimate only</span>
+              <div class="calculator-total-label">Estimated total</div>
+              <div class="calculator-total" id="estimatedTotal">$22.00</div>
+
+              <div class="calculator-breakdown">
+                <div><span>Selected material rate</span><strong id="materialRate">$0.10/g</strong></div>
+                <div><span>Setup fee</span><strong id="setupCost">$5.00</strong></div>
+                <div><span>Filament estimate</span><strong id="filamentCost">$9.00</strong></div>
+                <div><span>Machine time estimate</span><strong id="machineCost">$8.00</strong></div>
+                <div class="special-fee-row is-hidden" id="specialMaterialFeeRow"><span>Special material handling fee</span><strong id="specialMaterialFee">$5.00</strong></div>
+                <div><span>Lead time multiplier</span><strong id="leadMultiplier">1.00x</strong></div>
+              </div>
+
+              <div class="calculator-warning" id="pricingWarning">
+                Standard scheduling estimate based on current assumptions.
+              </div>
+
+              <div class="calculator-turnaround-note" id="turnaroundNote">
+                Standard stocked materials support the fastest quoting and scheduling.
+              </div>
+
+              <a
+                class="button button-primary calculator-cta"
+                id="calculatorQuoteButton"
+                href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote"
+              >
+                Submit Quote Request
+              </a>
+            </div>
+          </div>
+
+          <div class="calculator-explainer">
+            Large parts and long prints cost more because they use more material, occupy the printer for longer, carry higher failed-print risk, and affect the queue for other students.
+          </div>
+
+          <div class="calculator-turnaround-note">
+            Economy tier uses discounted material pricing because jobs are printed during idle machine time with extended lead times.
           </div>
         </div>
       </section>
@@ -55,26 +193,7 @@
         <div class="container">
           <div class="section-heading">
             <h2>Contact UCF Prints</h2>
-            <p>Use either contact method below to start your quote request. Final pricing still depends on file review.</p>
-          </div>
-
-          <div class="card quote-details-card" id="quoteDetailsCard">
-            <div class="quote-details-head">
-              <div>
-                <span class="note-label">Selected estimate</span>
-                <h3>Calculator details</h3>
-              </div>
-              <span class="inventory-badge inventory-special" id="quoteDetailsStatus">Waiting for details</span>
-            </div>
-            <div class="quote-details-grid">
-              <div><span>Material</span><strong id="quoteMaterial">Not provided</strong></div>
-              <div><span>Color</span><strong id="quoteColor">Not provided</strong></div>
-              <div><span>Filament</span><strong id="quoteFilament">Not provided</strong></div>
-              <div><span>Print time</span><strong id="quoteTime">Not provided</strong></div>
-              <div><span>Lead time</span><strong id="quoteLead">Not provided</strong></div>
-              <div><span>Estimate</span><strong id="quoteEstimate">Not provided</strong></div>
-            </div>
-            <p id="quoteDetailsMessage">Use the pricing calculator first if you want to send estimate details along with your quote request.</p>
+            <p>Use either contact method below if you want to reach out directly after estimating your part.</p>
           </div>
 
           <div class="card-grid two-up">
@@ -82,7 +201,7 @@
               <span class="note-label">Email</span>
               <h3>si354631@ucf.edu</h3>
               <p>Email is best for file details, longer project notes, and anything that needs a written estimate trail.</p>
-              <a class="button button-primary" id="quoteEmailButton" href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote">Send Email</a>
+              <a class="button button-primary" href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote">Send Email</a>
             </article>
 
             <article class="card contact-card">
