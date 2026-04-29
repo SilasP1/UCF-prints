@@ -1,68 +1,80 @@
-/*
-  ==========================================
-  EDIT AVAILABILITY HERE
-  ==========================================
-*/
-const availabilityTiers = [
-  {
-    tier: "Rush",
-    turnaround: "Same / next day",
-    status: "Limited",
-    slots: 1,
-    description: "Best for urgent deadlines and last-minute class deliverables."
-  },
-  {
-    tier: "Priority",
-    turnaround: "2–3 days",
-    status: "Open",
-    slots: 3,
-    description: "Fast lane for projects that need reliable turnaround this week."
-  },
-  {
-    tier: "Standard",
-    turnaround: "4–7 days",
-    status: "Open",
-    slots: 6,
-    description: "Most cost-efficient option for planned prints and iteration cycles."
-  }
+const DAILY_CAPACITY_HOURS = 12;
+const WARNING_THRESHOLD = 85;
+
+const sampleOrders = [
+  { day: "Mon", file: "gearbox_mount_v3.stl", hours: 3.5, tier: "Standard", status: "Pending" },
+  { day: "Tue", file: "wind_tunnel_fixture.stl", hours: 5, tier: "Priority", status: "Approved" },
+  { day: "Wed", file: "robot_arm_bracket.stl", hours: 4.5, tier: "Rush", status: "Printing" },
+  { day: "Thu", file: "drone_frame_plate.stl", hours: 2.5, tier: "Standard", status: "Ready" },
+  { day: "Fri", file: "capstone_housing_revB.stl", hours: 10, tier: "Priority", status: "Approved" },
+  { day: "Fri", file: "sensor_mount_array.stl", hours: 6, tier: "Rush", status: "Pending" },
+  { day: "Sat", file: "lab_demo_handle.stl", hours: 8.5, tier: "Standard", status: "Approved" },
+  { day: "Sun", file: "presentation_mockup.stl", hours: 11, tier: "Priority", status: "Printing" }
 ];
 
-const statusClassMap = {
-  Open: "badge-open",
-  Limited: "badge-limited",
-  Full: "badge-full"
-};
+function formatHours(hours) {
+  return `${Number(hours).toFixed(hours % 1 === 0 ? 0 : 1)}h`;
+}
 
-function renderAvailabilityCards() {
-  const container = document.getElementById("availabilityCards");
-  if (!container) return;
+function getBookedHoursByDay(orders) {
+  return orders.reduce((totals, order) => {
+    totals[order.day] = (totals[order.day] || 0) + order.hours;
+    return totals;
+  }, {});
+}
 
-  container.innerHTML = "";
+function updateCapacityCards() {
+  const cards = document.querySelectorAll(".capacity-card");
 
-  availabilityTiers.forEach((item) => {
-    const card = document.createElement("article");
-    card.className = "card availability-card";
+  if (!cards.length) {
+    return;
+  }
 
-    const badgeClass = statusClassMap[item.status] || "badge-limited";
+  const bookedHoursByDay = getBookedHoursByDay(sampleOrders);
 
-    card.innerHTML = `
-      <span class="badge ${badgeClass}">${item.status}</span>
-      <h3>${item.tier}</h3>
-      <p><strong>Turnaround:</strong> ${item.turnaround}</p>
-      <p class="availability-desc">${item.description}</p>
-      <p class="slot-count">${item.slots} slot${item.slots === 1 ? "" : "s"} available</p>
-    `;
+  cards.forEach((card) => {
+    const day = card.dataset.day;
+    const bookedHours = bookedHoursByDay[day] || 0;
+    const remainingHours = DAILY_CAPACITY_HOURS - bookedHours;
+    const rawPercent = (bookedHours / DAILY_CAPACITY_HOURS) * 100;
+    const displayPercent = Math.round(rawPercent);
+    const fillPercent = Math.min(rawPercent, 100);
 
-    container.appendChild(card);
+    const bookedTarget = card.querySelector("[data-booked]");
+    const remainingTarget = card.querySelector("[data-remaining]");
+    const percentTarget = card.querySelector("[data-percent]");
+    const stateTarget = card.querySelector(".day-state");
+    const messageTarget = card.querySelector("[data-message]");
+    const progressFill = card.querySelector(".progress-fill");
+
+    bookedTarget.textContent = formatHours(bookedHours);
+    remainingTarget.textContent = remainingHours > 0 ? formatHours(remainingHours) : "0h";
+    percentTarget.textContent = `${displayPercent}%`;
+    progressFill.style.width = `${fillPercent}%`;
+
+    card.classList.remove("near-capacity", "over-capacity");
+    stateTarget.classList.remove("warning", "over");
+
+    if (rawPercent > 100) {
+      card.classList.add("over-capacity");
+      stateTarget.classList.add("over");
+      stateTarget.textContent = "Over capacity";
+      messageTarget.textContent = "Over capacity — manual approval required";
+      return;
+    }
+
+    if (rawPercent >= WARNING_THRESHOLD) {
+      card.classList.add("near-capacity");
+      stateTarget.classList.add("warning");
+      stateTarget.textContent = "Near capacity";
+      messageTarget.textContent = "High load — priority and rush review recommended.";
+      return;
+    }
+
+    stateTarget.textContent = "Open capacity";
+    messageTarget.textContent = "Capacity available for standard scheduling.";
   });
 }
 
-function setFooterYear() {
-  const yearEl = document.getElementById("year");
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
-}
+document.addEventListener("DOMContentLoaded", updateCapacityCards);
 
-renderAvailabilityCards();
-setFooterYear();
