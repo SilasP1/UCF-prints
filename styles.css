@@ -283,6 +283,22 @@ img {
   margin-top: var(--space-5);
 }
 
+.hero-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.hero-summary-card {
+  min-height: 100%;
+}
+
+.hero-summary-card h3 {
+  margin: 0.75rem 0;
+  font-size: 1.15rem;
+}
+
 .eyebrow,
 .note-label,
 .tier-label,
@@ -985,6 +1001,10 @@ img {
   .three-up,
   .two-up,
   .orders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-summary-grid {
     grid-template-columns: 1fr;
   }
 
