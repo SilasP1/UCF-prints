@@ -1,8 +1,9 @@
 const DAILY_CAPACITY_HOURS = 12;
 const WARNING_THRESHOLD = 85;
 const BASE_SETUP_FEE = 5;
-const FILAMENT_COST_PER_GRAM = 0.12;
-const MACHINE_TIME_COST_PER_HOUR = 2;
+const FILAMENT_COST_PER_GRAM = 0.10;
+const MACHINE_TIME_COST_PER_HOUR = 1.5;
+const MINIMUM_ESTIMATED_ORDER = 12;
 
 const sampleOrders = [
   { day: "Mon", file: "gearbox_mount_v3.stl", hours: 3.5, tier: "Standard", status: "Pending" },
@@ -109,7 +110,8 @@ function updatePricingEstimate() {
   const filamentCost = filamentValue * FILAMENT_COST_PER_GRAM;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
   const subtotal = BASE_SETUP_FEE + filamentCost + timeCost;
-  const estimateTotal = isImmediate ? null : subtotal * multiplierValue;
+  const rawEstimate = isImmediate ? null : subtotal * multiplierValue;
+  const estimateTotal = isImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
 
   setSliderProgress(filamentRange);
   setSliderProgress(timeRange);
@@ -125,20 +127,31 @@ function updatePricingEstimate() {
   const warningElement = document.querySelector("#pricingWarning");
   warningElement.classList.remove("warning", "danger");
 
-  const isLongPrint = timeValue > 12;
+  const isLongPrint = timeValue > 10;
+  const isOverTwelveHours = timeValue > 12;
   const isRush = leadTimeText.startsWith("Rush");
+  const isLargePart = filamentValue > 300;
 
-  if (isLongPrint && (isRush || isImmediate)) {
-    warningElement.textContent = "Long urgent prints require custom pricing.";
+  if (isImmediate) {
+    warningElement.textContent = isOverTwelveHours ? "Long urgent prints require custom pricing." : "Immediate jobs require a custom quote.";
     warningElement.classList.add("danger");
-  } else if (isImmediate) {
-    warningElement.textContent = "Immediate jobs require a custom quote.";
+  } else if (isRush && isOverTwelveHours) {
+    warningElement.textContent = "Rush long prints require custom pricing.";
     warningElement.classList.add("danger");
+  } else if (isOverTwelveHours) {
+    warningElement.textContent = "Over 12 hours - special quote required.";
+    warningElement.classList.add("danger");
+  } else if (isLargePart && isLongPrint) {
+    warningElement.textContent = "Large, long print - custom quote likely.";
+    warningElement.classList.add("warning");
   } else if (isRush) {
     warningElement.textContent = "Rush jobs require manual approval and may cost more depending on queue availability.";
     warningElement.classList.add("warning");
+  } else if (isLargePart) {
+    warningElement.textContent = "Large part - final pricing may vary after file review.";
+    warningElement.classList.add("warning");
   } else if (isLongPrint) {
-    warningElement.textContent = "Long print - special quote required.";
+    warningElement.textContent = "Long print - higher failure risk and queue impact.";
     warningElement.classList.add("warning");
   } else {
     warningElement.textContent = "Standard scheduling estimate based on current assumptions.";
