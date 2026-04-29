@@ -46,6 +46,85 @@ function getBookedHoursByDay(orders) {
   }, {});
 }
 
+function updateCapacitySummary() {
+  const weeklyBookedTarget = document.querySelector("#weeklyBookedHours");
+  const weeklyRemainingTarget = document.querySelector("#weeklyRemainingHours");
+  const weeklyAlertDaysTarget = document.querySelector("#weeklyAlertDays");
+
+  if (!weeklyBookedTarget || !weeklyRemainingTarget || !weeklyAlertDaysTarget) {
+    return;
+  }
+
+  const bookedByDay = getBookedHoursByDay(sampleOrders);
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const weeklyCapacity = DAILY_CAPACITY_HOURS * days.length;
+
+  const weeklyBooked = days.reduce((total, day) => total + (bookedByDay[day] || 0), 0);
+  const weeklyRemaining = Math.max(weeklyCapacity - weeklyBooked, 0);
+  const weeklyAlertDays = days.filter((day) => ((bookedByDay[day] || 0) / DAILY_CAPACITY_HOURS) * 100 >= WARNING_THRESHOLD).length;
+
+  weeklyBookedTarget.textContent = formatHours(weeklyBooked);
+  weeklyRemainingTarget.textContent = formatHours(weeklyRemaining);
+  weeklyAlertDaysTarget.textContent = `${weeklyAlertDays}`;
+}
+
+function updateQuotePage() {
+  const detailsCard = document.querySelector("#quoteDetailsCard");
+  if (!detailsCard) {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const material = params.get("material");
+  const color = params.get("color");
+  const filament = params.get("filament");
+  const time = params.get("time");
+  const lead = params.get("lead");
+  const estimate = params.get("estimate");
+  const hasDetails = material || color || filament || time || lead || estimate;
+
+  const statusBadge = document.querySelector("#quoteDetailsStatus");
+  const messageTarget = document.querySelector("#quoteDetailsMessage");
+  const emailButton = document.querySelector("#quoteEmailButton");
+
+  document.querySelector("#quoteMaterial").textContent = material || "Not provided";
+  document.querySelector("#quoteColor").textContent = color || "Not provided";
+  document.querySelector("#quoteFilament").textContent = filament || "Not provided";
+  document.querySelector("#quoteTime").textContent = time || "Not provided";
+  document.querySelector("#quoteLead").textContent = lead || "Not provided";
+  document.querySelector("#quoteEstimate").textContent = estimate || "Not provided";
+
+  statusBadge.classList.remove("inventory-in-stock", "inventory-special");
+
+  if (!hasDetails) {
+    statusBadge.textContent = "Waiting for details";
+    statusBadge.classList.add("inventory-special");
+    messageTarget.textContent = "Use the pricing calculator first if you want to send estimate details along with your quote request.";
+    return;
+  }
+
+  statusBadge.textContent = "Estimate attached";
+  statusBadge.classList.add("inventory-in-stock");
+  messageTarget.textContent = "These values came from the calculator. Final pricing still depends on file review, material availability, and print risk.";
+
+  if (emailButton) {
+    const emailBody = [
+      "UCF Prints quote request",
+      "",
+      `Material: ${material || "Not provided"}`,
+      `Color: ${color || "Not provided"}`,
+      `Filament amount: ${filament || "Not provided"}`,
+      `Print time: ${time || "Not provided"}`,
+      `Lead time: ${lead || "Not provided"}`,
+      `Estimated total: ${estimate || "Not provided"}`,
+      "",
+      "I understand this estimate may change after file review."
+    ].join("\n");
+
+    emailButton.href = `mailto:si354631@ucf.edu?subject=${encodeURIComponent("Request a Print Quote")}&body=${encodeURIComponent(emailBody)}`;
+  }
+}
+
 function updateCapacityCards() {
   const cards = document.querySelectorAll(".capacity-card");
 
@@ -134,12 +213,26 @@ function updatePricingEstimate() {
   document.querySelector("#filamentValue").textContent = `${filamentValue}`;
   document.querySelector("#timeValue").textContent = `${timeValue}`;
   document.querySelector("#materialRate").textContent = `${formatCurrency(materialRate)}/g`;
+  document.querySelector("#materialRatePreview").textContent = `${formatCurrency(materialRate)}/g`;
   document.querySelector("#setupCost").textContent = formatCurrency(BASE_SETUP_FEE);
   document.querySelector("#filamentCost").textContent = formatCurrency(filamentCost);
   document.querySelector("#machineCost").textContent = formatCurrency(timeCost);
   document.querySelector("#specialMaterialFee").textContent = formatCurrency(specialMaterialFee);
   document.querySelector("#leadMultiplier").textContent = isImmediate ? "Custom" : `${multiplierValue.toFixed(2)}x`;
   document.querySelector("#estimatedTotal").textContent = isImmediate ? "Custom quote" : formatCurrency(estimateTotal);
+
+  const materialTypeNote = document.querySelector("#materialTypeNote");
+  if (filamentType === "PLA") {
+    materialTypeNote.textContent = "PLA is the most student-friendly option and is priced for standard quoting.";
+  } else if (filamentType === "PETG") {
+    materialTypeNote.textContent = "PETG is stronger than PLA but usually costs more and may need extra print tuning.";
+  } else if (filamentType === "TPU") {
+    materialTypeNote.textContent = "TPU is flexible and often requires slower speeds and more careful review.";
+  } else if (filamentType === "ABS") {
+    materialTypeNote.textContent = "ABS can need extra review because of warping, ventilation, and print-risk concerns.";
+  } else {
+    materialTypeNote.textContent = "Custom materials are placeholder-priced here and always require manual approval.";
+  }
 
   const specialFeeRow = document.querySelector("#specialMaterialFeeRow");
   specialFeeRow.classList.toggle("is-hidden", !isSpecialRequest);
@@ -231,7 +324,9 @@ function updatePricingEstimate() {
 
 document.addEventListener("DOMContentLoaded", () => {
   updateCapacityCards();
+  updateCapacitySummary();
   updatePricingEstimate();
+  updateQuotePage();
 
   const estimateInputs = document.querySelectorAll("#filamentSlider, #timeSlider, #leadTimeSelect, #filamentTypeSelect, #filamentColorSelect");
   estimateInputs.forEach((input) => {
