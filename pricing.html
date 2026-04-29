@@ -6,7 +6,7 @@
   <title>UCF Prints | Pricing</title>
   <meta
     name="description"
-    content="Transparent 3D printing pricing for UCF Prints, including service tiers, quote factors, long print policies, and the print request process."
+    content="Learn how UCF Prints pricing works, compare service tiers, and understand why final quotes can change after file review."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,9 +24,10 @@
         <nav class="nav">
           <a class="nav-link" href="index.html">Home</a>
           <a class="nav-link active" href="pricing.html">Pricing</a>
+          <a class="nav-link nav-link-highlight" href="quote.html">Get a Quote</a>
           <a class="nav-link" href="capacity.html">Capacity</a>
         </nav>
-        <a class="button button-primary button-small" href="quote.html">Request a Print Quote</a>
+        <a class="button button-primary button-small" href="quote.html#pricing-calculator">Get a Quote</a>
       </div>
     </header>
 
@@ -36,16 +37,16 @@
           <div class="hero-copy">
             <p class="eyebrow">Transparent service model</p>
             <h1>Simple 3D Printing Pricing</h1>
-            <p class="hero-subtitle">Clear tiers, dependable scheduling, and quotes based on real production requirements.</p>
+            <p class="hero-subtitle">Clear tiers, dependable scheduling, and pricing that reflects real print effort.</p>
             <p class="hero-description">
-              Standard prints are kept affordable, while rush and large jobs are priced higher because they use more schedule flexibility and carry more production risk.
+              Standard prints are kept affordable, while rush and larger jobs cost more because they use more material, consume more queue flexibility, and increase production risk.
             </p>
           </div>
           <div class="card note-card">
-            <span class="note-label">Quote standard</span>
-            <h3>Every estimate is reviewed before print start</h3>
-            <p>We confirm timing, materials, and support complexity before placing your file into the queue.</p>
-            <a class="button button-primary" href="quote.html">Request a Print Quote</a>
+            <span class="note-label">Estimate first</span>
+            <h3>Ready to estimate your part?</h3>
+            <p>Use the quote calculator for a fast estimate, then submit a request with your material and timeline details already prepared.</p>
+            <a class="button button-primary" href="quote.html#pricing-calculator">Open Quote Calculator</a>
           </div>
         </div>
       </section>
@@ -55,158 +56,52 @@
           <div class="section-heading">
             <p class="eyebrow">Service lanes</p>
             <h2>Choose the turnaround that fits</h2>
-            <p>Each tier matches a different deadline profile while keeping communication and approval clear.</p>
+            <p>Each tier balances cost, speed, and scheduling certainty differently.</p>
           </div>
           <div class="card-grid three-up">
             <article class="card pricing-card">
-              <span class="tier-label">Standard</span>
+              <span class="tier-label">Economy</span>
               <h3>Lowest cost</h3>
-              <p>Scheduled within available capacity for cost-conscious prototype work and general coursework.</p>
+              <p>Flexible queue placement over 7-10 days. Best for non-urgent PLA prints that can wait for idle machine time.</p>
             </article>
             <article class="card pricing-card pricing-card-accent">
-              <span class="tier-label">Priority</span>
-              <h3>Faster queue</h3>
-              <p>Moves ahead of standard jobs when limited capacity is available for stronger deadline protection.</p>
+              <span class="tier-label">Standard</span>
+              <h3>Balanced pricing</h3>
+              <p>Scheduled within normal available capacity for routine student projects and prototypes.</p>
             </article>
             <article class="card pricing-card">
-              <span class="tier-label">Rush</span>
-              <h3>Same-day / immediate</h3>
-              <p>Manual approval required, premium pricing applied, and only accepted when schedule risk is manageable.</p>
+              <span class="tier-label">Priority / Rush</span>
+              <h3>Faster turnaround</h3>
+              <p>Higher pricing protects schedule flexibility, supports urgent deadlines, and offsets increased queue impact.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section section-alt" id="pricing-calculator">
+      <section class="section section-alt">
         <div class="container">
           <div class="section-heading">
-            <h2>Estimate Your Print Cost</h2>
-            <p>This calculator is an estimate only. Final pricing happens after file review so standard prints can stay affordable while larger or urgent jobs are reviewed more carefully.</p>
+            <h2>How pricing works</h2>
+            <p>Quotes are built from actual print effort, not a flat one-size-fits-all rate.</p>
           </div>
-
-          <div class="calculator-shell card">
-            <div class="calculator-inputs">
-              <div class="calculator-formula">
-                <h3>How estimates are calculated</h3>
-                <p>Subtotal = $5 setup fee + ($0.10 per gram of filament) + ($1.50 per estimated print hour). Estimated total = subtotal multiplied by the selected lead-time multiplier, with a $12 minimum estimated order.</p>
-                <ul class="policy-list">
-                  <li>Standard, 3-5 days: 1.00x</li>
-                  <li>Priority, 1-2 days: 1.35x</li>
-                  <li>Rush / same-day: 1.75x</li>
-                  <li>Immediate / emergency: custom quote only</li>
-                </ul>
-              </div>
-
-              <div class="calculator-stock-note">
-                Currently stocked filament is limited. Black PLA is available now. Other materials or colors may require ordering time and custom pricing.
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentTypeSelect">Filament type</label>
-                  <span><strong id="materialRatePreview">$0.10/g</strong></span>
-                </div>
-                <select id="filamentTypeSelect">
-                  <option value="PLA" selected>PLA</option>
-                  <option value="PETG">PETG</option>
-                  <option value="TPU">TPU</option>
-                  <option value="ABS">ABS</option>
-                  <option value="Other">Custom / Other</option>
-                </select>
-                <p id="materialTypeNote">PLA is the most student-friendly option and is priced for standard quoting.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentColorSelect">Color</label>
-                </div>
-                <select id="filamentColorSelect">
-                  <option value="Black" selected>Black</option>
-                  <option value="White">White</option>
-                  <option value="Gray">Gray</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Red">Red</option>
-                  <option value="Blue">Blue</option>
-                  <option value="Other">Custom / Other</option>
-                </select>
-              </div>
-
-              <div class="calculator-control inventory-card">
-                <div class="calculator-control-head">
-                  <label>Inventory status</label>
-                  <span class="inventory-badge inventory-in-stock" id="inventoryBadge">In stock</span>
-                </div>
-                <p id="inventoryMessage">Black PLA is currently available for standard quoting.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentSlider">Filament amount</label>
-                  <span><strong id="filamentValue">75</strong> g</span>
-                </div>
-                <input type="range" id="filamentSlider" min="10" max="500" value="75">
-                <p>Estimate the total filament used by the print.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="timeSlider">Print time</label>
-                  <span><strong id="timeValue">4</strong> hours</span>
-                </div>
-                <input type="range" id="timeSlider" min="1" max="24" value="4">
-                <p>Use expected machine runtime for the most accurate estimate.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="leadTimeSelect">Lead time</label>
-                </div>
-                <select id="leadTimeSelect">
-                  <option value="1" selected>Standard, 3-5 days</option>
-                  <option value="1.35">Priority, 1-2 days</option>
-                  <option value="1.75">Rush / same-day</option>
-                  <option value="custom">Immediate / emergency</option>
-                </select>
-                <p>Urgency changes scheduling pressure and increases estimate cost.</p>
-              </div>
-            </div>
-
-            <div class="calculator-results">
-              <span class="note-label">Estimate only</span>
-              <div class="calculator-total-label">Estimated total</div>
-              <div class="calculator-total" id="estimatedTotal">$22.00</div>
-
-              <div class="calculator-breakdown">
-                <div><span>Selected material rate</span><strong id="materialRate">$0.10/g</strong></div>
-                <div><span>Setup fee</span><strong id="setupCost">$5.00</strong></div>
-                <div><span>Filament estimate</span><strong id="filamentCost">$9.00</strong></div>
-                <div><span>Machine time estimate</span><strong id="machineCost">$8.00</strong></div>
-                <div class="special-fee-row is-hidden" id="specialMaterialFeeRow"><span>Special material handling fee</span><strong id="specialMaterialFee">$5.00</strong></div>
-                <div><span>Lead time multiplier</span><strong id="leadMultiplier">1.00x</strong></div>
-              </div>
-
-              <div class="calculator-warning" id="pricingWarning">
-                Standard scheduling estimate based on current assumptions.
-              </div>
-
-              <div class="calculator-turnaround-note" id="turnaroundNote">
-                Standard stocked materials support the fastest quoting and scheduling.
-              </div>
-
-              <a
-                class="button button-primary calculator-cta"
-                id="calculatorQuoteButton"
-                href="quote.html"
-              >
-                Request Quote With These Details
-              </a>
-            </div>
+          <div class="faq-grid">
+            <article class="card faq-card">
+              <h3>Base estimate structure</h3>
+              <p>Estimates start with a setup fee, then add material cost, machine time, queue tier effects, and any special handling needed for unusual materials or colors.</p>
+            </article>
+            <article class="card faq-card">
+              <h3>Why larger and longer prints cost more</h3>
+              <p>Large parts and long prints use more material, occupy the printer for longer, raise failed-print risk, and affect the queue for other students.</p>
+            </article>
+            <article class="card faq-card">
+              <h3>Why Economy costs less</h3>
+              <p>Economy uses discounted PLA material pricing because those jobs are printed during idle machine time with slower, less predictable turnaround.</p>
+            </article>
+            <article class="card faq-card">
+              <h3>Why rush jobs cost more</h3>
+              <p>Rush work uses schedule flexibility, creates more queue pressure, and increases production risk compared with standard student jobs.</p>
+            </article>
           </div>
-
-          <div class="calculator-explainer">
-            Large parts and long prints cost more because they use more material, occupy the printer for longer, carry higher failed-print risk, and affect the queue for other students.
-          </div>
-
         </div>
       </section>
 
@@ -282,11 +177,11 @@
             <h3>Why UCF Prints can be worth it</h3>
             <div class="card-grid three-up comparison-value-grid">
               <article class="card detail-card"><h3>No shipping cost</h3><p>Local jobs avoid added delivery fees and waiting time.</p></article>
-              <article class="card detail-card"><h3>Local pickup</h3><p>Students can grab parts faster without coordinating deliveries.</p></article>
-              <article class="card detail-card"><h3>Faster revisions</h3><p>Changes are easier when the printer and support are local.</p></article>
-              <article class="card detail-card"><h3>Student deadline focus</h3><p>Scheduling is built around class projects and review windows.</p></article>
-              <article class="card detail-card"><h3>Quote support before printing</h3><p>You get estimate help before committing to a part.</p></article>
-              <article class="card detail-card"><h3>Less dependence on campus printer availability</h3><p>A managed queue can be more dependable than hoping a lab printer is open.</p></article>
+              <article class="card detail-card"><h3>Local pickup</h3><p>Students can get parts faster without waiting on shipping.</p></article>
+              <article class="card detail-card"><h3>Faster revisions</h3><p>Design changes are easier when support and pickup stay local.</p></article>
+              <article class="card detail-card"><h3>Student deadline focus</h3><p>Queue decisions are made with class projects and milestone pressure in mind.</p></article>
+              <article class="card detail-card"><h3>Quote support before printing</h3><p>You can get estimate help before committing to a part.</p></article>
+              <article class="card detail-card"><h3>Less dependence on campus printer availability</h3><p>A managed queue can be more reliable than hoping a lab printer is open.</p></article>
             </div>
           </div>
         </div>
@@ -297,7 +192,7 @@
           <div class="section-heading">
             <p class="eyebrow">FAQ</p>
             <h2>Pricing questions, answered clearly</h2>
-            <p>Key pricing logic and final-quote factors are here in a tighter format so the page stays easier to scan.</p>
+            <p>The calculator is an estimate only. Final pricing happens after file review.</p>
           </div>
 
           <div class="faq-grid">
@@ -307,23 +202,23 @@
             </article>
             <article class="card faq-card">
               <h3>Why can final pricing change?</h3>
-              <p>Geometry complexity, support material, failed-print risk, tight tolerances, large part size, file repair needs, material or color availability, and multi-part jobs can all change the final quote.</p>
+              <p>Geometry complexity, support material, failed-print risk, tight tolerances, large part size, file repair needs, stock availability, and multi-part jobs can all change the final quote.</p>
             </article>
             <article class="card faq-card">
-              <h3>What counts as a special review?</h3>
-              <p>Prints over 12 hours, unusual materials, fragile features, steep overhangs, split-print assembly needs, and rush scheduling often require manual review.</p>
+              <h3>What counts as special review?</h3>
+              <p>Prints over 12 hours, unusual materials, fragile features, steep overhangs, split-print assembly needs, and immediate scheduling often require manual review.</p>
             </article>
             <article class="card faq-card">
-              <h3>Why are rush jobs priced higher?</h3>
-              <p>Rush work uses schedule flexibility, increases queue impact, and raises production risk compared with standard student jobs.</p>
-            </article>
-            <article class="card faq-card">
-              <h3>Why can UCF Prints still be affordable?</h3>
-              <p>Standard prints are priced to stay student-friendly while local pickup, faster revisions, and no shipping cost help keep overall project cost down.</p>
-            </article>
-            <article class="card faq-card">
-              <h3>When is campus printing still the best option?</h3>
+              <h3>When is campus printing still best?</h3>
               <p>For small, non-urgent jobs, campus printing can be cheapest if a printer is available. UCF Prints becomes more valuable when deadlines, reliability, or queue risk matter.</p>
+            </article>
+            <article class="card faq-card">
+              <h3>Why does UCF Prints price large jobs higher?</h3>
+              <p>Longer jobs tie up equipment, raise failed-print risk, and reduce schedule flexibility for other students.</p>
+            </article>
+            <article class="card faq-card">
+              <h3>What makes Economy different?</h3>
+              <p>Economy is slower and less predictable, but it reduces cost by using flexible queue placement and discounted PLA material pricing.</p>
             </article>
           </div>
         </div>
