@@ -58,12 +58,31 @@
             <p>Use either contact method below to start your quote request. Final pricing still depends on file review.</p>
           </div>
 
+          <div class="card quote-details-card" id="quoteDetailsCard">
+            <div class="quote-details-head">
+              <div>
+                <span class="note-label">Selected estimate</span>
+                <h3>Calculator details</h3>
+              </div>
+              <span class="inventory-badge inventory-special" id="quoteDetailsStatus">Waiting for details</span>
+            </div>
+            <div class="quote-details-grid">
+              <div><span>Material</span><strong id="quoteMaterial">Not provided</strong></div>
+              <div><span>Color</span><strong id="quoteColor">Not provided</strong></div>
+              <div><span>Filament</span><strong id="quoteFilament">Not provided</strong></div>
+              <div><span>Print time</span><strong id="quoteTime">Not provided</strong></div>
+              <div><span>Lead time</span><strong id="quoteLead">Not provided</strong></div>
+              <div><span>Estimate</span><strong id="quoteEstimate">Not provided</strong></div>
+            </div>
+            <p id="quoteDetailsMessage">Use the pricing calculator first if you want to send estimate details along with your quote request.</p>
+          </div>
+
           <div class="card-grid two-up">
             <article class="card contact-card">
               <span class="note-label">Email</span>
               <h3>si354631@ucf.edu</h3>
               <p>Email is best for file details, longer project notes, and anything that needs a written estimate trail.</p>
-              <a class="button button-primary" href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote">Send Email</a>
+              <a class="button button-primary" id="quoteEmailButton" href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote">Send Email</a>
             </article>
 
             <article class="card contact-card">
