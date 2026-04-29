@@ -11,6 +11,7 @@ const materialRates = {
   ABS: 0.14,
   Other: 0.18
 };
+const ECONOMY_TIER_VALUE = "economy";
 
 const sampleOrders = [
   { day: "Mon", file: "gearbox_mount_v3.stl", hours: 3.5, tier: "Standard", status: "Pending" },
@@ -66,63 +67,6 @@ function updateCapacitySummary() {
   weeklyBookedTarget.textContent = formatHours(weeklyBooked);
   weeklyRemainingTarget.textContent = formatHours(weeklyRemaining);
   weeklyAlertDaysTarget.textContent = `${weeklyAlertDays}`;
-}
-
-function updateQuotePage() {
-  const detailsCard = document.querySelector("#quoteDetailsCard");
-  if (!detailsCard) {
-    return;
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const material = params.get("material");
-  const color = params.get("color");
-  const filament = params.get("filament");
-  const time = params.get("time");
-  const lead = params.get("lead");
-  const estimate = params.get("estimate");
-  const hasDetails = material || color || filament || time || lead || estimate;
-
-  const statusBadge = document.querySelector("#quoteDetailsStatus");
-  const messageTarget = document.querySelector("#quoteDetailsMessage");
-  const emailButton = document.querySelector("#quoteEmailButton");
-
-  document.querySelector("#quoteMaterial").textContent = material || "Not provided";
-  document.querySelector("#quoteColor").textContent = color || "Not provided";
-  document.querySelector("#quoteFilament").textContent = filament || "Not provided";
-  document.querySelector("#quoteTime").textContent = time || "Not provided";
-  document.querySelector("#quoteLead").textContent = lead || "Not provided";
-  document.querySelector("#quoteEstimate").textContent = estimate || "Not provided";
-
-  statusBadge.classList.remove("inventory-in-stock", "inventory-special");
-
-  if (!hasDetails) {
-    statusBadge.textContent = "Waiting for details";
-    statusBadge.classList.add("inventory-special");
-    messageTarget.textContent = "Use the pricing calculator first if you want to send estimate details along with your quote request.";
-    return;
-  }
-
-  statusBadge.textContent = "Estimate attached";
-  statusBadge.classList.add("inventory-in-stock");
-  messageTarget.textContent = "These values came from the calculator. Final pricing still depends on file review, material availability, and print risk.";
-
-  if (emailButton) {
-    const emailBody = [
-      "UCF Prints quote request",
-      "",
-      `Material: ${material || "Not provided"}`,
-      `Color: ${color || "Not provided"}`,
-      `Filament amount: ${filament || "Not provided"}`,
-      `Print time: ${time || "Not provided"}`,
-      `Lead time: ${lead || "Not provided"}`,
-      `Estimated total: ${estimate || "Not provided"}`,
-      "",
-      "I understand this estimate may change after file review."
-    ].join("\n");
-
-    emailButton.href = `mailto:si354631@ucf.edu?subject=${encodeURIComponent("Request a Print Quote")}&body=${encodeURIComponent(emailBody)}`;
-  }
 }
 
 function updateCapacityCards() {
@@ -191,12 +135,31 @@ function updatePricingEstimate() {
 
   const filamentValue = Number(filamentRange.value);
   const timeValue = Number(timeRange.value);
-  const isImmediate = leadTimeSelect.value === "custom";
-  const multiplierValue = isImmediate ? null : Number(leadTimeSelect.value);
-  const leadTimeText = leadTimeSelect.options[leadTimeSelect.selectedIndex].text;
+  const selectedTier = leadTimeSelect.value;
   const filamentType = filamentTypeSelect.value;
   const filamentColor = filamentColorSelect.value;
-  const materialRate = materialRates[filamentType] ?? materialRates.Other;
+  const economyOption = leadTimeSelect.querySelector(`option[value="${ECONOMY_TIER_VALUE}"]`);
+
+  if (economyOption) {
+    const economyAvailable = filamentType === "PLA";
+    economyOption.hidden = !economyAvailable;
+    economyOption.disabled = !economyAvailable;
+
+    if (!economyAvailable && selectedTier === ECONOMY_TIER_VALUE) {
+      leadTimeSelect.value = "1";
+    }
+  }
+
+  const resolvedTier = leadTimeSelect.value;
+  const resolvedLeadTimeText = leadTimeSelect.options[leadTimeSelect.selectedIndex].text;
+  const resolvedIsImmediate = resolvedTier === "custom";
+  const resolvedIsEconomy = resolvedTier === ECONOMY_TIER_VALUE;
+  let materialRate = materialRates[filamentType] ?? materialRates.Other;
+
+  if (resolvedIsEconomy && filamentType === "PLA") {
+    materialRate = 0.08;
+  }
+
   const inStock = filamentType === "PLA" && filamentColor === "Black";
   const isSpecialRequest = !inStock;
   const specialMaterialFee = isSpecialRequest ? SPECIAL_MATERIAL_HANDLING_FEE : 0;
@@ -204,26 +167,31 @@ function updatePricingEstimate() {
   const filamentCost = filamentValue * materialRate;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
   const subtotal = BASE_SETUP_FEE + filamentCost + timeCost + specialMaterialFee;
-  const billableBase = isImmediate ? null : Math.max(subtotal, MINIMUM_ESTIMATED_ORDER);
-  const rawEstimate = isImmediate ? null : billableBase * multiplierValue;
-  const estimateTotal = isImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
+  const resolvedMultiplierValue = resolvedIsImmediate || resolvedIsEconomy ? null : Number(resolvedTier);
+  const billableBase = resolvedIsImmediate ? null : Math.max(subtotal, MINIMUM_ESTIMATED_ORDER);
+  const rawEstimate = resolvedIsImmediate ? null : resolvedIsEconomy ? billableBase : billableBase * resolvedMultiplierValue;
+  const estimateTotal = resolvedIsImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
 
   setSliderProgress(filamentRange);
   setSliderProgress(timeRange);
 
   document.querySelector("#filamentValue").textContent = `${filamentValue}`;
   document.querySelector("#timeValue").textContent = `${timeValue}`;
-  document.querySelector("#materialRate").textContent = `${formatCurrency(materialRate)}/g`;
+  document.querySelector("#materialRate").textContent = resolvedIsEconomy && filamentType === "PLA"
+    ? `${formatCurrency(materialRate)}/g (Economy tier discount)`
+    : `${formatCurrency(materialRate)}/g`;
   document.querySelector("#materialRatePreview").textContent = `${formatCurrency(materialRate)}/g`;
   document.querySelector("#setupCost").textContent = formatCurrency(BASE_SETUP_FEE);
   document.querySelector("#filamentCost").textContent = formatCurrency(filamentCost);
   document.querySelector("#machineCost").textContent = formatCurrency(timeCost);
   document.querySelector("#specialMaterialFee").textContent = formatCurrency(specialMaterialFee);
-  document.querySelector("#leadMultiplier").textContent = isImmediate ? "Custom" : `${multiplierValue.toFixed(2)}x`;
-  document.querySelector("#estimatedTotal").textContent = isImmediate ? "Custom quote" : formatCurrency(estimateTotal);
+  document.querySelector("#leadMultiplier").textContent = resolvedIsImmediate ? "Custom" : resolvedIsEconomy ? "Flexible queue" : `${resolvedMultiplierValue.toFixed(2)}x`;
+  document.querySelector("#estimatedTotal").textContent = resolvedIsImmediate ? "Custom quote" : formatCurrency(estimateTotal);
 
   const materialTypeNote = document.querySelector("#materialTypeNote");
-  if (filamentType === "PLA") {
+  if (filamentType === "PLA" && resolvedIsEconomy) {
+    materialTypeNote.textContent = "PLA gets discounted material pricing in Economy because these jobs run in idle machine time with extended lead times.";
+  } else if (filamentType === "PLA") {
     materialTypeNote.textContent = "PLA is the most student-friendly option and is priced for standard quoting.";
   } else if (filamentType === "PETG") {
     materialTypeNote.textContent = "PETG is stronger than PLA but usually costs more and may need extra print tuning.";
@@ -261,16 +229,19 @@ function updatePricingEstimate() {
 
   const isLongPrint = timeValue > 10;
   const isOverTwelveHours = timeValue > 12;
-  const isRush = leadTimeText.startsWith("Rush");
+  const isRush = resolvedLeadTimeText.startsWith("Rush");
   const isLargePart = filamentValue > 300;
   const isPETG = filamentType === "PETG";
   const isTPU = filamentType === "TPU";
   const isABS = filamentType === "ABS";
   const isOtherMaterial = filamentType === "Other";
 
-  if (isImmediate) {
+  if (resolvedIsImmediate) {
     warningElement.textContent = isOverTwelveHours ? "Long urgent prints require custom pricing." : "Immediate jobs require a custom quote.";
     warningElement.classList.add("danger");
+  } else if (resolvedIsEconomy && filamentType !== "PLA") {
+    warningElement.textContent = "Economy pricing only discounts PLA. Other materials keep their normal material rates with slower queue timing.";
+    warningElement.classList.add("warning");
   } else if (isRush && isOverTwelveHours) {
     warningElement.textContent = "Rush long prints require custom pricing.";
     warningElement.classList.add("danger");
@@ -310,16 +281,20 @@ function updatePricingEstimate() {
 
   const quoteButton = document.querySelector("#calculatorQuoteButton");
   if (quoteButton) {
-    const params = new URLSearchParams({
-      material: filamentType,
-      color: filamentColor,
-      filament: `${filamentValue}g`,
-      time: `${timeValue} hours`,
-      lead: leadTimeText,
-      estimate: isImmediate ? "Custom quote" : formatCurrency(estimateTotal)
-    });
+    const emailBody = [
+      "UCF Prints quote request",
+      "",
+      `Tier: ${resolvedLeadTimeText}`,
+      `Material: ${filamentType}`,
+      `Color: ${filamentColor}`,
+      `Filament amount: ${filamentValue}g`,
+      `Print time: ${timeValue} hours`,
+      `Estimated total: ${resolvedIsImmediate ? "Custom quote" : formatCurrency(estimateTotal)}`,
+      "",
+      "I understand this calculator provides an estimate only and final pricing may change after file review."
+    ].join("\n");
 
-    quoteButton.href = `quote.html?${params.toString()}`;
+    quoteButton.href = `mailto:si354631@ucf.edu?subject=${encodeURIComponent("Request a Print Quote")}&body=${encodeURIComponent(emailBody)}`;
   }
 }
 
@@ -327,7 +302,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCapacityCards();
   updateCapacitySummary();
   updatePricingEstimate();
-  updateQuotePage();
 
   const estimateInputs = document.querySelectorAll("#filamentSlider, #timeSlider, #leadTimeSelect, #filamentTypeSelect, #filamentColorSelect");
   estimateInputs.forEach((input) => {
