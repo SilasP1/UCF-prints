@@ -2,32 +2,31 @@
   ==========================================
   EDIT AVAILABILITY HERE
   ==========================================
-  - Update the `slots` number any time capacity changes.
-  - Update `status` using: "Open", "Limited", or "Full".
-  - You can also edit labels and turnaround text if needed.
 */
 const availabilityTiers = [
   {
     tier: "Rush",
-    turnaround: "same/next day",
+    turnaround: "Same / next day",
     status: "Limited",
-    slots: 1
+    slots: 1,
+    description: "Best for urgent deadlines and last-minute class deliverables."
   },
   {
     tier: "Priority",
     turnaround: "2–3 days",
     status: "Open",
-    slots: 3
+    slots: 3,
+    description: "Fast lane for projects that need reliable turnaround this week."
   },
   {
     tier: "Standard",
     turnaround: "4–7 days",
     status: "Open",
-    slots: 6
+    slots: 6,
+    description: "Most cost-efficient option for planned prints and iteration cycles."
   }
 ];
 
-// Maps status values to badge styles in CSS.
 const statusClassMap = {
   Open: "badge-open",
   Limited: "badge-limited",
@@ -42,7 +41,7 @@ function renderAvailabilityCards() {
 
   availabilityTiers.forEach((item) => {
     const card = document.createElement("article");
-    card.className = "card";
+    card.className = "card availability-card";
 
     const badgeClass = statusClassMap[item.status] || "badge-limited";
 
@@ -50,6 +49,7 @@ function renderAvailabilityCards() {
       <span class="badge ${badgeClass}">${item.status}</span>
       <h3>${item.tier}</h3>
       <p><strong>Turnaround:</strong> ${item.turnaround}</p>
+      <p class="availability-desc">${item.description}</p>
       <p class="slot-count">${item.slots} slot${item.slots === 1 ? "" : "s"} available</p>
     `;
 

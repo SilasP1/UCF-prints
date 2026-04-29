@@ -10,29 +10,52 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container nav-wrap">
+  <header class="hero" id="top">
+    <div class="container">
+      <p class="eyebrow">UCF PRINTS · STUDENT-RUN 3D PRINTING</p>
+      <h1>Fast, reliable 3D printing for real student deadlines.</h1>
+      <p class="hero-intro">Built for speed, quality, and clear turnaround. If campus printers are booked, you still have a dependable path to finish your project on time.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contact">Request a print quote</a>
+        <a class="btn btn-secondary" href="pricing.html">View turnaround options</a>
+      </div>
+    </div>
+  </header>
 
+  <main>
     <section id="benefits" class="section">
       <div class="container">
         <h2>Built for real student deadlines</h2>
         <p class="section-intro">This service is designed for speed, reliability, and flexibility—not bargain-bin printing. If campus options are backed up, you still have a path to finish on time.</p>
         <div class="card-grid">
-          <article class="card"><h3>Faster turnaround</h3><p>Get parts printed sooner when timing matters most.</p></article>
-          <article class="card"><h3>Flexible scheduling</h3><p>Choose service tiers based on your deadline and urgency.</p></article>
-          <article class="card"><h3>No booked-lab bottlenecks</h3><p>Avoid waiting on limited campus printer availability.</p></article>
-          <article class="card"><h3>Print-prep support</h3><p>Get help with common STL/3MF setup and file issues.</p></article>
-          <article class="card"><h3>Filament ready</h3><p>Common materials are already stocked for quick starts.</p></article>
-          <article class="card"><h3>Rush options</h3><p>Need it urgently? Priority and rush options are available.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>Faster turnaround</h3><p>Get parts printed sooner when timing matters most.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>Flexible scheduling</h3><p>Choose service tiers based on your deadline and urgency.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>No booked-lab bottlenecks</h3><p>Avoid waiting on limited campus printer availability.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>Print-prep support</h3><p>Get help with common STL/3MF setup and file issues.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>Filament ready</h3><p>Common materials are already stocked for quick starts.</p></article>
+          <article class="card"><span class="icon-dot" aria-hidden="true"></span><h3>Rush options</h3><p>Need it urgently? Priority and rush options are available.</p></article>
         </div>
       </div>
     </section>
 
-
+    <section id="availability" class="section section-alt">
       <div class="container">
         <h2>Current availability</h2>
         <p class="section-intro">Availability updates as capacity changes. Reach out early for best turnaround.</p>
-        <div id="availabilityCards" class="card-grid"></div>
+        <div id="availabilityCards" class="availability-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="section availability-cta-wrap">
+      <div class="container">
+        <div class="availability-cta card" role="region" aria-label="Request or review turnaround options">
+          <h3>Need a fast quote?</h3>
+          <p>Send your file and deadline to get a clear turnaround recommendation for Rush, Priority, or Standard service.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary btn-invert" href="#contact">Request a print quote</a>
+            <a class="btn btn-outline-dark" href="pricing.html">View turnaround options</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -50,7 +73,7 @@
       </div>
     </section>
 
-
+    <section id="how-it-works" class="section">
       <div class="container">
         <h2>How it works</h2>
         <div class="steps">
@@ -62,17 +85,23 @@
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="contact" class="section section-alt">
       <div class="container">
         <h2>Request a quote</h2>
         <p class="section-intro">Send your file, deadline, material preference, and any notes for a quote.</p>
         <div class="card contact-card">
-
+          <p><strong>Email:</strong> hello@ucfprints.com</p>
+          <p><strong>Include:</strong> STL/3MF file, deadline, size, and material preference.</p>
+          <p><strong>Pickup:</strong> Near UCF campus (details shared after scheduling).</p>
+        </div>
+        <div class="hero-actions">
+          <a class="btn btn-outline-dark" href="pricing.html">Pricing page</a>
+          <a class="btn btn-outline-dark" href="capacity.html">Internal capacity page</a>
         </div>
       </div>
     </section>
 
-
+    <section id="terms" class="section">
       <div class="container">
         <h2>Service terms</h2>
         <ul class="terms-list card">

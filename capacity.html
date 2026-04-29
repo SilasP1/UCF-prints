@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UCF Prints | Capacity Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero page-hero">
+    <div class="container">
+      <p class="eyebrow">UCF PRINTS · INTERNAL CAPACITY</p>
+      <h1>Weekly Capacity Planner</h1>
+      <p class="hero-intro">Internal planning view for managing print-hours and priority decisions. Customers do not book printer time directly.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="index.html#contact">Request a Print Quote</a>
+        <a class="btn btn-secondary" href="pricing.html">View Pricing</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2>Capacity rules</h2>
+        <div class="card">
+          <ul>
+            <li>Default daily print capacity: <strong>12 total print-hours</strong>.</li>
+            <li>Standard and Priority jobs should fit within the 12-hour limit by default.</li>
+            <li>Rush, same-day, immediate, or longer-than-12-hour jobs require manual approval and special pricing.</li>
+            <li>Long jobs are not auto-rejected and are marked <strong>Special Quote Required</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Weekly view (sample)</h2>
+        <div class="capacity-grid">
+          <article class="card day-card near-capacity"><h3>Monday</h3><p><strong>Booked:</strong> 10h / 12h</p><p><strong>Remaining:</strong> 2h</p><p><strong>Capacity:</strong> 83%</p><p><strong>Assigned orders:</strong> 3</p><p class="mini-list">Alex M. (Standard), Jamie R. (Priority), Chris L. (Rush)</p><span class="badge badge-priority">Near Capacity</span></article>
+          <article class="card day-card"><h3>Tuesday</h3><p><strong>Booked:</strong> 7h / 12h</p><p><strong>Remaining:</strong> 5h</p><p><strong>Capacity:</strong> 58%</p><p><strong>Assigned orders:</strong> 2</p><p class="mini-list">Noah K. (Standard), Lina P. (Priority)</p></article>
+          <article class="card day-card over-capacity"><h3>Wednesday</h3><p><strong>Booked:</strong> 14h / 12h</p><p><strong>Remaining:</strong> -2h</p><p><strong>Capacity:</strong> 117%</p><p><strong>Assigned orders:</strong> 4</p><p class="mini-list">Taylor S. (Special Quote Required), Dev A. (Priority), Mia T. (Rush), Sam P. (Standard)</p><p class="over-note">Over daily capacity — special pricing or manual approval required.</p><span class="badge badge-over">Over Capacity</span></article>
+          <article class="card day-card"><h3>Thursday</h3><p><strong>Booked:</strong> 6h / 12h</p><p><strong>Remaining:</strong> 6h</p><p><strong>Capacity:</strong> 50%</p><p><strong>Assigned orders:</strong> 2</p><p class="mini-list">Chris L. (Rush), Omar Q. (Standard)</p></article>
+          <article class="card day-card"><h3>Friday</h3><p><strong>Booked:</strong> 8h / 12h</p><p><strong>Remaining:</strong> 4h</p><p><strong>Capacity:</strong> 67%</p><p><strong>Assigned orders:</strong> 3</p><p class="mini-list">Sam P. (Standard), Isha N. (Priority), Ben C. (Pending)</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Assigned orders (sample)</h2>
+        <div class="orders-grid">
+          <article class="card"><h3>Alex M. · <a href="#" aria-label="Open bracket_v4.stl file">bracket_v4.stl</a></h3><p>Material: PLA · Est. print: 3.5h · Deadline: Tue 5:00 PM</p><p><span class="badge badge-standard">Standard</span> <span class="badge badge-pending">Pending</span></p></article>
+          <article class="card"><h3>Jamie R. · gear_mount.3mf</h3><p>Material: PETG · Est. print: 5h · Deadline: Wed 10:00 AM</p><p><span class="badge badge-priority">Priority</span> <span class="badge badge-approved">Approved</span></p></article>
+          <article class="card"><h3>Taylor S. · drone_arm.stl</h3><p>Material: Nylon · Est. print: 13h · Deadline: Wed 2:00 PM</p><p><span class="badge badge-special">Special Quote Required</span> <span class="badge badge-printing">Printing</span></p></article>
+          <article class="card"><h3>Chris L. · enclosure_top.stl</h3><p>Material: PLA · Est. print: 2h · Deadline: Thu 12:00 PM</p><p><span class="badge badge-rush">Rush</span> <span class="badge badge-ready">Ready</span></p></article>
+          <article class="card"><h3>Sam P. · fixture_plate.stl</h3><p>Material: ABS · Est. print: 4h · Deadline: Fri 4:00 PM</p><p><span class="badge badge-standard">Standard</span> <span class="badge badge-picked">Picked Up</span></p></article>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
