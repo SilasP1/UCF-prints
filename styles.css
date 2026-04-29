@@ -343,7 +343,7 @@ img {
   box-shadow: var(--shadow-soft);
 }
 
-.calculator-layout {
+.calculator-shell {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   gap: var(--space-5);
@@ -353,21 +353,35 @@ img {
     linear-gradient(135deg, rgba(255, 201, 4, 0.08), transparent 58%);
 }
 
-.calculator-controls,
-.calculator-summary {
+.calculator-inputs,
+.calculator-results {
   display: grid;
   gap: var(--space-4);
   align-content: start;
 }
 
-.calculator-field {
+.calculator-control {
   padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.035);
 }
 
-.field-top {
+.calculator-formula,
+.calculator-notes {
+  border-color: var(--line-strong);
+}
+
+.calculator-formula h3 {
+  margin: 0 0 0.85rem;
+  font-size: 1.2rem;
+}
+
+.calculator-notes {
+  margin-top: var(--space-5);
+}
+
+.calculator-control-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -375,31 +389,32 @@ img {
   margin-bottom: 1rem;
 }
 
-.field-top label {
+.calculator-control-head label {
   font-weight: 700;
   color: var(--panel-strong);
 }
 
-.field-top strong {
+.calculator-control-head strong {
   color: var(--gold);
   font-size: 1.05rem;
 }
 
-.range-input,
-.select-input {
+.calculator-control input[type="range"],
+.calculator-control select {
   width: 100%;
 }
 
-.range-input {
+.calculator-control input[type="range"] {
   appearance: none;
   height: 0.7rem;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(255, 201, 4, 0.2), rgba(255, 255, 255, 0.08));
+  background:
+    linear-gradient(90deg, var(--gold) 0%, var(--gold) var(--slider-progress, 0%), rgba(255, 255, 255, 0.08) var(--slider-progress, 0%), rgba(255, 255, 255, 0.08) 100%);
   outline: none;
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.range-input::-webkit-slider-thumb {
+.calculator-control input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 1.15rem;
   height: 1.15rem;
@@ -410,7 +425,7 @@ img {
   cursor: pointer;
 }
 
-.range-input::-moz-range-thumb {
+.calculator-control input[type="range"]::-moz-range-thumb {
   width: 1.15rem;
   height: 1.15rem;
   border-radius: 50%;
@@ -420,7 +435,7 @@ img {
   cursor: pointer;
 }
 
-.select-input {
+.calculator-control select {
   min-height: 3rem;
   padding: 0.85rem 1rem;
   border-radius: var(--radius-sm);
@@ -430,13 +445,18 @@ img {
   font: inherit;
 }
 
-.select-input:focus,
-.range-input:focus {
+.calculator-control select:focus,
+.calculator-control input[type="range"]:focus {
   outline: none;
   border-color: rgba(255, 201, 4, 0.4);
 }
 
-.estimate-price {
+.calculator-total-label {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.calculator-total {
   font-size: clamp(2.6rem, 6vw, 4rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
@@ -444,52 +464,48 @@ img {
   color: var(--panel-strong);
 }
 
-.estimate-disclaimer {
-  margin: 0;
-  color: var(--text-muted);
-}
-
-.estimate-breakdown {
+.calculator-breakdown {
   display: grid;
   gap: 0.85rem;
 }
 
-.estimate-breakdown div,
-.estimate-warning {
+.calculator-breakdown div,
+.calculator-warning {
   padding: 1rem 1.1rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.04);
 }
 
-.estimate-breakdown div {
+.calculator-breakdown div {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.estimate-breakdown strong {
+.calculator-breakdown strong {
   color: var(--panel-strong);
 }
 
-.estimate-warning {
+.calculator-warning {
   color: var(--text-muted);
 }
 
-.estimate-warning.warning {
+.calculator-warning.warning {
   color: #3d2b00;
   border-color: rgba(255, 201, 4, 0.42);
   background: rgba(255, 201, 4, 0.18);
 }
 
-.estimate-warning.danger {
+.calculator-warning.danger {
   color: #fff4f2;
   border-color: rgba(255, 111, 97, 0.5);
   background: rgba(255, 111, 97, 0.18);
 }
 
-.estimate-cta {
+.calculator-cta {
   width: 100%;
+  margin-top: 0.25rem;
 }
 
 .feature-card,
@@ -773,7 +789,7 @@ img {
 @media (max-width: 900px) {
   .hero-grid,
   .split-layout,
-  .calculator-layout,
+  .calculator-shell,
   .three-up,
   .two-up {
     grid-template-columns: 1fr;
@@ -836,3 +852,4 @@ img {
     max-width: none;
   }
 }
+
