@@ -239,6 +239,10 @@ img {
   align-items: stretch;
 }
 
+.hero-grid-single {
+  grid-template-columns: minmax(0, 46rem);
+}
+
 .hero-copy h1,
 .section-heading h2 {
   margin: 0;
@@ -1031,4 +1035,3 @@ img {
     grid-template-columns: 1fr;
   }
 }
-
