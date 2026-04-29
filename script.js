@@ -2,8 +2,10 @@ const DAILY_CAPACITY_HOURS = 12;
 const WARNING_THRESHOLD = 85;
 const BASE_SETUP_FEE = 5;
 const MACHINE_TIME_COST_PER_HOUR = 1.5;
-const MINIMUM_ESTIMATED_ORDER = 12;
+const STANDARD_MINIMUM_ESTIMATED_ORDER = 12;
+const RUSH_MINIMUM_ESTIMATED_ORDER = 20;
 const SPECIAL_MATERIAL_HANDLING_FEE = 5;
+const ECONOMY_DISCOUNT_RATE = 0.10;
 const materialRates = {
   PLA: 0.10,
   PETG: 0.13,
@@ -138,27 +140,11 @@ function updatePricingEstimate() {
   const selectedTier = leadTimeSelect.value;
   const filamentType = filamentTypeSelect.value;
   const filamentColor = filamentColorSelect.value;
-  const economyOption = leadTimeSelect.querySelector(`option[value="${ECONOMY_TIER_VALUE}"]`);
-
-  if (economyOption) {
-    const economyAvailable = filamentType === "PLA";
-    economyOption.hidden = !economyAvailable;
-    economyOption.disabled = !economyAvailable;
-
-    if (!economyAvailable && selectedTier === ECONOMY_TIER_VALUE) {
-      leadTimeSelect.value = "1";
-    }
-  }
-
   const resolvedTier = leadTimeSelect.value;
   const resolvedLeadTimeText = leadTimeSelect.options[leadTimeSelect.selectedIndex].text;
   const resolvedIsImmediate = resolvedTier === "custom";
   const resolvedIsEconomy = resolvedTier === ECONOMY_TIER_VALUE;
   let materialRate = materialRates[filamentType] ?? materialRates.Other;
-
-  if (resolvedIsEconomy && filamentType === "PLA") {
-    materialRate = 0.08;
-  }
 
   const inStock = filamentType === "PLA" && filamentColor === "Black";
   const isSpecialRequest = !inStock;
@@ -166,31 +152,32 @@ function updatePricingEstimate() {
 
   const filamentCost = filamentValue * materialRate;
   const timeCost = timeValue * MACHINE_TIME_COST_PER_HOUR;
-  const subtotal = BASE_SETUP_FEE + filamentCost + timeCost + specialMaterialFee;
+  const baseSubtotal = BASE_SETUP_FEE + filamentCost + timeCost + specialMaterialFee;
   const resolvedMultiplierValue = resolvedIsImmediate || resolvedIsEconomy ? null : Number(resolvedTier);
-  const billableBase = resolvedIsImmediate ? null : Math.max(subtotal, MINIMUM_ESTIMATED_ORDER);
-  const rawEstimate = resolvedIsImmediate ? null : resolvedIsEconomy ? billableBase : billableBase * resolvedMultiplierValue;
-  const estimateTotal = resolvedIsImmediate ? null : Math.max(rawEstimate, MINIMUM_ESTIMATED_ORDER);
+  const adjustedSubtotal = resolvedIsImmediate ? null : resolvedIsEconomy ? baseSubtotal : baseSubtotal * resolvedMultiplierValue;
+  const economyDiscountAmount = resolvedIsImmediate ? 0 : resolvedIsEconomy ? adjustedSubtotal * ECONOMY_DISCOUNT_RATE : 0;
+  const rawEstimate = resolvedIsImmediate ? null : resolvedIsEconomy ? adjustedSubtotal - economyDiscountAmount : adjustedSubtotal;
+  const minimumEstimate = resolvedLeadTimeText.startsWith("Rush") ? RUSH_MINIMUM_ESTIMATED_ORDER : STANDARD_MINIMUM_ESTIMATED_ORDER;
+  const estimateTotal = resolvedIsImmediate ? null : Math.max(rawEstimate, minimumEstimate);
 
   setSliderProgress(filamentRange);
   setSliderProgress(timeRange);
 
   document.querySelector("#filamentValue").textContent = `${filamentValue}`;
   document.querySelector("#timeValue").textContent = `${timeValue}`;
-  document.querySelector("#materialRate").textContent = resolvedIsEconomy && filamentType === "PLA"
-    ? `${formatCurrency(materialRate)}/g (Economy tier discount)`
-    : `${formatCurrency(materialRate)}/g`;
+  document.querySelector("#materialRate").textContent = `${formatCurrency(materialRate)}/g`;
   document.querySelector("#materialRatePreview").textContent = `${formatCurrency(materialRate)}/g`;
   document.querySelector("#setupCost").textContent = formatCurrency(BASE_SETUP_FEE);
   document.querySelector("#filamentCost").textContent = formatCurrency(filamentCost);
   document.querySelector("#machineCost").textContent = formatCurrency(timeCost);
   document.querySelector("#specialMaterialFee").textContent = formatCurrency(specialMaterialFee);
-  document.querySelector("#leadMultiplier").textContent = resolvedIsImmediate ? "Custom" : resolvedIsEconomy ? "Flexible queue" : `${resolvedMultiplierValue.toFixed(2)}x`;
+  document.querySelector("#economyDiscount").textContent = "-10%";
+  document.querySelector("#leadMultiplier").textContent = resolvedIsImmediate ? "Immediate / emergency" : resolvedLeadTimeText;
   document.querySelector("#estimatedTotal").textContent = resolvedIsImmediate ? "Custom quote" : formatCurrency(estimateTotal);
 
   const materialTypeNote = document.querySelector("#materialTypeNote");
-  if (filamentType === "PLA" && resolvedIsEconomy) {
-    materialTypeNote.textContent = "PLA gets discounted material pricing in Economy because these jobs run in idle machine time with extended lead times.";
+  if (resolvedIsEconomy) {
+    materialTypeNote.textContent = "Economy jobs receive a 10% discount because they are printed during available idle time with a 7-10 day lead time.";
   } else if (filamentType === "PLA") {
     materialTypeNote.textContent = "PLA is the most student-friendly option and is priced for standard quoting.";
   } else if (filamentType === "PETG") {
@@ -205,6 +192,8 @@ function updatePricingEstimate() {
 
   const specialFeeRow = document.querySelector("#specialMaterialFeeRow");
   specialFeeRow.classList.toggle("is-hidden", !isSpecialRequest);
+  const economyDiscountRow = document.querySelector("#economyDiscountRow");
+  economyDiscountRow.classList.toggle("is-hidden", !resolvedIsEconomy);
 
   const inventoryBadge = document.querySelector("#inventoryBadge");
   const inventoryMessage = document.querySelector("#inventoryMessage");
@@ -239,9 +228,6 @@ function updatePricingEstimate() {
   if (resolvedIsImmediate) {
     warningElement.textContent = isOverTwelveHours ? "Long urgent prints require custom pricing." : "Immediate jobs require a custom quote.";
     warningElement.classList.add("danger");
-  } else if (resolvedIsEconomy && filamentType !== "PLA") {
-    warningElement.textContent = "Economy pricing only discounts PLA. Other materials keep their normal material rates with slower queue timing.";
-    warningElement.classList.add("warning");
   } else if (isRush && isOverTwelveHours) {
     warningElement.textContent = "Rush long prints require custom pricing.";
     warningElement.classList.add("danger");
