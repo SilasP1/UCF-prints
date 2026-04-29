@@ -146,18 +146,14 @@ function updatePricingEstimate() {
 
   const quoteButton = document.querySelector("#calculatorQuoteButton");
   if (quoteButton) {
-    const emailBody = [
-      "UCF Prints quote request",
-      "",
-      `Filament amount: ${filamentValue}g`,
-      `Print time: ${timeValue} hours`,
-      `Lead time: ${leadTimeText}`,
-      `Estimated total: ${isImmediate ? "Custom quote" : formatCurrency(estimateTotal)}`,
-      "",
-      "I understand this calculator provides an estimate only and final pricing may change after file review."
-    ].join("\n");
+    const params = new URLSearchParams({
+      filament: `${filamentValue}g`,
+      time: `${timeValue} hours`,
+      lead: leadTimeText,
+      estimate: isImmediate ? "Custom quote" : formatCurrency(estimateTotal)
+    });
 
-    quoteButton.href = `mailto:ucfprints@example.com?subject=${encodeURIComponent("Request a Print Quote")}&body=${encodeURIComponent(emailBody)}`;
+    quoteButton.href = `quote.html?${params.toString()}`;
   }
 }
 
