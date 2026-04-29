@@ -372,6 +372,16 @@ img {
   border-color: var(--line-strong);
 }
 
+.calculator-stock-note,
+.calculator-turnaround-note {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
 .calculator-formula h3 {
   margin: 0 0 0.85rem;
   font-size: 1.2rem;
@@ -461,6 +471,26 @@ img {
   border-color: rgba(255, 201, 4, 0.4);
 }
 
+.inventory-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.inventory-in-stock {
+  color: #072614;
+  background: rgba(99, 210, 153, 0.96);
+}
+
+.inventory-special {
+  color: #4a3100;
+  background: rgba(255, 201, 4, 0.94);
+}
+
 .calculator-total-label {
   color: var(--text-muted);
   font-size: 0.95rem;
@@ -516,6 +546,10 @@ img {
 .calculator-cta {
   width: 100%;
   margin-top: 0.25rem;
+}
+
+.special-fee-row.is-hidden {
+  display: none;
 }
 
 .feature-card,
