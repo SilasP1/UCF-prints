@@ -77,6 +77,106 @@
         </div>
       </section>
 
+      <section class="section section-alt" id="pricing-calculator">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Estimate Your Print Cost</h2>
+            <p>This calculator provides an estimate only. Final pricing may change after file review.</p>
+          </div>
+
+          <div class="calculator-shell card">
+            <div class="calculator-inputs">
+              <div class="calculator-formula">
+                <h3>How estimates are calculated</h3>
+                <p>Estimated price = $5 setup fee + $0.12 per gram of filament + $2.00 per estimated print hour, then multiplied by the selected lead-time multiplier.</p>
+                <ul class="policy-list">
+                  <li>Standard, 3-5 days: 1.00x</li>
+                  <li>Priority, 1-2 days: 1.35x</li>
+                  <li>Rush / same-day: 1.75x minimum</li>
+                  <li>Immediate / emergency: custom quote</li>
+                </ul>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="filamentSlider">Filament amount</label>
+                  <span><strong id="filamentValue">75</strong> g</span>
+                </div>
+                <input type="range" id="filamentSlider" min="10" max="500" value="75">
+                <p>Estimate the total filament used by the print.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="timeSlider">Print time</label>
+                  <span><strong id="timeValue">4</strong> hours</span>
+                </div>
+                <input type="range" id="timeSlider" min="1" max="24" value="4">
+                <p>Use expected machine runtime for the most accurate estimate.</p>
+              </div>
+
+              <div class="calculator-control">
+                <div class="calculator-control-head">
+                  <label for="leadTimeSelect">Lead time</label>
+                </div>
+                <select id="leadTimeSelect">
+                  <option value="1" selected>Standard, 3-5 days</option>
+                  <option value="1.35">Priority, 1-2 days</option>
+                  <option value="1.75">Rush / same-day</option>
+                  <option value="custom">Immediate / emergency</option>
+                </select>
+                <p>Urgency changes scheduling pressure and increases estimate cost.</p>
+              </div>
+            </div>
+
+            <div class="calculator-results">
+              <span class="note-label">Estimate only</span>
+              <div class="calculator-total-label">Estimated total</div>
+              <div class="calculator-total" id="estimatedTotal">$22.00</div>
+
+              <div class="calculator-breakdown">
+                <div><span>Setup fee</span><strong id="setupCost">$5.00</strong></div>
+                <div><span>Filament estimate</span><strong id="filamentCost">$9.00</strong></div>
+                <div><span>Machine time estimate</span><strong id="machineCost">$8.00</strong></div>
+                <div><span>Lead time multiplier</span><strong id="leadMultiplier">1.00x</strong></div>
+              </div>
+
+              <div class="calculator-warning" id="pricingWarning">
+                Standard scheduling estimate based on current assumptions.
+              </div>
+
+              <a
+                class="button button-primary calculator-cta"
+                id="calculatorQuoteButton"
+                href="mailto:ucfprints@example.com?subject=Request%20a%20Print%20Quote"
+              >
+                Request Quote With These Details
+              </a>
+            </div>
+          </div>
+
+          <div class="calculator-notes card">
+            <div class="section-heading align-left">
+              <h2>Why final quotes may change</h2>
+              <p>This calculator provides an estimate only. Final pricing may change after file review.</p>
+            </div>
+            <div class="card-grid three-up">
+              <article class="card detail-card"><h3>Geometry complexity</h3><p>Intricate features can require slower printing, added review, and more careful setup.</p></article>
+              <article class="card detail-card"><h3>Support material</h3><p>Support-heavy models increase material use, cleanup effort, and print risk.</p></article>
+              <article class="card detail-card"><h3>Failed-print risk</h3><p>Unstable parts or difficult orientations may require added caution and scheduling buffers.</p></article>
+              <article class="card detail-card"><h3>Tight tolerances</h3><p>Precision-fit parts may need additional review, orientation planning, or iteration.</p></article>
+              <article class="card detail-card"><h3>Large part size</h3><p>Oversized parts can affect layout, print duration, and machine availability.</p></article>
+              <article class="card detail-card"><h3>File repair needs</h3><p>Non-manifold geometry or export issues can require prep work before printing.</p></article>
+              <article class="card detail-card"><h3>Material/color availability</h3><p>Specific stock requests may depend on current inventory and sourcing constraints.</p></article>
+              <article class="card detail-card"><h3>Multiple parts</h3><p>Batches and grouped jobs can change total material, setup time, and scheduling impact.</p></article>
+              <article class="card detail-card"><h3>Fragile features or overhangs</h3><p>Thin walls, steep overhangs, and delicate details often need extra support strategy.</p></article>
+              <article class="card detail-card"><h3>Split-print or assembly needs</h3><p>Large or complex builds may need multiple print stages and post-print assembly.</p></article>
+              <article class="card detail-card"><h3>Deadline urgency</h3><p>Tighter turnaround windows increase queue pressure and may require manual approval.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section section-alt">
         <div class="container split-layout">
           <div>
@@ -104,72 +204,6 @@
               <li>Extended jobs are marked as <strong>Special Quote Required</strong>.</li>
             </ul>
           </aside>
-        </div>
-      </section>
-
-      <section class="section section-alt">
-        <div class="container">
-          <div class="section-heading">
-            <p class="eyebrow">Estimate calculator</p>
-            <h2>Budget your print before submitting</h2>
-            <p>This estimate helps students budget before uploading files. Final pricing still requires file review, print validation, and queue confirmation.</p>
-          </div>
-
-          <div class="calculator-layout card">
-            <div class="calculator-controls">
-              <article class="calculator-field">
-                <div class="field-top">
-                  <label for="filament-range">Filament amount</label>
-                  <strong><span id="filament-value">75</span>g</strong>
-                </div>
-                <input id="filament-range" class="range-input" type="range" min="10" max="500" value="75" step="5">
-                <p>Use the estimated total filament consumed by the part, including practical material waste.</p>
-              </article>
-
-              <article class="calculator-field">
-                <div class="field-top">
-                  <label for="time-range">Print time</label>
-                  <strong><span id="time-value">4</span> hours</strong>
-                </div>
-                <input id="time-range" class="range-input" type="range" min="1" max="24" value="4" step="1">
-                <p>Enter expected machine runtime so the estimate reflects actual scheduler impact.</p>
-              </article>
-
-              <article class="calculator-field">
-                <div class="field-top">
-                  <label for="lead-time">Lead time / urgency</label>
-                  <strong id="lead-time-label">Standard</strong>
-                </div>
-                <select id="lead-time" class="select-input">
-                  <option value="1" selected>Standard: 3-5 days</option>
-                  <option value="1.35">Priority: 1-2 days</option>
-                  <option value="1.75">Rush / Same-Day</option>
-                </select>
-                <p>Faster delivery windows increase queue pressure and raise the planning estimate.</p>
-              </article>
-            </div>
-
-            <div class="calculator-summary">
-              <span class="note-label">Estimate only</span>
-              <div class="estimate-price" id="estimate-price">$22.00</div>
-              <p class="estimate-disclaimer">This is not a final quote. Every part is reviewed before approval and print start.</p>
-
-              <div class="estimate-breakdown">
-                <div><span>Setup fee</span><strong id="setup-fee">$5.00</strong></div>
-                <div><span>Filament estimate</span><strong id="filament-cost">$9.00</strong></div>
-                <div><span>Print time estimate</span><strong id="time-cost">$8.00</strong></div>
-                <div><span>Lead time multiplier</span><strong id="lead-multiplier">1.00x</strong></div>
-              </div>
-
-              <div class="estimate-warning" id="estimate-warning">
-                Standard scheduling estimate based on current assumptions.
-              </div>
-
-              <a class="button button-primary estimate-cta" id="estimate-cta" href="mailto:ucfprints@example.com?subject=Request%20Quote%20With%20These%20Details">
-                Request Quote With These Details
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -210,4 +244,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
