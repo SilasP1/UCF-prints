@@ -64,7 +64,7 @@
                 <h3>How estimates are calculated</h3>
                 <p>Subtotal = $5 setup fee + material cost + ($1.50 per estimated print hour). Estimated total reflects queue tier rules, minimum pricing, and custom-review conditions where needed.</p>
                 <ul class="policy-list">
-                  <li>Economy, 7-10 days: lowest cost with flexible queue placement</li>
+                  <li>Economy, 7-10 days: 10% off the estimate</li>
                   <li>Standard, 3-5 days: 1.00x</li>
                   <li>Priority, 1-2 days: 1.35x</li>
                   <li>Rush / same-day: 1.75x</li>
@@ -137,13 +137,13 @@
                   <label for="leadTimeSelect">Lead time</label>
                 </div>
                 <select id="leadTimeSelect">
-                  <option value="economy">Economy - Lowest cost - extended 7-10 day lead time</option>
+                  <option value="economy">Economy - 10% off - flexible 7-10 day lead time</option>
                   <option value="1" selected>Standard, 3-5 days</option>
                   <option value="1.35">Priority, 1-2 days</option>
                   <option value="1.75">Rush / same-day</option>
                   <option value="custom">Immediate / emergency</option>
                 </select>
-                <p>Slower and less predictable queue timing can reduce cost. Faster tiers cost more because they consume schedule flexibility.</p>
+                <p>Economy trades speed for lower cost with a flexible 7-10 day lead time. Faster tiers cost more because they consume schedule flexibility.</p>
               </div>
             </div>
 
@@ -158,7 +158,8 @@
                 <div><span>Filament estimate</span><strong id="filamentCost">$9.00</strong></div>
                 <div><span>Machine time estimate</span><strong id="machineCost">$8.00</strong></div>
                 <div class="special-fee-row is-hidden" id="specialMaterialFeeRow"><span>Special material handling fee</span><strong id="specialMaterialFee">$5.00</strong></div>
-                <div><span>Lead time multiplier</span><strong id="leadMultiplier">1.00x</strong></div>
+                <div class="special-fee-row is-hidden" id="economyDiscountRow"><span>Economy discount</span><strong id="economyDiscount">-$0.00</strong></div>
+                <div><span>Lead-time tier</span><strong id="leadMultiplier">Standard, 3-5 days</strong></div>
               </div>
 
               <div class="calculator-warning" id="pricingWarning">
@@ -184,7 +185,7 @@
           </div>
 
           <div class="calculator-turnaround-note">
-            Economy tier uses discounted material pricing because jobs are printed during idle machine time with extended lead times.
+            Economy jobs receive a 10% discount because they are printed during available idle time with a 7-10 day lead time.
           </div>
         </div>
       </section>
