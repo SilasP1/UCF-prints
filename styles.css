@@ -169,6 +169,11 @@ img {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.nav-link-highlight {
+  color: var(--gold);
+  border: 1px solid rgba(255, 201, 4, 0.22);
+}
+
 .nav-link:hover {
   transform: translateY(-1px);
 }
@@ -380,6 +385,14 @@ img {
   background: rgba(255, 255, 255, 0.035);
   color: var(--text-muted);
   line-height: 1.7;
+}
+
+.open-quote-card {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+  text-align: center;
+  padding: var(--space-5);
 }
 
 .quote-details-card {
@@ -1018,3 +1031,4 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
