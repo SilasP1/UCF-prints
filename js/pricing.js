@@ -54,8 +54,8 @@ export function calculateEstimate({
 
 export function estimateTurnaround(deadlineType) {
   const turnaroundByDeadline = {
-    economy: "Economy turnaround: usually 3-5 days after review.",
-    standard: "Standard turnaround: usually 24-48 hours after review, depending on size and queue.",
+    economy: "Economy turnaround: usually 7-10 days after review.",
+    standard: "Standard turnaround: usually 3-5 days after review.",
     priority: "Priority turnaround: usually 1-2 days after review.",
     rush: "Rush turnaround: as soon as possible after review."
   };
