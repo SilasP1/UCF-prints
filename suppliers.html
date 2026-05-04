@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCF Prints | Supplier Matches</title>
+  <meta
+    name="description"
+    content="Review a short list of supplier matches for your UCF Prints quote."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="UCF Prints home">
+          <span class="brand-mark"></span>
+          <span>UCF Prints</span>
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link nav-link-highlight" href="quote.html">Edit quote</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-intro">
+        <div class="container quote-intro">
+          <div>
+            <p class="eyebrow">Supplier matches</p>
+            <h1>Best-fit options for your print.</h1>
+            <p>These matches are based on your rough specs, capability fit, availability, queue load, and deadline.</p>
+          </div>
+          <div class="quiet-note" id="resultsSummary">
+            Final price is confirmed after reviewing the file or reference.
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container supplier-results-layout">
+          <section class="supplier-scroll" id="supplierResults" aria-label="Supplier match list"></section>
+
+          <aside class="card final-quote-card sticky-summary">
+            <span class="note-label">Ready to confirm?</span>
+            <h2>Send the final details.</h2>
+            <p>Pick the option that feels right, then copy the quote summary and send it with your file or reference.</p>
+            <button class="button button-primary" type="button" id="copyQuoteButton">Request final quote</button>
+            <p class="copy-message" id="copyMessage" role="status" aria-live="polite"></p>
+          </aside>
+
+          <details class="developer-panel" id="developerPanel" hidden>
+            <summary>Developer details</summary>
+            <pre id="debugOutput"></pre>
+          </details>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="js/supplier-results.js"></script>
+</body>
+</html>
