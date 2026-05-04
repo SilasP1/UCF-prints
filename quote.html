@@ -34,7 +34,7 @@
           <div>
             <p class="eyebrow">Guided quote</p>
             <h1>I need something printed.</h1>
-            <p>Enter rough specs, get a rough estimate, and see the recommended supplier for this job.</p>
+            <p>Enter rough specs, get a rough estimate, then search for available supplier matches when you are ready.</p>
           </div>
           <div class="quiet-note">
             This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.
@@ -155,25 +155,23 @@
 
           <aside class="results-stack">
             <section class="card estimate-card">
-              <span class="note-label">Rough estimate</span>
+              <span class="note-label">Your rough estimate</span>
               <div class="estimate-main" id="estimatedPrice">$14</div>
               <div class="estimate-range" id="estimatedPriceRange">$13-$16 estimated range</div>
-              <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3-5 days after review.</div>
+              <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 24-48 hours after review, depending on size and queue.</div>
               <p class="disclaimer">This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.</p>
             </section>
 
-            <section class="card supplier-result" id="supplierResult">
-              <span class="note-label">Recommended supplier</span>
-              <div id="supplierCards"></div>
+            <section class="card final-quote-card">
+              <span class="note-label">Next step</span>
+              <h2>Ready to see matches?</h2>
+              <p>Search for suppliers after your estimate looks close. You will see a short list of best-fit options and their rough quote range.</p>
+              <button class="button button-primary" type="button" id="searchSuppliersButton">Search for suppliers</button>
+              <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
             </section>
 
-            <section class="card request-card">
-              <span class="note-label">Request object</span>
-              <dl class="request-summary" id="requestSummary"></dl>
-            </section>
-
-            <details class="developer-panel">
-              <summary>Developer matching details</summary>
+            <details class="developer-panel" id="developerPanel" hidden>
+              <summary>Developer details</summary>
               <pre id="debugOutput"></pre>
             </details>
           </aside>
