@@ -7,9 +7,16 @@ const form = document.querySelector("#quoteForm");
 const estimatedPriceElement = document.querySelector("#estimatedPrice");
 const estimatedPriceRangeElement = document.querySelector("#estimatedPriceRange");
 const estimatedTurnaroundElement = document.querySelector("#estimatedTurnaround");
-const supplierCardsElement = document.querySelector("#supplierCards");
-const requestSummaryElement = document.querySelector("#requestSummary");
+const searchSuppliersButton = document.querySelector("#searchSuppliersButton");
+const quoteMessageElement = document.querySelector("#quoteMessage");
+const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
+const debugEnabled = new URLSearchParams(window.location.search).has("debug");
+let currentRequest = null;
+
+if (developerPanel && debugEnabled) {
+  developerPanel.hidden = false;
+}
 
 function getFormInput() {
   return {
@@ -45,9 +52,8 @@ function updateQuote() {
   const request = createRequest(input, estimate, matchResult);
 
   renderEstimate(estimate, input.deadlineType);
-  renderSupplierResult(matchResult);
-  renderRequestSummary(request);
   renderDebug(matchResult, request);
+  currentRequest = request;
 
   // Early UCF Prints is operator-controlled. Matching suggests the best fit,
   // but the founder can manually override assignment before a real job starts.
@@ -60,65 +66,11 @@ function renderEstimate(estimate, deadlineType) {
   estimatedTurnaroundElement.textContent = estimateTurnaround(deadlineType);
 }
 
-function renderSupplierResult(matchResult) {
-  if (!matchResult.bestSupplier) {
-    supplierCardsElement.innerHTML = `
-      <div class="manual-review">
-        No supplier matched every requirement yet. This request may need manual review, a different material, adjusted dimensions, or founder assignment.
-      </div>
-    `;
+function renderDebug(matchResult, request) {
+  if (!debugEnabled) {
     return;
   }
 
-  const cards = [matchResult.bestSupplier, ...matchResult.alternateSuppliers]
-    .slice(0, 3)
-    .map((supplier, index) => renderSupplierCard(supplier, matchResult.matchReasons[supplier.id] ?? [], index === 0))
-    .join("");
-
-  supplierCardsElement.innerHTML = cards;
-}
-
-function renderSupplierCard(supplier, reasons, isBest) {
-  const title = isBest ? "Recommended supplier" : "Alternate best fit";
-  const rating = supplier.rating ? `${supplier.rating.toFixed(1)} rating` : "New supplier";
-
-  return `
-    <article class="supplier-card ${isBest ? "best" : ""}">
-      <div>
-        <span class="note-label">${title}</span>
-        <h3>${supplier.name}</h3>
-      </div>
-      <ul class="supplier-meta">
-        <li>${supplier.locationLabel}</li>
-        <li>${supplier.trustTier}</li>
-        <li>${rating}</li>
-        <li>${supplier.queueLoad} in queue</li>
-      </ul>
-      <ul class="reason-list">
-        ${reasons.map((reason) => `<li>${reason}</li>`).join("")}
-      </ul>
-    </article>
-  `;
-}
-
-function renderRequestSummary(request) {
-  const items = {
-    "Request ID": request.requestId,
-    Status: request.status,
-    Material: `${request.material}, ${request.color}`,
-    Specs: `${request.estimatedWeightGrams}g, ${request.estimatedPrintHours}h`,
-    Dimensions: `${request.estimatedDimensions.x} x ${request.estimatedDimensions.y} x ${request.estimatedDimensions.z} mm`,
-    Deadline: request.deadlineType,
-    Fulfillment: request.fulfillmentPreference,
-    "Selected supplier": request.selectedSupplierId ?? "Manual review"
-  };
-
-  requestSummaryElement.innerHTML = Object.entries(items)
-    .map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`)
-    .join("");
-}
-
-function renderDebug(matchResult, request) {
   debugOutputElement.textContent = JSON.stringify({
     request,
     rejectedSuppliers: matchResult.rejectedSuppliers
@@ -132,6 +84,17 @@ function formatCurrency(value) {
   return `$${Number(value).toFixed(0)}`;
 }
 
+function searchSuppliers() {
+  if (!currentRequest) {
+    return;
+  }
+
+  sessionStorage.setItem("ucfPrintsCurrentRequest", JSON.stringify(currentRequest));
+  quoteMessageElement.textContent = "Searching for best-fit suppliers...";
+  window.location.href = "suppliers.html";
+}
+
 form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
+searchSuppliersButton.addEventListener("click", searchSuppliers);
 updateQuote();
