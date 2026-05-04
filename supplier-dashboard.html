@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCF Prints | Supplier Dashboard</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html">
+          <span class="brand-mark"></span>
+          <span>UCF Prints</span>
+        </a>
+        <span class="dashboard-pill">Hidden supplier dashboard</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-intro">
+        <div class="container quote-intro">
+          <div>
+            <p class="eyebrow">Supplier operations</p>
+            <h1>Supplier dashboard mockup.</h1>
+            <p>Frontend-only view for incoming requests, accepted work, print status, and future supplier controls.</p>
+          </div>
+          <div class="quiet-note">
+            Early UCF Prints is operator-controlled: suppliers are approved manually, matching is advisory, and founder override is expected.
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container dashboard-grid">
+          <section class="card dashboard-card">
+            <h2>Incoming quote requests</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Request</th><th>Material</th><th>Deadline</th><th>Estimate</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>REQ-1042</td><td>PLA black</td><td>Standard</td><td>$18-$23</td></tr>
+                  <tr><td>REQ-1043</td><td>PETG gray</td><td>Priority</td><td>$31-$40</td></tr>
+                  <tr><td>REQ-1044</td><td>PLA custom</td><td>Rush</td><td>$22-$28</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card dashboard-card">
+            <h2>Accepted jobs</h2>
+            <div class="job-list">
+              <article><strong>Senior design bracket</strong><span>Supplier assigned - awaiting print prep</span></article>
+              <article><strong>Club prototype housing</strong><span>Supplier accepted - scheduled tonight</span></article>
+            </div>
+          </section>
+
+          <section class="card dashboard-card">
+            <h2>Printing now</h2>
+            <div class="job-list">
+              <article><strong>Robot arm spacer set</strong><span>3.5 hours remaining</span></article>
+            </div>
+          </section>
+
+          <section class="card dashboard-card">
+            <h2>Ready for pickup</h2>
+            <div class="job-list">
+              <article><strong>Wind tunnel fixture</strong><span>Pickup at UCF after confirmation</span></article>
+            </div>
+          </section>
+
+          <section class="card dashboard-card">
+            <h2>Completed jobs</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Job</th><th>Status</th><th>Rating</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Gearbox mount</td><td>Completed</td><td>Pending</td></tr>
+                  <tr><td>Sensor clip</td><td>Delivered</td><td>Pending</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="card dashboard-card stats-card">
+            <h2>Supplier stats</h2>
+            <div class="stats-grid">
+              <div><span>Queue load</span><strong>0</strong></div>
+              <div><span>Completed</span><strong>0</strong></div>
+              <div><span>Rating</span><strong>New</strong></div>
+              <div><span>Availability</span><strong>Live soon</strong></div>
+            </div>
+          </section>
+
+          <section class="card dashboard-card placeholder-card">
+            <h2>Payouts placeholder</h2>
+            <p>Payout tracking will connect after backend data, supplier accounts, job acceptance, and payment handling exist.</p>
+          </section>
+
+          <section class="card dashboard-card placeholder-card">
+            <h2>Trust tier placeholder</h2>
+            <p>Trust tiers will reflect manual approval, completed jobs, quality ratings, reliability, and founder review.</p>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!--
+    Future backend connections:
+    - supplier login
+    - live availability
+    - accepting/declining jobs
+    - updating job statuses
+    - payout tracking
+    - quality ratings
+
+    Founder-control concept:
+    - suppliers are approved manually
+    - jobs can be manually assigned
+    - matching suggests best fit, but the founder can override
+    - no public supplier browsing yet
+  -->
+</body>
+</html>
