@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCF Prints | Get a Print Quote</title>
+  <title>UCF Prints | Guided Quote</title>
   <meta
     name="description"
-    content="Estimate your print cost before submitting your file with the UCF Prints quote calculator."
+    content="Enter rough 3D print specs, get a ballpark estimate, and see the recommended supplier for the job."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,206 +17,171 @@
   <div class="site-shell">
     <header class="topbar">
       <div class="container nav-wrap">
-        <a class="brand" href="index.html">
+        <a class="brand" href="index.html" aria-label="UCF Prints home">
           <span class="brand-mark"></span>
           <span>UCF Prints</span>
         </a>
-        <nav class="nav">
+        <nav class="nav" aria-label="Main navigation">
           <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="pricing.html">Pricing</a>
-          <a class="nav-link nav-link-highlight active" href="quote.html">Get a Quote</a>
-          <a class="nav-link" href="capacity.html">Capacity</a>
+          <a class="nav-link nav-link-highlight active" href="quote.html">Get Started</a>
         </nav>
-        <a class="button button-primary button-small" href="quote.html#pricing-calculator">Get a Quote</a>
       </div>
     </header>
 
     <main>
-      <section class="hero-section hero-compact">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">Calculator-first quoting</p>
-            <h1>Get a Print Quote</h1>
-            <p class="hero-subtitle">Estimate your print cost before submitting your file.</p>
-            <p class="hero-description">
-              Choose your material, color, queue tier, print time, and filament amount here first, then send your quote request with the estimate details already prepared.
-            </p>
+      <section class="page-intro">
+        <div class="container quote-intro">
+          <div>
+            <p class="eyebrow">Guided quote</p>
+            <h1>I need something printed.</h1>
+            <p>Enter rough specs, get a rough estimate, and see the recommended supplier for this job.</p>
           </div>
-
-          <div class="card note-card">
-            <span class="note-label">Best results</span>
-            <h3>Use the calculator before submitting</h3>
-            <p>Action comes first on this page so students can estimate quickly before sending a file or asking follow-up questions.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="pricing-calculator">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Estimate Your Print Cost</h2>
-            <p>This calculator is an estimate only. Final pricing happens after file review so standard prints can stay affordable while larger or urgent jobs are reviewed more carefully.</p>
-          </div>
-
-          <div class="calculator-shell card">
-            <div class="calculator-inputs">
-              <div class="calculator-formula">
-                <h3>How estimates are calculated</h3>
-                <p>Subtotal = $5 setup fee + material cost + ($1.50 per estimated print hour). Estimated total reflects queue tier rules, minimum pricing, and custom-review conditions where needed.</p>
-                <ul class="policy-list">
-                  <li>Economy, 7-10 days: 10% off the estimate</li>
-                  <li>Standard, 3-5 days: 1.00x</li>
-                  <li>Priority, 1-2 days: 1.35x</li>
-                  <li>Rush / same-day: 1.75x</li>
-                  <li>Immediate / emergency: custom quote only</li>
-                </ul>
-              </div>
-
-              <div class="calculator-stock-note">
-                Currently stocked filament is limited. Black PLA is available now. Other materials or colors may require ordering time and custom pricing.
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentTypeSelect">Filament type</label>
-                  <span><strong id="materialRatePreview">$0.10/g</strong></span>
-                </div>
-                <select id="filamentTypeSelect">
-                  <option value="PLA" selected>PLA</option>
-                  <option value="PETG">PETG</option>
-                  <option value="TPU">TPU</option>
-                  <option value="ABS">ABS</option>
-                  <option value="Other">Custom / Other</option>
-                </select>
-                <p id="materialTypeNote">PLA is the most student-friendly option and is priced for standard quoting.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentColorSelect">Color</label>
-                </div>
-                <select id="filamentColorSelect">
-                  <option value="Black" selected>Black</option>
-                  <option value="White">White</option>
-                  <option value="Gray">Gray</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Red">Red</option>
-                  <option value="Blue">Blue</option>
-                  <option value="Other">Custom / Other</option>
-                </select>
-              </div>
-
-              <div class="calculator-control inventory-card">
-                <div class="calculator-control-head">
-                  <label>Inventory status</label>
-                  <span class="inventory-badge inventory-in-stock" id="inventoryBadge">In stock</span>
-                </div>
-                <p id="inventoryMessage">Black PLA is currently available for standard quoting.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="filamentSlider">Filament amount</label>
-                  <span><strong id="filamentValue">75</strong> g</span>
-                </div>
-                <input type="range" id="filamentSlider" min="10" max="500" value="75">
-                <p>Estimate the total filament used by the print.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="timeSlider">Print time</label>
-                  <span><strong id="timeValue">4</strong> hours</span>
-                </div>
-                <input type="range" id="timeSlider" min="1" max="24" value="4">
-                <p>Use expected machine runtime for the most accurate estimate.</p>
-              </div>
-
-              <div class="calculator-control">
-                <div class="calculator-control-head">
-                  <label for="leadTimeSelect">Lead time</label>
-                </div>
-                <select id="leadTimeSelect">
-                  <option value="economy">Economy - 10% off - flexible 7-10 day lead time</option>
-                  <option value="1" selected>Standard, 3-5 days</option>
-                  <option value="1.35">Priority, 1-2 days</option>
-                  <option value="1.75">Rush / same-day</option>
-                  <option value="custom">Immediate / emergency</option>
-                </select>
-                <p>Economy trades speed for lower cost with a flexible 7-10 day lead time. Faster tiers cost more because they consume schedule flexibility.</p>
-              </div>
-            </div>
-
-            <div class="calculator-results">
-              <span class="note-label">Estimate only</span>
-              <div class="calculator-total-label">Estimated total</div>
-              <div class="calculator-total" id="estimatedTotal">$22.00</div>
-
-              <div class="calculator-breakdown">
-                <div><span>Selected material rate</span><strong id="materialRate">$0.10/g</strong></div>
-                <div><span>Setup fee</span><strong id="setupCost">$5.00</strong></div>
-                <div><span>Filament estimate</span><strong id="filamentCost">$9.00</strong></div>
-                <div><span>Machine time estimate</span><strong id="machineCost">$8.00</strong></div>
-                <div class="special-fee-row is-hidden" id="specialMaterialFeeRow"><span>Special material handling fee</span><strong id="specialMaterialFee">$5.00</strong></div>
-                <div class="special-fee-row is-hidden" id="economyDiscountRow"><span>Economy discount</span><strong id="economyDiscount">-$0.00</strong></div>
-                <div><span>Lead-time tier</span><strong id="leadMultiplier">Standard, 3-5 days</strong></div>
-              </div>
-
-              <div class="calculator-warning" id="pricingWarning">
-                Standard scheduling estimate based on current assumptions.
-              </div>
-
-              <div class="calculator-turnaround-note" id="turnaroundNote">
-                Standard stocked materials support the fastest quoting and scheduling.
-              </div>
-
-              <a
-                class="button button-primary calculator-cta"
-                id="calculatorQuoteButton"
-                href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote"
-              >
-                Submit Quote Request
-              </a>
-            </div>
-          </div>
-
-          <div class="calculator-explainer">
-            Large parts and long prints cost more because they use more material, occupy the printer for longer, carry higher failed-print risk, and affect the queue for other students.
-          </div>
-
-          <div class="calculator-turnaround-note">
-            Economy jobs receive a 10% discount because they are printed during available idle time with a 7-10 day lead time.
+          <div class="quiet-note">
+            This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.
           </div>
         </div>
       </section>
 
       <section class="section">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Contact UCF Prints</h2>
-            <p>Use either contact method below if you want to reach out directly after estimating your part.</p>
-          </div>
+        <div class="container quote-layout">
+          <form class="card quote-form" id="quoteForm">
+            <div class="form-head">
+              <span class="note-label">Print details</span>
+              <h2>Start with your best guess.</h2>
+            </div>
 
-          <div class="card-grid two-up">
-            <article class="card contact-card">
-              <span class="note-label">Email</span>
-              <h3>si354631@ucf.edu</h3>
-              <p>Email is best for file details, longer project notes, and anything that needs a written estimate trail.</p>
-              <a class="button button-primary" href="mailto:si354631@ucf.edu?subject=Request%20a%20Print%20Quote">Send Email</a>
-            </article>
+            <div class="form-grid">
+              <label class="field">
+                <span>Material</span>
+                <select id="material" name="material">
+                  <option value="PLA" selected>PLA</option>
+                  <option value="PETG">PETG</option>
+                  <option value="TPU">TPU</option>
+                  <option value="ABS">ABS</option>
+                </select>
+              </label>
 
-            <article class="card contact-card">
-              <span class="note-label">Instagram</span>
-              <h3>@ucf_prints</h3>
-              <p>Instagram works well for quick outreach, early questions, and letting students know they are ready to send a file.</p>
-              <a class="button button-secondary" href="https://instagram.com/ucf_prints" target="_blank" rel="noopener noreferrer">Open Instagram</a>
-            </article>
-          </div>
+              <label class="field">
+                <span>Color</span>
+                <select id="color" name="color">
+                  <option value="black" selected>Black</option>
+                  <option value="white">White</option>
+                  <option value="gray">Gray</option>
+                  <option value="blue">Blue</option>
+                  <option value="red">Red</option>
+                  <option value="custom">Custom / flexible</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Estimated weight</span>
+                <div class="input-with-unit">
+                  <input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" min="1" value="75">
+                  <span>g</span>
+                </div>
+              </label>
+
+              <label class="field">
+                <span>Estimated print time</span>
+                <div class="input-with-unit">
+                  <input id="estimatedPrintHours" name="estimatedPrintHours" type="number" min="0.5" step="0.5" value="4">
+                  <span>hrs</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="dimension-grid">
+              <label class="field">
+                <span>X dimension</span>
+                <div class="input-with-unit">
+                  <input id="dimensionX" name="dimensionX" type="number" min="1" value="80">
+                  <span>mm</span>
+                </div>
+              </label>
+              <label class="field">
+                <span>Y dimension</span>
+                <div class="input-with-unit">
+                  <input id="dimensionY" name="dimensionY" type="number" min="1" value="60">
+                  <span>mm</span>
+                </div>
+              </label>
+              <label class="field">
+                <span>Z dimension</span>
+                <div class="input-with-unit">
+                  <input id="dimensionZ" name="dimensionZ" type="number" min="1" value="40">
+                  <span>mm</span>
+                </div>
+              </label>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>Deadline type</span>
+                <select id="deadlineType" name="deadlineType">
+                  <option value="economy">Economy</option>
+                  <option value="standard" selected>Standard</option>
+                  <option value="priority">Priority</option>
+                  <option value="rush">Rush</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Fulfillment preference</span>
+                <select id="fulfillmentPreference" name="fulfillmentPreference">
+                  <option value="pickup" selected>Pickup</option>
+                  <option value="delivery">Delivery</option>
+                  <option value="either">Either</option>
+                </select>
+              </label>
+
+              <label class="field">
+                <span>Rough complexity</span>
+                <select id="roughComplexity" name="roughComplexity">
+                  <option value="simple" selected>Simple</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="complex">Complex</option>
+                </select>
+              </label>
+
+              <label class="file-toggle">
+                <input id="fileAttached" name="fileAttached" type="checkbox">
+                <span>
+                  <strong>File attached placeholder</strong>
+                  <small>No real upload yet. This only marks whether a file is ready.</small>
+                </span>
+              </label>
+            </div>
+          </form>
+
+          <aside class="results-stack">
+            <section class="card estimate-card">
+              <span class="note-label">Rough estimate</span>
+              <div class="estimate-main" id="estimatedPrice">$14</div>
+              <div class="estimate-range" id="estimatedPriceRange">$13-$16 estimated range</div>
+              <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3-5 days after review.</div>
+              <p class="disclaimer">This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.</p>
+            </section>
+
+            <section class="card supplier-result" id="supplierResult">
+              <span class="note-label">Recommended supplier</span>
+              <div id="supplierCards"></div>
+            </section>
+
+            <section class="card request-card">
+              <span class="note-label">Request object</span>
+              <dl class="request-summary" id="requestSummary"></dl>
+            </section>
+
+            <details class="developer-panel">
+              <summary>Developer matching details</summary>
+              <pre id="debugOutput"></pre>
+            </details>
+          </aside>
         </div>
       </section>
     </main>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module" src="js/quote.js"></script>
 </body>
 </html>
