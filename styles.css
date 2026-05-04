@@ -509,6 +509,13 @@ select {
   font-weight: 800;
 }
 
+.contact-link {
+  color: var(--blue);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
 .manual-review {
   display: grid;
   gap: 1rem;
