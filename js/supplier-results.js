@@ -92,6 +92,7 @@ function renderSupplierProfile(activeRequest, activeMatchResult, supplier, isBes
       </div>
       <div class="supplier-quote">${formatRange(quoteRange)}</div>
       <p>${supplier.locationLabel}</p>
+      ${supplier.contactEmail ? `<p><a class="contact-link" href="mailto:${supplier.contactEmail}">${supplier.contactEmail}</a></p>` : ""}
       <ul class="supplier-meta">
         <li>${getAvailabilityLabel(supplier)}</li>
         <li>${getQueueSummary(supplier)}</li>
@@ -217,9 +218,10 @@ function buildQuoteSummary(activeRequest, supplier) {
     `Deadline type: ${activeRequest.deadlineType}`,
     `Fulfillment preference: ${activeRequest.fulfillmentPreference}`,
     `Recommended supplier: ${supplier?.name ?? "Manual review"}`,
+    supplier?.contactEmail ? `Supplier email: ${supplier.contactEmail}` : null,
     "",
     "Final price is confirmed after reviewing the file or reference."
-  ].join("\n");
+  ].filter((line) => line !== null).join("\n");
 }
 
 function renderDebug(activeRequest, activeMatchResult) {
