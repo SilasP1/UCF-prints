@@ -70,9 +70,11 @@ function calculateEstimate({
   const adjustedCost = baseCost * deadlineMultiplier;
   const finalPrice = adjustedCost * pricingDefaults.marginMultiplier + pricingDefaults.handlingFee;
   const estimatedPrice = Math.max(finalPrice, pricingDefaults.minimumPrice);
+  const estimatedPriceRange = createEstimateRange(estimatedPrice);
 
   return {
     estimatedPrice,
+    estimatedPriceRange,
     materialRate,
     materialCost,
     timeCost,
@@ -82,6 +84,17 @@ function calculateEstimate({
     marginMultiplier: pricingDefaults.marginMultiplier,
     handlingFee: pricingDefaults.handlingFee
   };
+}
+
+function createEstimateRange(estimatedPrice) {
+  return {
+    lowEstimate: roundUpToHalfDollar(estimatedPrice * 0.9),
+    highEstimate: roundUpToHalfDollar(estimatedPrice * 1.2)
+  };
+}
+
+function roundUpToHalfDollar(value) {
+  return Math.ceil(Number(value) * 2) / 2;
 }
 
 function estimateTurnaround(deadlineType) {
@@ -106,6 +119,7 @@ function createRequest(input, estimate) {
     deadlineType: input.deadlineType,
     fulfillmentPreference: input.fulfillmentPreference,
     estimatedPrice: estimate.estimatedPrice,
+    estimatedPriceRange: estimate.estimatedPriceRange,
     operator: {
       name: "UCF Prints",
       email: "si354631@ucf.edu"
@@ -130,8 +144,13 @@ function updateQuote() {
   renderDebug(request);
   currentRequest = request;
 
-  // UCF Prints is currently founder-operated.
   window.currentUcfPrintsRequest = request;
+
+  try {
+    sessionStorage.setItem("ucfPrintsCurrentRequest", JSON.stringify(request));
+  } catch (error) {
+    console.warn("Unable to save UCF Prints quote request", error);
+  }
 }
 
 function renderEstimate(estimate, deadlineType) {
@@ -187,6 +206,7 @@ function buildQuoteSummary(request) {
     "",
     `Request ID: ${request.requestId}`,
     `Estimated price: ${formatCurrency(request.estimatedPrice)}`,
+    `Estimated price range: ${formatRange(request.estimatedPriceRange)}`,
     "Final confirmed prices round up to the nearest half dollar.",
     `Material and color: ${request.material}, ${request.color}`,
     `Printer filament estimate: ${request.estimatedWeightGrams}g`,
@@ -199,6 +219,10 @@ function buildQuoteSummary(request) {
     "",
     "Final price is confirmed after reviewing the file or reference."
   ].join("\n");
+}
+
+function formatRange(range) {
+  return `${formatCurrency(range.lowEstimate)}-${formatCurrency(range.highEstimate)}`;
 }
 
 form.addEventListener("input", updateQuote);
