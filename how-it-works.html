@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCF Prints | Capacity Planner</title>
+  <title>UCF Prints | How It Works</title>
   <meta
     name="description"
-    content="Internal-style weekly capacity planner for UCF Prints showing booked hours, remaining hours, weekly load, and sample order status."
+    content="How UCF Prints handles student 3D print requests, quotes, confirmation, printing, and campus pickup."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,59 +17,32 @@
   <div class="site-shell">
     <header class="topbar">
       <div class="container nav-wrap">
-        <a class="brand" href="index.html">
+        <a class="brand" href="index.html" aria-label="UCF Prints home">
           <span class="brand-mark"></span>
           <span>UCF Prints</span>
         </a>
-        <nav class="nav">
+        <nav class="nav" aria-label="Main navigation">
           <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="pricing.html">Pricing</a>
-          <a class="nav-link nav-link-highlight" href="quote.html">Get a Quote</a>
-          <a class="nav-link active" href="capacity.html">Capacity</a>
+          <a class="nav-link active" href="how-it-works.html">How It Works</a>
+          <a class="nav-link nav-link-highlight" href="quote.html">Get Started</a>
         </nav>
-        <a class="button button-primary button-small" href="quote.html#pricing-calculator">Get a Quote</a>
       </div>
     </header>
 
     <main>
-      <section class="hero-section hero-compact">
-        <div class="container hero-grid">
-          <div class="hero-copy">
-            <p class="eyebrow">Internal capacity view</p>
-            <h1>Weekly Print Capacity</h1>
-            <p class="hero-subtitle">A simple planner for managing queue load, remaining hours, and approval risk.</p>
-            <p class="hero-description">
-              This is an operations-style overview for balancing standard, priority, and rush jobs against a fixed 12-hour daily print limit.
-            </p>
-          </div>
-          <div class="card summary-card">
-            <span class="note-label">Capacity rules</span>
-            <div class="summary-metrics">
-              <div>
-                <span>Total daily capacity</span>
-                <strong>12 hours</strong>
-              </div>
-              <div>
-                <span>Warning threshold</span>
-                <strong>85%</strong>
-              </div>
-              <div>
-                <span>Overbooked status</span>
-                <strong>Manual approval</strong>
-              </div>
-              <div>
-                <span>Weekly booked hours</span>
-                <strong id="weeklyBookedHours">0h</strong>
-              </div>
-              <div>
-                <span>Weekly remaining</span>
-                <strong id="weeklyRemainingHours">0h</strong>
-              </div>
-              <div>
-                <span>Alert days</span>
-                <strong id="weeklyAlertDays">0</strong>
-              </div>
+      <section class="page-intro">
+        <div class="container quote-intro">
+          <div>
+            <p class="eyebrow">Process</p>
+            <h1>How UCF Prints Works</h1>
+            <p>No shipping, no printer troubleshooting, no guessing. Send your file, confirm your quote, and pick it up on campus.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="quote.html">Get a Quote</a>
+              <a class="button button-secondary" href="index.html#cost-comparisons">See Pricing Examples</a>
             </div>
+          </div>
+          <div class="quiet-note">
+            Submit your file, get a real quote, and pick up your finished print on campus.
           </div>
         </div>
       </section>
@@ -77,109 +50,55 @@
       <section class="section">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">Weekly planner</p>
-            <h2>Mon through Sun utilization</h2>
-            <p>Booked hours, remaining capacity, and warnings are calculated automatically from the sample job list.</p>
+            <p class="eyebrow">Our Process</p>
+            <h2>From request to pickup.</h2>
+            <p>UCF Prints is built to make 3D printing easier for students without turning every project into a printer setup lesson.</p>
           </div>
 
-          <div class="weekly-grid" id="capacity-grid">
-            <article class="card capacity-card" data-day="Mon">
-              <div class="capacity-head">
-                <h3>Mon</h3>
-                <span class="day-state">Loading</span>
+          <div class="interactive-process" data-process-timeline>
+            <div class="timeline-steps" role="tablist" aria-label="UCF Prints process steps">
+              <button class="timeline-step is-active" type="button" role="tab" aria-selected="true" data-step-index="0">
+                <span>01</span>
+                <strong>Submit Your Print Request</strong>
+                <small>Send the file</small>
+              </button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" data-step-index="1">
+                <span>02</span>
+                <strong>We Review the File</strong>
+                <small>File check</small>
+              </button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" data-step-index="2">
+                <span>03</span>
+                <strong>You Get a Quote</strong>
+                <small>Real quote</small>
+              </button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" data-step-index="3">
+                <span>04</span>
+                <strong>You Confirm and Pay</strong>
+                <small>Approve + pay</small>
+              </button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" data-step-index="4">
+                <span>05</span>
+                <strong>Pick Up on Your Assigned Day</strong>
+                <small>Campus pickup</small>
+              </button>
+            </div>
+
+            <article class="card timeline-detail" aria-live="polite">
+              <span class="process-number" id="timelineStepNumber">01</span>
+              <h3 id="timelineStepTitle">Submit Your Print Request</h3>
+              <p id="timelineStepBody">Start by sending your file or project details through the quote form. Include your material preference, color, deadline, and any notes that matter. The more context you give upfront, the easier it is to quote the job accurately.</p>
+              <ul class="check-list" id="timelineStepBullets">
+                <li>Upload or send your STL/3MF file if available</li>
+                <li>Tell us the material, color, and deadline</li>
+                <li>Mention if the part has a functional purpose or tight fit requirement</li>
+                <li>Use the calculator first if you want a rough estimate</li>
+              </ul>
+              <p class="policy-callout timeline-note" id="timelineStepNote" hidden></p>
+              <div class="timeline-controls">
+                <button class="button button-secondary" type="button" id="timelinePrev">Previous</button>
+                <button class="button button-primary" type="button" id="timelineNext">Next</button>
               </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Tue">
-              <div class="capacity-head">
-                <h3>Tue</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Wed">
-              <div class="capacity-head">
-                <h3>Wed</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Thu">
-              <div class="capacity-head">
-                <h3>Thu</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Fri">
-              <div class="capacity-head">
-                <h3>Fri</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Sat">
-              <div class="capacity-head">
-                <h3>Sat</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
-            </article>
-            <article class="card capacity-card" data-day="Sun">
-              <div class="capacity-head">
-                <h3>Sun</h3>
-                <span class="day-state">Loading</span>
-              </div>
-              <div class="capacity-stats">
-                <div><span>Total capacity</span><strong>12h</strong></div>
-                <div><span>Booked hours</span><strong data-booked>0h</strong></div>
-                <div><span>Remaining</span><strong data-remaining>12h</strong></div>
-                <div><span>Capacity used</span><strong data-percent>0%</strong></div>
-              </div>
-              <div class="progress-track"><span class="progress-fill"></span></div>
-              <p class="capacity-message" data-message>Capacity available for standard scheduling.</p>
             </article>
           </div>
         </div>
@@ -188,106 +107,104 @@
       <section class="section section-alt">
         <div class="container">
           <div class="section-heading">
-            <p class="eyebrow">Sample queue</p>
-            <h2>Current order mix</h2>
-            <p>Example jobs show how different tiers and statuses feed into weekly capacity usage.</p>
+            <p class="eyebrow">After You Submit</p>
+            <h2>What Happens After You Submit?</h2>
+            <p>
+              After you submit a request, UCF Prints reviews the actual file instead of relying only on the calculator. This matters because two prints with the same weight can have very different support needs, print times, failure risks, and deadline constraints. Once the job is reviewed, you'll receive a confirmed quote. If you approve the quote and pay, the print is added to the queue.
+            </p>
           </div>
 
-          <div class="orders-grid" id="orders-grid">
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>gearbox_mount_v3.stl</h3>
-                <span class="chip chip-standard">Standard</span>
-              </div>
-              <p class="order-meta">Estimated print time: 3.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-pending">Pending</span>
-                <span class="order-day">Mon</span>
-              </div>
+          <div class="card-grid four-up">
+            <article class="card detail-card">
+              <h3>Calculator vs. Final Quote</h3>
+              <p>The calculator gives a fast estimate. The final quote comes after file review.</p>
             </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>wind_tunnel_fixture.stl</h3>
-                <span class="chip chip-priority">Priority</span>
-              </div>
-              <p class="order-meta">Estimated print time: 5h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Tue</span>
-              </div>
+            <article class="card detail-card">
+              <h3>Payment Timing</h3>
+              <p>Payment is collected after the final quote is approved and before printing begins.</p>
             </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>robot_arm_bracket.stl</h3>
-                <span class="chip chip-rush">Rush</span>
-              </div>
-              <p class="order-meta">Estimated print time: 4.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-printing">Printing</span>
-                <span class="order-day">Wed</span>
-              </div>
+            <article class="card detail-card">
+              <h3>Pickup Window</h3>
+              <p>Default pickup is 12 noon directly in front of the Student Union on your assigned pickup day.</p>
             </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>drone_frame_plate.stl</h3>
-                <span class="chip chip-standard">Standard</span>
-              </div>
-              <p class="order-meta">Estimated print time: 2.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-ready">Ready</span>
-                <span class="order-day">Thu</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>capstone_housing_revB.stl</h3>
-                <span class="chip chip-priority">Priority</span>
-              </div>
-              <p class="order-meta">Estimated print time: 10h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Fri</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>sensor_mount_array.stl</h3>
-                <span class="chip chip-rush">Rush</span>
-              </div>
-              <p class="order-meta">Estimated print time: 6h</p>
-              <div class="order-footer">
-                <span class="chip chip-pending">Pending</span>
-                <span class="order-day">Fri</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>lab_demo_handle.stl</h3>
-                <span class="chip chip-standard">Standard</span>
-              </div>
-              <p class="order-meta">Estimated print time: 8.5h</p>
-              <div class="order-footer">
-                <span class="chip chip-approved">Approved</span>
-                <span class="order-day">Sat</span>
-              </div>
-            </article>
-            <article class="card order-card">
-              <div class="order-top">
-                <h3>presentation_mockup.stl</h3>
-                <span class="chip chip-priority">Priority</span>
-              </div>
-              <p class="order-meta">Estimated print time: 11h</p>
-              <div class="order-footer">
-                <span class="chip chip-printing">Printing</span>
-                <span class="order-day">Sun</span>
-              </div>
+            <article class="card detail-card">
+              <h3>Special Requests</h3>
+              <p>Rush, after-hours, delivery, or special meeting requests may be possible, but may add an extra fee.</p>
             </article>
           </div>
         </div>
       </section>
+
+      <section class="section section-alt">
+        <div class="container split-layout">
+          <div class="section-heading align-left">
+            <p class="eyebrow">Pickup</p>
+            <h2>Pickup and Special Accommodations</h2>
+            <p>
+              Standard pickup is handled through scheduled campus pickup windows. The default pickup is 12 noon directly in front of the Student Union on your assigned pickup day. The goal is to avoid random meetups throughout the day and keep orders organized.
+            </p>
+          </div>
+
+          <div class="card policy-card">
+            <ul class="check-list">
+              <li>Default pickup time/location: 12 noon directly in front of the Student Union</li>
+              <li>Pickup day/window is confirmed when your order is approved</li>
+              <li>Payment is collected after the final quote through Zelle or PayPal</li>
+              <li>Rush, after-hours, delivery, or special meeting requests may be available</li>
+              <li>Special accommodations may add an extra fee depending on distance, urgency, or scheduling difficulty</li>
+              <li>If you need something unusual, mention it in your quote request</li>
+            </ul>
+            <p class="policy-callout">Special accommodations are not guaranteed, but we'll try to work with you when possible. Extra fees may apply.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container split-layout">
+          <div class="card policy-card">
+            <span class="note-label">Calculator vs quote</span>
+            <h2>Why the Quote Is Not Always the Calculator Price</h2>
+            <p>
+              The calculator is meant to give a quick estimate. Final pricing may change based on supports, print orientation, failed-print risk, tight deadlines, large parts, unusual geometry, or special pickup needs.
+            </p>
+          </div>
+
+          <div class="card policy-card">
+            <ul class="check-list">
+              <li>Support-heavy models may cost more</li>
+              <li>Rush deadlines may cost more</li>
+              <li>Very large prints may require a custom quote</li>
+              <li>Special pickup or delivery requests may cost extra</li>
+              <li>Files with high failure risk may need review before approval</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="container">
+          <div class="card trust-card">
+            <span class="note-label">Built for Student Deadlines</span>
+            <h2>Local help when timing matters.</h2>
+            <p>
+              TI Lab is usually the cheapest option if you want to manage the print yourself. Online print farms are useful if you can wait for shipping. UCF Prints is for students who need a usable part printed locally without dealing with the full printing process.
+            </p>
+            <strong>UCF Prints fills the gap between doing it yourself and waiting on an online print farm.</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="section cta-section">
+        <div class="container cta-band">
+          <div>
+            <p class="eyebrow">Ready to Print?</p>
+            <h2>Send your file or project details and we'll get back to you with a real quote.</h2>
+          </div>
+          <a class="button button-primary" href="quote.html">Start a Quote</a>
+        </div>
+      </section>
     </main>
   </div>
-
-  <script src="script.js"></script>
+  <script src="js/process.js"></script>
 </body>
 </html>
