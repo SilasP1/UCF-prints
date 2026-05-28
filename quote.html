@@ -6,7 +6,7 @@
   <title>UCF Prints | Guided Quote</title>
   <meta
     name="description"
-    content="Enter rough 3D print specs, get a ballpark estimate, and see the recommended supplier for the job."
+    content="Enter rough 3D print specs, get a ballpark estimate, and send a final quote request to UCF Prints."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +23,7 @@
         </a>
         <nav class="nav" aria-label="Main navigation">
           <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="how-it-works.html">How It Works</a>
           <a class="nav-link nav-link-highlight active" href="quote.html">Get Started</a>
         </nav>
       </div>
@@ -34,7 +35,7 @@
           <div>
             <p class="eyebrow">Guided quote</p>
             <h1>I need something printed.</h1>
-            <p>Enter rough specs, get a rough estimate, then search for available supplier matches when you are ready.</p>
+            <p>Enter the printer estimate numbers and the estimate updates automatically. Then copy the request summary and send it with your file.</p>
           </div>
           <div class="quiet-note">
             This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.
@@ -47,7 +48,8 @@
           <form class="card quote-form" id="quoteForm">
             <div class="form-head">
               <span class="note-label">Print details</span>
-              <h2>Start with your best guess.</h2>
+              <h2>Start with your printer estimate.</h2>
+              <p>The calculator uses filament grams, print time, material, and deadline. It is still only a ballpark until the file is reviewed.</p>
             </div>
 
             <div class="form-grid">
@@ -59,6 +61,7 @@
                   <option value="TPU">TPU</option>
                   <option value="ABS">ABS</option>
                 </select>
+                <small>Material changes the estimate. PLA is the normal default.</small>
               </label>
 
               <label class="field">
@@ -71,47 +74,37 @@
                   <option value="red">Red</option>
                   <option value="custom">Custom / flexible</option>
                 </select>
+                <small>Color does not change the calculator yet, but it helps with review.</small>
               </label>
 
+            </div>
+
+            <div class="slicer-estimate-card">
+              <div>
+                <span class="note-label">Printer estimate</span>
+                <h3>Use the filament and time estimate from your slicer.</h3>
+                <p>Print size and print time are based on our printer. You do not need to choose dimensions here.</p>
+              </div>
               <label class="field">
-                <span>Estimated weight</span>
+                <span>Estimated filament</span>
                 <div class="input-with-unit">
                   <input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" min="1" value="75">
                   <span>g</span>
                 </div>
+                <small>Use the grams shown by your slicer, not the model size.</small>
               </label>
-
               <label class="field">
                 <span>Estimated print time</span>
                 <div class="input-with-unit">
                   <input id="estimatedPrintHours" name="estimatedPrintHours" type="number" min="0.5" step="0.5" value="4">
                   <span>hrs</span>
                 </div>
+                <small>Use the printer time estimate in hours.</small>
               </label>
-            </div>
-
-            <div class="dimension-grid">
-              <label class="field">
-                <span>X dimension</span>
-                <div class="input-with-unit">
-                  <input id="dimensionX" name="dimensionX" type="number" min="1" value="80">
-                  <span>mm</span>
-                </div>
-              </label>
-              <label class="field">
-                <span>Y dimension</span>
-                <div class="input-with-unit">
-                  <input id="dimensionY" name="dimensionY" type="number" min="1" value="60">
-                  <span>mm</span>
-                </div>
-              </label>
-              <label class="field">
-                <span>Z dimension</span>
-                <div class="input-with-unit">
-                  <input id="dimensionZ" name="dimensionZ" type="number" min="1" value="40">
-                  <span>mm</span>
-                </div>
-              </label>
+              <div class="machine-spec">
+                <strong>Printer print area</strong>
+                <span>220 x 220 x 250 mm max build volume. If your model does not fit this printer, it needs manual review.</span>
+              </div>
             </div>
 
             <div class="form-grid">
@@ -119,10 +112,11 @@
                 <span>Deadline type</span>
                 <select id="deadlineType" name="deadlineType">
                   <option value="economy">Economy</option>
-                  <option value="standard" selected>Standard</option>
-                  <option value="priority">Priority</option>
-                  <option value="rush">Rush</option>
+                  <option value="standard" selected>Standard, 3-5 days</option>
+                  <option value="priority">Priority, 1-2 days</option>
+                  <option value="rush">Rush, ASAP review</option>
                 </select>
+                <small>Faster deadlines increase the estimate.</small>
               </label>
 
               <label class="field">
@@ -133,40 +127,30 @@
                   <option value="either">Either</option>
                 </select>
               </label>
-
-              <label class="field">
-                <span>Rough complexity</span>
-                <select id="roughComplexity" name="roughComplexity">
-                  <option value="simple" selected>Simple</option>
-                  <option value="moderate">Moderate</option>
-                  <option value="complex">Complex</option>
-                </select>
-              </label>
-
-              <label class="file-toggle">
-                <input id="fileAttached" name="fileAttached" type="checkbox">
-                <span>
-                  <strong>File attached placeholder</strong>
-                  <small>No real upload yet. This only marks whether a file is ready.</small>
-                </span>
-              </label>
             </div>
           </form>
 
           <aside class="results-stack">
             <section class="card estimate-card">
               <span class="note-label">Your rough estimate</span>
-              <div class="estimate-main" id="estimatedPrice">$14</div>
-              <div class="estimate-range" id="estimatedPriceRange">$13-$16 estimated range</div>
+              <div class="estimate-main" id="estimatedPrice">$22.55</div>
+              <div class="estimate-note">Final confirmed prices round up to the nearest half dollar.</div>
               <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3-5 days after review.</div>
+              <div class="estimate-breakdown" aria-label="Estimate breakdown">
+                <div><span>Material</span><strong id="materialBreakdown">$8</strong></div>
+                <div><span>Printer time</span><strong id="timeBreakdown">$6</strong></div>
+                <div><span>Deadline</span><strong id="deadlineBreakdown">1.00x</strong></div>
+                <div><span>Handling buffer</span><strong id="handlingBreakdown">$5</strong></div>
+              </div>
               <p class="disclaimer">This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.</p>
             </section>
 
             <section class="card final-quote-card">
               <span class="note-label">Next step</span>
-              <h2>Ready to see matches?</h2>
-              <p>Search for suppliers after your estimate looks close. You will see a short list of best-fit options and their rough quote range.</p>
-              <button class="button button-primary" type="button" id="searchSuppliersButton">Search for suppliers</button>
+              <h2>Ready to confirm?</h2>
+              <p>Copy the quote summary and send it with your file or reference. We'll confirm the final price before printing.</p>
+              <a class="contact-link" href="mailto:si354631@ucf.edu">si354631@ucf.edu</a>
+              <button class="button button-primary" type="button" id="copyQuoteButton">Copy quote summary</button>
               <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
             </section>
 
@@ -180,6 +164,7 @@
     </main>
   </div>
 
-  <script type="module" src="js/quote.js"></script>
+  <script src="js/quote.js"></script>
 </body>
 </html>
+
