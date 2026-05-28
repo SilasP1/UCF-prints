@@ -30,34 +30,96 @@
 
     <main>
       <section class="hero-section">
-        <div class="container hero-layout">
+        <div class="container hero-layout hero-layout-single">
           <div class="hero-copy">
             <p class="eyebrow">Founder-operated at UCF</p>
             <h1>Fast 3D printing for student projects, prototypes, and custom parts.</h1>
             <p class="hero-description">
-              Enter your print details, get a rough estimate, and we'll match the job to the best available supplier.
+              Enter your print details, get a rough estimate, and send the final quote request directly to Silas.
             </p>
             <div class="hero-actions">
               <a class="button button-primary" href="quote.html">Get Started</a>
             </div>
           </div>
-          <aside class="hero-panel" aria-label="Current quote flow">
-            <div>
-              <span class="panel-number">01</span>
-              <strong>Tell us the basics</strong>
-              <p>Material, size, color, deadline, and rough print time.</p>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">Why choose us</p>
+            <h2>Example Cost Comparisons</h2>
+            <p>
+              Actual prices vary by file, material, supports, and deadline, but these examples show how UCF Prints compares for common student projects.
+            </p>
+          </div>
+
+          <div class="card comparison-card">
+            <div class="table-wrap comparison-table-wrap">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th>Example Part</th>
+                    <th>Filament / Time</th>
+                    <th>UCF Prints Estimate</th>
+                    <th>Online Print Farm Estimate</th>
+                    <th>TI Lab Reality</th>
+                    <th>Best Option</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Small bracket / mount</td>
+                    <td>35g, 3 hours</td>
+                    <td>$13-18</td>
+                    <td>$20-40 plus shipping</td>
+                    <td>Cheapest, if available</td>
+                    <td>TI Lab if not urgent, UCF Prints if deadline matters</td>
+                  </tr>
+                  <tr>
+                    <td>Medium enclosure</td>
+                    <td>120g, 6 hours</td>
+                    <td>$35-45</td>
+                    <td>$45-75 plus shipping</td>
+                    <td>Possible, but queue/access risk</td>
+                    <td>UCF Prints for speed/reliability</td>
+                  </tr>
+                  <tr>
+                    <td>Large project part</td>
+                    <td>280g, 11 hours</td>
+                    <td>$55-70</td>
+                    <td>$85-150 plus shipping</td>
+                    <td>Difficult due to long print time</td>
+                    <td>UCF Prints</td>
+                  </tr>
+                  <tr>
+                    <td>Very large print</td>
+                    <td>420g, 18 hours</td>
+                    <td>$90-120 or custom quote</td>
+                    <td>$130-220 plus shipping</td>
+                    <td>Often impractical</td>
+                    <td>UCF Prints or custom review</td>
+                  </tr>
+                  <tr>
+                    <td>Rush small part</td>
+                    <td>25g, 2 hours, same-day</td>
+                    <td>$20-30</td>
+                    <td>Often unavailable same-day</td>
+                    <td>Only if printer is open immediately</td>
+                    <td>UCF Prints</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div>
-              <span class="panel-number">02</span>
-              <strong>See a ballpark price</strong>
-              <p>Transparent estimate before file review.</p>
-            </div>
-            <div>
-              <span class="panel-number">03</span>
-              <strong>Get a best-fit match</strong>
-              <p>Currently routed through founder-operated review.</p>
-            </div>
-          </aside>
+          </div>
+
+          <div class="comparison-note card">
+            <h3>How to read this</h3>
+            <p>
+              TI Lab is usually the cheapest option if you have time, access, and want to manage the print yourself. Online print farms are useful for specialty materials or professional-grade jobs, but shipping makes them slower and more expensive for most student projects. UCF Prints is built for students who need a usable part quickly without dealing with the printing process.
+            </p>
+            <strong>UCF Prints fills the gap between doing it yourself at the TI Lab and waiting on an online print farm.</strong>
+          </div>
         </div>
       </section>
 
@@ -71,7 +133,7 @@
             <article class="card step-card">
               <span class="step-number">1</span>
               <h3>Enter rough specs</h3>
-              <p>Use the quote page even if you only have early estimates for grams, print hours, and dimensions.</p>
+              <p>Use the quote page with your material, color, deadline, and K1C slicer estimate.</p>
             </article>
             <article class="card step-card">
               <span class="step-number">2</span>
@@ -80,8 +142,8 @@
             </article>
             <article class="card step-card">
               <span class="step-number">3</span>
-              <h3>Confirm after review</h3>
-              <p>The final price is confirmed after the file or reference is checked for print risk.</p>
+              <h3>Send for review</h3>
+              <p>Silas confirms the final price after checking the file or reference for print risk.</p>
             </article>
           </div>
         </div>
@@ -102,12 +164,12 @@
               <span>No account or payment flow yet. Just enough detail to estimate the job.</span>
             </div>
             <div class="value-row">
-              <strong>Local context</strong>
-              <span>Pickup and delivery preferences are considered before assigning the work.</span>
+              <strong>K1C-based quoting</strong>
+              <span>Print size and print time are assumed around the Creality K1C workflow.</span>
             </div>
             <div class="value-row">
-              <strong>Operator control</strong>
-              <span>Early jobs are manually reviewed so supplier matching stays practical and trustworthy.</span>
+              <strong>Founder control</strong>
+              <span>Every request is manually reviewed by Silas before anything gets printed.</span>
             </div>
           </div>
         </div>
@@ -124,10 +186,10 @@
               </p>
             </article>
             <article class="card info-card">
-              <span class="note-label">Supplier matching coming soon</span>
-              <h3>Currently founder-operated.</h3>
+              <span class="note-label">Currently founder-operated</span>
+              <h3>One person, clear communication.</h3>
               <p>
-                Supplier capability matching is built into the frontend now, but jobs are still controlled manually. Approved suppliers, live availability, and assignments will connect to backend data later.
+                UCF Prints is just Silas right now. No marketplace layer, no hidden handoff, and no extra account system.
               </p>
             </article>
           </div>
