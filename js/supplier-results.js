@@ -38,7 +38,7 @@ function renderMissingRequest() {
 }
 
 function renderSummary(activeRequest, activeMatchResult) {
-  const range = formatRange(activeRequest.estimatedPriceRange);
+  const range = formatRange(getRequestPriceRange(activeRequest));
   const matchCount = [
     activeMatchResult.bestSupplier,
     ...activeMatchResult.alternateSuppliers
@@ -134,10 +134,11 @@ function selectSupplier(supplierId) {
 function getSupplierQuoteRange(activeRequest, supplier, isBest) {
   const queueBuffer = supplier.queueLoad > 1 ? 1.05 : 1;
   const backupBuffer = isBest ? 1 : 1.03;
+  const requestRange = getRequestPriceRange(activeRequest);
 
   return {
-    lowEstimate: Math.round(activeRequest.estimatedPriceRange.lowEstimate * queueBuffer * backupBuffer),
-    highEstimate: Math.round(activeRequest.estimatedPriceRange.highEstimate * queueBuffer * backupBuffer)
+    lowEstimate: Math.round(requestRange.lowEstimate * queueBuffer * backupBuffer),
+    highEstimate: Math.round(requestRange.highEstimate * queueBuffer * backupBuffer)
   };
 }
 
@@ -210,7 +211,7 @@ function buildQuoteSummary(activeRequest, supplier) {
     "UCF Prints final quote request",
     "",
     `Request ID: ${activeRequest.requestId}`,
-    `Estimated price range: ${formatRange(activeRequest.estimatedPriceRange)}`,
+    `Estimated price range: ${formatRange(getRequestPriceRange(activeRequest))}`,
     `Material and color: ${activeRequest.material}, ${activeRequest.color}`,
     `Estimated weight: ${activeRequest.estimatedWeightGrams}g`,
     `Estimated print time: ${activeRequest.estimatedPrintHours} hours`,
@@ -237,6 +238,19 @@ function renderDebug(activeRequest, activeMatchResult) {
 
 function formatRange(range) {
   return `${formatCurrency(range.lowEstimate)}-${formatCurrency(range.highEstimate)}`;
+}
+
+function getRequestPriceRange(activeRequest) {
+  if (activeRequest.estimatedPriceRange) {
+    return activeRequest.estimatedPriceRange;
+  }
+
+  const estimatedPrice = Number(activeRequest.estimatedPrice) || 0;
+
+  return {
+    lowEstimate: Math.round(estimatedPrice * 0.9),
+    highEstimate: Math.round(estimatedPrice * 1.2)
+  };
 }
 
 function formatCurrency(value) {
