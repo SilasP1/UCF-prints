@@ -1,14 +1,14 @@
 export const pricingDefaults = {
-  materialRate: 0.1,
+  materialRates: {
+    PLA: 0.1,
+    PETG: 0.13,
+    TPU: 0.16,
+    ABS: 0.14
+  },
   timeRate: 1.5,
   marginMultiplier: 1.3,
   handlingFee: 5,
   minimumPrice: 12,
-  complexityMultipliers: {
-    simple: 1,
-    moderate: 1.15,
-    complex: 1.35
-  },
   deadlineMultipliers: {
     economy: 0.9,
     standard: 1,
@@ -18,37 +18,36 @@ export const pricingDefaults = {
 };
 
 export function calculateEstimate({
+  material,
   estimatedWeightGrams,
   estimatedPrintHours,
-  roughComplexity,
   deadlineType
 }) {
   const grams = Number(estimatedWeightGrams) || 0;
   const printHours = Number(estimatedPrintHours) || 0;
-  const complexityMultiplier = pricingDefaults.complexityMultipliers[roughComplexity] ?? 1;
+  const materialRate = pricingDefaults.materialRates[material] ?? pricingDefaults.materialRates.PLA;
   const deadlineMultiplier = pricingDefaults.deadlineMultipliers[deadlineType] ?? 1;
+  const materialCost = grams * materialRate;
+  const timeCost = printHours * pricingDefaults.timeRate;
 
-  const baseCost = (
-    grams * pricingDefaults.materialRate +
-    printHours * pricingDefaults.timeRate
-  );
-  const adjustedCost = baseCost * complexityMultiplier * deadlineMultiplier;
+  const baseCost = materialCost + timeCost;
+  const adjustedCost = baseCost * deadlineMultiplier;
   // marginMultiplier covers failed prints, machine wear, and quote uncertainty.
   // handlingFee covers setup, messaging, and coordination.
   const finalPrice = adjustedCost * pricingDefaults.marginMultiplier + pricingDefaults.handlingFee;
 
-  const estimatedPrice = Math.round(Math.max(finalPrice, pricingDefaults.minimumPrice));
-  const lowEstimate = Math.round(estimatedPrice * 0.9);
-  const highEstimate = Math.round(estimatedPrice * 1.15);
+  const estimatedPrice = Math.max(finalPrice, pricingDefaults.minimumPrice);
 
   return {
     estimatedPrice,
-    estimatedPriceRange: {
-      lowEstimate,
-      highEstimate
-    },
+    materialRate,
+    materialCost,
+    timeCost,
     baseCost,
-    adjustedCost
+    deadlineMultiplier,
+    adjustedCost,
+    marginMultiplier: pricingDefaults.marginMultiplier,
+    handlingFee: pricingDefaults.handlingFee
   };
 }
 
