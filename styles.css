@@ -1,16 +1,16 @@
 :root {
-  --bg: #f6f3ee;
-  --ink: #161616;
-  --muted: #64615b;
-  --panel: #ffffff;
-  --panel-soft: #fbfaf7;
-  --line: #ded8cf;
+  --bg: #080808;
+  --ink: #f7f7f5;
+  --muted: #b9b9b4;
+  --panel: #121212;
+  --panel-soft: #191919;
+  --line: rgba(255, 255, 255, 0.1);
   --gold: #ffc904;
   --gold-deep: #d3a500;
   --green: #1f8a5b;
   --red: #bc4b3f;
-  --blue: #2d6cdf;
-  --shadow: 0 18px 40px rgba(34, 28, 18, 0.1);
+  --blue: #7aa7ff;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
   --radius: 8px;
   --container: min(1120px, calc(100% - 2rem));
 }
@@ -30,7 +30,8 @@ body {
   font-family: "Manrope", "Segoe UI", sans-serif;
   color: var(--ink);
   background:
-    linear-gradient(180deg, rgba(255, 201, 4, 0.12), transparent 18rem),
+    radial-gradient(circle at top left, rgba(255, 201, 4, 0.12), transparent 24rem),
+    linear-gradient(180deg, #050505 0%, #0b0b0b 48%, #111111 100%),
     var(--bg);
 }
 
@@ -58,8 +59,8 @@ select {
   position: sticky;
   top: 0;
   z-index: 10;
-  border-bottom: 1px solid rgba(22, 22, 22, 0.08);
-  background: rgba(246, 243, 238, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 6, 6, 0.82);
   backdrop-filter: blur(16px);
 }
 
@@ -83,7 +84,7 @@ select {
   height: 1.05rem;
   border-radius: 4px;
   background: linear-gradient(135deg, var(--gold), #ffe383);
-  border: 1px solid rgba(22, 22, 22, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .nav {
@@ -111,9 +112,9 @@ select {
 
 .nav-link-highlight,
 .dashboard-pill {
-  color: var(--ink);
-  border-color: rgba(22, 22, 22, 0.14);
-  background: var(--panel);
+  color: var(--gold);
+  border-color: rgba(255, 201, 4, 0.28);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .button {
@@ -123,7 +124,7 @@ select {
   min-height: 3.2rem;
   padding: 0.9rem 1.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(22, 22, 22, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   font-weight: 800;
   transition: transform 160ms ease, box-shadow 160ms ease;
 }
@@ -134,8 +135,9 @@ select {
 }
 
 .button-primary {
-  background: var(--ink);
+  background: #000000;
   color: var(--gold);
+  border-color: rgba(255, 201, 4, 0.28);
 }
 
 .hero-section,
@@ -353,7 +355,7 @@ select {
   display: grid;
   gap: 0.25rem;
   padding: 0.9rem;
-  border: 1px solid rgba(22, 22, 22, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
   background: var(--panel);
 }
@@ -398,6 +400,7 @@ select {
 .input-with-unit input {
   border: 0;
   background: transparent;
+  color: var(--ink);
 }
 
 .input-with-unit span {
@@ -420,7 +423,7 @@ select {
 .file-toggle input {
   width: 1.15rem;
   height: 1.15rem;
-  accent-color: var(--ink);
+  accent-color: var(--gold);
 }
 
 .file-toggle span {
@@ -464,7 +467,7 @@ select {
   padding: 0;
   overflow: hidden;
   border-color: rgba(255, 255, 255, 0.1);
-  background: #111111;
+  background: var(--panel);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
 }
 
@@ -528,8 +531,8 @@ select {
   gap: 0.75rem;
   margin-top: 1rem;
   border-color: rgba(255, 201, 4, 0.28);
-  background: #161616;
-  color: #f7f7f5;
+  background: var(--panel);
+  color: var(--ink);
 }
 
 .comparison-note h3,
@@ -538,7 +541,7 @@ select {
 }
 
 .comparison-note p {
-  color: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
 }
 
 .manual-review {
@@ -547,8 +550,8 @@ select {
   padding: 1rem;
   border-radius: var(--radius);
   border: 1px solid rgba(188, 75, 63, 0.35);
-  background: #fff6f4;
-  color: #743025;
+  background: rgba(188, 75, 63, 0.14);
+  color: #ffd2cb;
   line-height: 1.6;
 }
 
