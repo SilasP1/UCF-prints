@@ -21,7 +21,8 @@
           <span class="brand-mark"></span>
           <span>UCF Prints</span>
         </a>
-        <nav class="nav" aria-label="Main navigation">
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
+        <nav class="nav" id="siteNav" aria-label="Main navigation">
           <a class="nav-link active" href="index.html">Home</a>
           <a class="nav-link" href="how-it-works.html">How It Works</a>
           <a class="nav-link nav-link-highlight" href="quote.html">Get Started</a>
@@ -56,7 +57,8 @@
           </div>
 
           <div class="card comparison-card">
-            <div class="table-wrap comparison-table-wrap">
+            <p class="comparison-scroll-note">Scroll sideways to compare options -></p>
+            <div class="table-wrap comparison-table-wrap comparison-table-scroll">
               <table class="comparison-table">
                 <thead>
                   <tr>
@@ -182,6 +184,7 @@
       </section>
     </main>
   </div>
+  <script src="js/site.js"></script>
 </body>
 </html>
 
