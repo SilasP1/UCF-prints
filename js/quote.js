@@ -94,9 +94,7 @@ function buildQuoteSummary(request) {
     `K1C print-time estimate: ${request.estimatedPrintHours} hours`,
     `Deadline: ${request.deadlineType}`,
     `Fulfillment: ${request.fulfillmentPreference}`, "",
-    "Intended use / fit or strength requirements:", "",
-    "I will attach the STL, 3MF, or STEP file before sending.",
-    "I understand the final price is confirmed after file review."
+    "STL/3MF below:"
   ].join("\n");
 }
 
@@ -137,11 +135,10 @@ function configureFileReviewLinks() {
   const subject = "Peer Printing file review";
   const body = [
     "Hi,", "", "I'd like a 3D printing quote.", "",
-    "Intended use:",
     "Deadline:",
     "Material/color preference:",
     "Approximate size:", "",
-    "I will attach the STL, 3MF, or STEP file before sending."
+    "STL/3MF below:"
   ].join("\n");
   document.querySelector("#fileReviewEmailButton").href = buildMailtoUrl(OPERATOR.email, subject, body);
   document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, subject, body);
