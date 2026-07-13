@@ -63,11 +63,16 @@
                   <p class="disclaimer">Final price may change after reviewing supports, orientation, risk, geometry, and actual print settings.</p>
                 </section>
                 <section class="card final-quote-card" id="quoteActions">
-                  <span class="note-label">Next step</span><h2>Send this estimate with your file.</h2><p>Your email will be prefilled. Add the STL or 3MF below the quote details.</p>
-                  <a class="button button-primary button-full" id="gmailQuoteButton" target="_blank" rel="noopener">Create Gmail</a>
-                  <a class="button button-secondary button-full" id="outlookQuoteButton" target="_blank" rel="noopener">Create Outlook email</a>
-                  <button class="button button-secondary button-full" type="button" id="copyQuoteButton">Copy info</button>
-                  <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
+                  <span class="note-label">Final step</span><h2>Request this print.</h2><p>Finish the estimate, then continue to send the quote details and your model.</p>
+                  <button class="button button-primary button-full" type="button" id="requestQuoteButton" aria-expanded="false" aria-controls="quoteEmailOptions" disabled>Enter weight and time to continue</button>
+                  <div class="email-options" id="quoteEmailOptions" hidden>
+                    <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail and Outlook open a new email with your estimate already filled in.</span></div>
+                    <a class="button button-primary button-full" id="gmailQuoteButton" target="_blank" rel="noopener">Create Gmail</a>
+                    <a class="button button-secondary button-full" id="outlookQuoteButton" target="_blank" rel="noopener">Create Outlook email</a>
+                    <button class="button button-secondary button-full" type="button" id="copyQuoteButton">Copy info instead</button>
+                    <p class="order-notice"><strong>To submit your request:</strong> attach the STL or 3MF, then send the email. Your order is confirmed only after you receive the final price and completion time.</p>
+                    <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
+                  </div>
                 </section>
                 <details class="developer-panel" id="developerPanel" hidden><summary>Developer details</summary><pre id="debugOutput"></pre></details>
               </aside>
@@ -79,11 +84,14 @@
             <div class="card file-review-card">
               <div><span class="note-label">No slicer estimate</span><h2>Email the model.</h2><p>Include the deadline and material or color preference, then add the STL or 3MF below.</p></div>
               <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>State the deadline</li><li>Choose a material and color</li><li>Include the approximate size if known</li><li>Add the STL or 3MF below the email details</li></ul></div>
-              <a class="button button-primary button-full" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Create Gmail</a>
-              <a class="button button-secondary button-full" id="fileReviewOutlookButton" href="https://outlook.office.com/mail/deeplink/compose" target="_blank" rel="noopener">Create Outlook email</a>
-              <button class="button button-secondary button-full" type="button" id="fileReviewCopyButton">Copy info</button>
-              <p class="copy-message" id="fileReviewMessage" role="status" aria-live="polite"></p>
-              <p class="fine-print">The model cannot be added automatically. Add it below the email details before sending.</p>
+              <div class="email-options">
+                <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail and Outlook open a new email with the request details already filled in.</span></div>
+                <a class="button button-primary button-full" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Create Gmail</a>
+                <a class="button button-secondary button-full" id="fileReviewOutlookButton" href="https://outlook.live.com/mail/0/deeplink/compose" target="_blank" rel="noopener">Create Outlook email</a>
+                <button class="button button-secondary button-full" type="button" id="fileReviewCopyButton">Copy info instead</button>
+                <p class="order-notice"><strong>To submit your request:</strong> attach the STL or 3MF, then send the email. Your order is confirmed only after you receive the final price and completion time.</p>
+                <p class="copy-message" id="fileReviewMessage" role="status" aria-live="polite"></p>
+              </div>
             </div>
           </section>
         </div>
