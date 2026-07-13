@@ -165,7 +165,9 @@ function buildEmailParams(values) {
 }
 
 function buildOutlookUrl(recipient, subject, body) {
-  return `https://outlook.office.com/mail/deeplink/compose?${buildEmailParams({ to: recipient, subject, body })}`;
+  const composeUrl = `https://outlook.office.com/mail/deeplink/compose/?${buildEmailParams({ to: recipient, subject, body })}`;
+  const redirectTo = btoa(composeUrl).replace(/=+$/, "");
+  return `https://outlook.office.com/owa/?${buildEmailParams({ state: "1", redirectTo })}`;
 }
 
 function buildGmailUrl(recipient, subject, body) {
