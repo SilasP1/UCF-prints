@@ -141,12 +141,6 @@ button { color: inherit; }
 .secondary-action { display: inline-flex; justify-content: center; padding: .45rem; border: 0; background: transparent; color: var(--gold); font-weight: 800; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
 .is-disabled, .secondary-action:disabled { opacity: .42; pointer-events: none; cursor: not-allowed; }
 .button:disabled { opacity: .42; cursor: not-allowed; transform: none; box-shadow: none; }
-.email-fallback { margin-top: .25rem; padding-top: .9rem; border-top: 1px solid var(--line); }
-.email-fallback summary { color: var(--muted); font-weight: 800; cursor: pointer; }
-.copy-row { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: .65rem; align-items: center; margin: .9rem 0; padding: .75rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-soft); }
-.copy-row span { color: var(--muted); font-size: .86rem; }
-.copy-row code { overflow-wrap: anywhere; color: var(--ink); font-family: inherit; font-weight: 800; }
-.copy-row button { padding: .45rem .65rem; border: 1px solid rgba(255,201,4,.3); border-radius: 999px; background: transparent; color: var(--gold); font-size: .82rem; font-weight: 800; cursor: pointer; }
 .copy-message { min-height: 1.3rem; margin: 0; white-space: pre-wrap; }
 .file-only-panel { max-width: 54rem; margin: 0 auto; scroll-margin-top: 6rem; }
 .file-review-card { display: grid; gap: 1.3rem; padding: 1.6rem; }
@@ -181,8 +175,6 @@ button { color: inherit; }
   .mode-button { border-radius: calc(var(--radius) - 2px); }
   .quote-choice-grid { grid-template-columns: 1fr; }
   .quote-choice { min-height: 9rem; }
-  .copy-row { grid-template-columns: 1fr auto; }
-  .copy-row span { grid-column: 1 / -1; }
 }
 
 @media (max-width: 480px) {
