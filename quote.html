@@ -64,9 +64,13 @@
                 </section>
                 <section class="card final-quote-card" id="quoteActions">
                   <span class="note-label">Next step</span><h2>Send this estimate with your file.</h2><p>Your email will be prefilled. Add the STL or 3MF below the quote details.</p>
-                  <a class="button button-primary button-full is-disabled" id="emailQuoteButton" aria-disabled="true">Create quote email</a>
-                  <a class="secondary-action is-disabled" id="gmailQuoteButton" aria-disabled="true" target="_blank" rel="noopener">Use Gmail instead</a>
-                  <button class="secondary-action" type="button" id="copyQuoteButton" disabled>Copy quote details</button>
+                  <a class="button button-primary button-full is-disabled" id="outlookQuoteButton" aria-disabled="true" target="_blank" rel="noopener">Open in Outlook</a>
+                  <a class="secondary-action is-disabled" id="gmailQuoteButton" aria-disabled="true" target="_blank" rel="noopener">Open in Gmail</a>
+                  <details class="email-fallback">
+                    <summary>Email not opening?</summary>
+                    <div class="copy-row"><span>Send to</span><code>silaspowersw2@gmail.com</code><button type="button" data-copy-email data-status-target="quoteMessage">Copy address</button></div>
+                    <button class="button button-secondary button-full" type="button" id="copyQuoteButton" disabled>Copy message format</button>
+                  </details>
                   <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
                 </section>
                 <details class="developer-panel" id="developerPanel" hidden><summary>Developer details</summary><pre id="debugOutput"></pre></details>
@@ -79,8 +83,14 @@
             <div class="card file-review-card">
               <div><span class="note-label">No slicer estimate</span><h2>Email the model.</h2><p>Include the deadline and material or color preference, then add the STL or 3MF below.</p></div>
               <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>State the deadline</li><li>Choose a material and color</li><li>Include the approximate size if known</li><li>Add the STL or 3MF below the email details</li></ul></div>
-              <a class="button button-primary" id="fileReviewEmailButton" href="mailto:silaspowersw2@gmail.com">Create quote email</a>
-              <a class="secondary-action" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Use Gmail instead</a>
+              <a class="button button-primary" id="fileReviewOutlookButton" href="https://outlook.office.com/mail/deeplink/compose" target="_blank" rel="noopener">Open in Outlook</a>
+              <a class="secondary-action" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Open in Gmail</a>
+              <details class="email-fallback">
+                <summary>Email not opening?</summary>
+                <div class="copy-row"><span>Send to</span><code>silaspowersw2@gmail.com</code><button type="button" data-copy-email data-status-target="fileReviewMessage">Copy address</button></div>
+                <button class="button button-secondary button-full" type="button" id="fileReviewCopyButton">Copy message format</button>
+              </details>
+              <p class="copy-message" id="fileReviewMessage" role="status" aria-live="polite"></p>
               <p class="fine-print">The model cannot be added automatically. Add it below the email details before sending.</p>
             </div>
           </section>
