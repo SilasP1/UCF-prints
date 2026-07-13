@@ -11,7 +11,7 @@ const pricingDefaults = {
 
 const form = document.querySelector("#quoteForm");
 const copyQuoteButton = document.querySelector("#copyQuoteButton");
-const mailAppQuoteButton = document.querySelector("#mailAppQuoteButton");
+const outlookWebQuoteButton = document.querySelector("#outlookWebQuoteButton");
 const gmailQuoteButton = document.querySelector("#gmailQuoteButton");
 const quoteMessageElement = document.querySelector("#quoteMessage");
 const fileReviewCopyButton = document.querySelector("#fileReviewCopyButton");
@@ -164,8 +164,8 @@ function buildEmailParams(values) {
   return new URLSearchParams(values).toString().replace(/\+/g, "%20");
 }
 
-function buildMailAppUrl(recipient, subject, body) {
-  return `mailto:${recipient}?${buildEmailParams({ subject, body })}`;
+function buildOutlookWebUrl(recipient, subject, body) {
+  return `https://outlook.office.com/mail/deeplink/compose?${buildEmailParams({ to: recipient, subject, body })}`;
 }
 
 function buildGmailUrl(recipient, subject, body) {
@@ -178,7 +178,7 @@ function buildCopyInfo(subject, body) {
 
 function configureQuoteLinks(body) {
   quoteBody = body;
-  mailAppQuoteButton.href = buildMailAppUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+  outlookWebQuoteButton.href = buildOutlookWebUrl(OPERATOR.email, QUOTE_SUBJECT, body);
   gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, body);
 }
 
@@ -191,7 +191,7 @@ function configureFileReviewLinks() {
     "STL/3MF below:"
   ].join("\n");
   fileReviewBody = body;
-  document.querySelector("#fileReviewMailAppButton").href = buildMailAppUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+  document.querySelector("#fileReviewOutlookWebButton").href = buildOutlookWebUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
   document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
 }
 
