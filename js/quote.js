@@ -1,42 +1,26 @@
 const PRINTER_BUILD_VOLUME = { x: 220, y: 220, z: 250 };
-const JOB_STATUSES = {
-  quoteRequested: "quote_requested"
-};
+const OPERATOR = { name: "Peer Printing", email: "si354631@ucf.edu" };
 const pricingDefaults = {
-  materialRates: {
-    PLA: 0.1,
-    PETG: 0.13,
-    TPU: 0.16,
-    ABS: 0.14
-  },
+  materialRates: { PLA: 0.10, PETG: 0.13, TPU: 0.16, ABS: 0.14 },
   timeRate: 1.5,
   marginMultiplier: 1.3,
   handlingFee: 5,
   minimumPrice: 12,
-  deadlineMultipliers: {
-    economy: 0.9,
-    standard: 1,
-    priority: 1.35,
-    rush: 1.75
-  }
+  deadlineMultipliers: { economy: 0.9, standard: 1, priority: 1.35, rush: 1.75 }
 };
+
 const form = document.querySelector("#quoteForm");
-const estimatedPriceElement = document.querySelector("#estimatedPrice");
-const estimatedTurnaroundElement = document.querySelector("#estimatedTurnaround");
-const materialBreakdownElement = document.querySelector("#materialBreakdown");
-const timeBreakdownElement = document.querySelector("#timeBreakdown");
-const deadlineBreakdownElement = document.querySelector("#deadlineBreakdown");
-const handlingBreakdownElement = document.querySelector("#handlingBreakdown");
 const copyQuoteButton = document.querySelector("#copyQuoteButton");
+const emailQuoteButton = document.querySelector("#emailQuoteButton");
 const quoteMessageElement = document.querySelector("#quoteMessage");
 const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
 const debugEnabled = new URLSearchParams(window.location.search).has("debug");
 let currentRequest = null;
 
-if (developerPanel && debugEnabled) {
-  developerPanel.hidden = false;
-}
+if (developerPanel && debugEnabled) developerPanel.hidden = false;
+
+function getValue(id) { return document.querySelector(`#${id}`).value; }
 
 function getFormInput() {
   return {
@@ -50,18 +34,9 @@ function getFormInput() {
   };
 }
 
-function getValue(id) {
-  return document.querySelector(`#${id}`).value;
-}
-
-function calculateEstimate({
-  material,
-  estimatedWeightGrams,
-  estimatedPrintHours,
-  deadlineType
-}) {
-  const grams = Number(estimatedWeightGrams) || 0;
-  const printHours = Number(estimatedPrintHours) || 0;
+function calculateEstimate({ material, estimatedWeightGrams, estimatedPrintHours, deadlineType }) {
+  const grams = Math.max(Number(estimatedWeightGrams) || 0, 0);
+  const printHours = Math.max(Number(estimatedPrintHours) || 0, 0);
   const materialRate = pricingDefaults.materialRates[material] ?? pricingDefaults.materialRates.PLA;
   const deadlineMultiplier = pricingDefaults.deadlineMultipliers[deadlineType] ?? 1;
   const materialCost = grams * materialRate;
@@ -70,162 +45,108 @@ function calculateEstimate({
   const adjustedCost = baseCost * deadlineMultiplier;
   const finalPrice = adjustedCost * pricingDefaults.marginMultiplier + pricingDefaults.handlingFee;
   const estimatedPrice = Math.max(finalPrice, pricingDefaults.minimumPrice);
-  const estimatedPriceRange = createEstimateRange(estimatedPrice);
-
   return {
     estimatedPrice,
-    estimatedPriceRange,
-    materialRate,
-    materialCost,
-    timeCost,
-    baseCost,
-    deadlineMultiplier,
-    adjustedCost,
-    marginMultiplier: pricingDefaults.marginMultiplier,
+    estimatedPriceRange: {
+      lowEstimate: roundUpToHalfDollar(estimatedPrice * 0.9),
+      highEstimate: roundUpToHalfDollar(estimatedPrice * 1.2)
+    },
+    materialRate, materialCost, timeCost, deadlineMultiplier,
     handlingFee: pricingDefaults.handlingFee
   };
 }
 
-function createEstimateRange(estimatedPrice) {
-  return {
-    lowEstimate: roundUpToHalfDollar(estimatedPrice * 0.9),
-    highEstimate: roundUpToHalfDollar(estimatedPrice * 1.2)
-  };
-}
-
-function roundUpToHalfDollar(value) {
-  return Math.ceil(Number(value) * 2) / 2;
-}
+function roundUpToHalfDollar(value) { return Math.ceil(Number(value) * 2) / 2; }
+function formatCurrency(value) { return `$${Number(value).toFixed(2)}`; }
+function formatRange(range) { return `${formatCurrency(range.lowEstimate)}–${formatCurrency(range.highEstimate)}`; }
 
 function estimateTurnaround(deadlineType) {
-  const turnaroundByDeadline = {
-    economy: "Economy turnaround: usually 7-10 days after review.",
-    standard: "Standard turnaround: usually 3-5 days after review.",
-    priority: "Priority turnaround: usually 1-2 days after review.",
-    rush: "Rush turnaround: as soon as possible after review."
-  };
-
-  return turnaroundByDeadline[deadlineType] ?? turnaroundByDeadline.standard;
+  return ({
+    economy: "Economy turnaround: usually 7–10 days after review.",
+    standard: "Standard turnaround: usually 3–5 days after review.",
+    priority: "Priority turnaround: usually 1–2 days after review.",
+    rush: "Rush turnaround: as soon as capacity allows after review."
+  })[deadlineType] || "Standard turnaround: usually 3–5 days after review.";
 }
 
 function createRequest(input, estimate) {
   return {
-    requestId: createRequestId(),
-    material: input.material,
-    color: input.color,
-    estimatedWeightGrams: input.estimatedWeightGrams,
-    estimatedPrintHours: input.estimatedPrintHours,
-    estimatedDimensions: input.estimatedDimensions,
-    deadlineType: input.deadlineType,
-    fulfillmentPreference: input.fulfillmentPreference,
+    requestId: `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+    ...input,
     estimatedPrice: estimate.estimatedPrice,
     estimatedPriceRange: estimate.estimatedPriceRange,
-    operator: {
-      name: "UCF Prints",
-      email: "si354631@ucf.edu"
-    },
+    operator: OPERATOR,
     createdAt: new Date().toISOString(),
-    status: JOB_STATUSES.quoteRequested
+    status: "quote_requested"
   };
 }
 
-function createRequestId() {
-  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
-  return `REQ-${randomPart}`;
+function buildQuoteSummary(request) {
+  return [
+    "Peer Printing quote request", "",
+    `Request ID: ${request.requestId}`,
+    `Estimated range: ${formatRange(request.estimatedPriceRange)}`,
+    `Calculated midpoint: ${formatCurrency(request.estimatedPrice)}`,
+    `Material and color: ${request.material}, ${request.color}`,
+    `Slicer filament estimate: ${request.estimatedWeightGrams}g`,
+    `Slicer print-time estimate: ${request.estimatedPrintHours} hours`,
+    `Deadline: ${request.deadlineType}`,
+    `Fulfillment: ${request.fulfillmentPreference}`, "",
+    "Intended use / fit or strength requirements:", "",
+    "I will attach the STL, 3MF, or STEP file before sending.",
+    "I understand the final price is confirmed after file review."
+  ].join("\n");
+}
+
+function renderEstimate(estimate, input) {
+  document.querySelector("#estimatedPriceRange").textContent = formatRange(estimate.estimatedPriceRange);
+  document.querySelector("#estimatedPrice").textContent = formatCurrency(estimate.estimatedPrice);
+  document.querySelector("#estimatedTurnaround").textContent = estimateTurnaround(input.deadlineType);
+  document.querySelector("#materialBreakdown").textContent = `${formatCurrency(estimate.materialCost)} @ ${formatCurrency(estimate.materialRate)}/g`;
+  document.querySelector("#timeBreakdown").textContent = `${formatCurrency(estimate.timeCost)} @ $1.50/hr`;
+  document.querySelector("#deadlineBreakdown").textContent = `${estimate.deadlineMultiplier.toFixed(2)}×`;
+  document.querySelector("#handlingBreakdown").textContent = `+${formatCurrency(estimate.handlingFee)}`;
 }
 
 function updateQuote() {
   const input = getFormInput();
   const estimate = calculateEstimate(input);
-  const request = createRequest(input, estimate);
-
-  renderEstimate(estimate, input.deadlineType);
-  renderBreakdown(estimate);
-  renderDebug(request);
-  currentRequest = request;
-
-  window.currentUcfPrintsRequest = request;
-
-  try {
-    sessionStorage.setItem("ucfPrintsCurrentRequest", JSON.stringify(request));
-  } catch (error) {
-    console.warn("Unable to save UCF Prints quote request", error);
-  }
-}
-
-function renderEstimate(estimate, deadlineType) {
-  estimatedPriceElement.textContent = formatCurrency(estimate.estimatedPrice);
-  estimatedTurnaroundElement.textContent = estimateTurnaround(deadlineType);
-}
-
-function renderBreakdown(estimate) {
-  materialBreakdownElement.textContent = `${formatCurrency(estimate.materialCost)} @ ${formatRate(estimate.materialRate)}/g`;
-  timeBreakdownElement.textContent = `${formatCurrency(estimate.timeCost)} @ $1.50/hr`;
-  deadlineBreakdownElement.textContent = `${estimate.deadlineMultiplier.toFixed(2)}x`;
-  handlingBreakdownElement.textContent = `+${formatCurrency(estimate.handlingFee)}`;
-}
-
-function renderDebug(request) {
-  if (!debugEnabled) {
-    return;
-  }
-
-  debugOutputElement.textContent = JSON.stringify({
-    request
-  }, null, 2);
-
-  console.info("UCF Prints quote request", request);
-}
-
-function formatCurrency(value) {
-  return `$${Number(value).toFixed(2)}`;
-}
-
-function formatRate(value) {
-  return `$${Number(value).toFixed(2)}`;
+  currentRequest = createRequest(input, estimate);
+  renderEstimate(estimate, input);
+  const summary = buildQuoteSummary(currentRequest);
+  emailQuoteButton.href = `mailto:${OPERATOR.email}?subject=${encodeURIComponent("Peer Printing quote request")}&body=${encodeURIComponent(summary)}`;
+  if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
+  window.currentPeerPrintingRequest = currentRequest;
+  try { sessionStorage.setItem("peerPrintingCurrentRequest", JSON.stringify(currentRequest)); } catch (error) { console.warn("Unable to save quote request", error); }
 }
 
 async function copyQuoteSummary() {
-  if (!currentRequest) {
-    return;
-  }
-
+  if (!currentRequest) return;
   const summary = buildQuoteSummary(currentRequest);
-
   try {
     await navigator.clipboard.writeText(summary);
-    quoteMessageElement.textContent = "Quote summary copied. Send this with your file or reference.";
+    quoteMessageElement.textContent = "Quote summary copied. Attach your model when you send it.";
   } catch (error) {
     quoteMessageElement.textContent = summary;
   }
 }
 
-function buildQuoteSummary(request) {
-  return [
-    "UCF Prints final quote request",
-    "",
-    `Request ID: ${request.requestId}`,
-    `Estimated price: ${formatCurrency(request.estimatedPrice)}`,
-    `Estimated price range: ${formatRange(request.estimatedPriceRange)}`,
-    "Final confirmed prices round up to the nearest half dollar.",
-    `Material and color: ${request.material}, ${request.color}`,
-    `Printer filament estimate: ${request.estimatedWeightGrams}g`,
-    `Printer time estimate: ${request.estimatedPrintHours} hours`,
-    `Printer size limit: 220 x 220 x 250 mm max build volume`,
-    `Deadline type: ${request.deadlineType}`,
-    `Fulfillment preference: ${request.fulfillmentPreference}`,
-    "Operator: UCF Prints",
-    "Contact: si354631@ucf.edu",
-    "",
-    "Final price is confirmed after reviewing the file or reference."
-  ].join("\n");
+function setMode(mode) {
+  const showFile = mode === "file";
+  document.querySelector("#estimateMode").hidden = showFile;
+  document.querySelector("#file-only").hidden = !showFile;
+  document.querySelectorAll("[data-mode]").forEach(button => {
+    const active = button.dataset.mode === mode;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  if (showFile) document.querySelector("#file-only").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function formatRange(range) {
-  return `${formatCurrency(range.lowEstimate)}-${formatCurrency(range.highEstimate)}`;
-}
-
+document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => setMode(button.dataset.mode)));
 form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 updateQuote();
+
+if (window.location.hash === "#file-only") setMode("file");
