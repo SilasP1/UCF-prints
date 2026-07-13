@@ -20,6 +20,8 @@ const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
 const debugEnabled = new URLSearchParams(window.location.search).has("debug");
 const REQUEST_ID = `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+const QUOTE_SUBJECT = "Peer Printing quote request";
+const FILE_REVIEW_SUBJECT = "Peer Printing file review";
 let currentRequest = null;
 let fileReviewBody = "";
 
@@ -130,9 +132,8 @@ function updateQuote() {
   currentRequest = createRequest(input, estimate);
   renderEstimate(estimate, input);
   const summary = buildQuoteSummary(currentRequest);
-  const subject = "Peer Printing quote request";
-  outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, subject, summary);
-  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, subject, summary);
+  outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, QUOTE_SUBJECT, summary);
+  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, summary);
   setQuoteActionsEnabled(true);
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
   window.currentPeerPrintingRequest = currentRequest;
@@ -167,8 +168,11 @@ function buildGmailUrl(recipient, subject, body) {
   return `https://mail.google.com/mail/?${params.toString()}`;
 }
 
+function buildCopyInfo(subject, body) {
+  return [`To: ${OPERATOR.email}`, `Subject: ${subject}`, "", body].join("\n");
+}
+
 function configureFileReviewLinks() {
-  const subject = "Peer Printing file review";
   const body = [
     "Hi,", "", "I'd like a 3D printing quote.", "",
     "Deadline:",
@@ -177,17 +181,17 @@ function configureFileReviewLinks() {
     "STL/3MF below:"
   ].join("\n");
   fileReviewBody = body;
-  document.querySelector("#fileReviewOutlookButton").href = buildOutlookUrl(OPERATOR.email, subject, body);
-  document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, subject, body);
+  document.querySelector("#fileReviewOutlookButton").href = buildOutlookUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+  document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
 }
 
 async function copyQuoteSummary() {
   if (!currentRequest) return;
-  await copyText(buildQuoteSummary(currentRequest), quoteMessageElement, "Message format copied.");
+  await copyText(buildCopyInfo(QUOTE_SUBJECT, buildQuoteSummary(currentRequest)), quoteMessageElement, "Email info copied.");
 }
 
 async function copyFileReviewSummary() {
-  await copyText(fileReviewBody, fileReviewMessageElement, "Message format copied.");
+  await copyText(buildCopyInfo(FILE_REVIEW_SUBJECT, fileReviewBody), fileReviewMessageElement, "Email info copied.");
 }
 
 async function copyText(text, statusElement, successMessage) {
@@ -222,12 +226,6 @@ form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 fileReviewCopyButton.addEventListener("click", copyFileReviewSummary);
-document.querySelectorAll("[data-copy-email]").forEach(button => {
-  button.addEventListener("click", async () => {
-    const statusElement = document.querySelector(`#${button.dataset.statusTarget}`);
-    await copyText(OPERATOR.email, statusElement, "Email address copied.");
-  });
-});
 updateQuote();
 configureFileReviewLinks();
 
