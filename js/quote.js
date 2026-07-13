@@ -11,14 +11,17 @@ const pricingDefaults = {
 
 const form = document.querySelector("#quoteForm");
 const copyQuoteButton = document.querySelector("#copyQuoteButton");
-const emailQuoteButton = document.querySelector("#emailQuoteButton");
+const outlookQuoteButton = document.querySelector("#outlookQuoteButton");
 const gmailQuoteButton = document.querySelector("#gmailQuoteButton");
 const quoteMessageElement = document.querySelector("#quoteMessage");
+const fileReviewCopyButton = document.querySelector("#fileReviewCopyButton");
+const fileReviewMessageElement = document.querySelector("#fileReviewMessage");
 const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
 const debugEnabled = new URLSearchParams(window.location.search).has("debug");
 const REQUEST_ID = `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
 let currentRequest = null;
+let fileReviewBody = "";
 
 if (developerPanel && debugEnabled) developerPanel.hidden = false;
 
@@ -128,7 +131,7 @@ function updateQuote() {
   renderEstimate(estimate, input);
   const summary = buildQuoteSummary(currentRequest);
   const subject = "Peer Printing quote request";
-  emailQuoteButton.href = buildMailtoUrl(OPERATOR.email, subject, summary);
+  outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, subject, summary);
   gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, subject, summary);
   setQuoteActionsEnabled(true);
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
@@ -146,7 +149,7 @@ function renderEmptyEstimate() {
 }
 
 function setQuoteActionsEnabled(enabled) {
-  [emailQuoteButton, gmailQuoteButton].forEach(link => {
+  [outlookQuoteButton, gmailQuoteButton].forEach(link => {
     link.classList.toggle("is-disabled", !enabled);
     link.setAttribute("aria-disabled", String(!enabled));
     if (!enabled) link.removeAttribute("href");
@@ -154,8 +157,9 @@ function setQuoteActionsEnabled(enabled) {
   copyQuoteButton.disabled = !enabled;
 }
 
-function buildMailtoUrl(recipient, subject, body) {
-  return `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+function buildOutlookUrl(recipient, subject, body) {
+  const params = new URLSearchParams({ to: recipient, subject, body });
+  return `https://outlook.office.com/mail/deeplink/compose?${params.toString()}`;
 }
 
 function buildGmailUrl(recipient, subject, body) {
@@ -172,18 +176,26 @@ function configureFileReviewLinks() {
     "Approximate size:", "",
     "STL/3MF below:"
   ].join("\n");
-  document.querySelector("#fileReviewEmailButton").href = buildMailtoUrl(OPERATOR.email, subject, body);
+  fileReviewBody = body;
+  document.querySelector("#fileReviewOutlookButton").href = buildOutlookUrl(OPERATOR.email, subject, body);
   document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, subject, body);
 }
 
 async function copyQuoteSummary() {
   if (!currentRequest) return;
-  const summary = buildQuoteSummary(currentRequest);
+  await copyText(buildQuoteSummary(currentRequest), quoteMessageElement, "Message format copied.");
+}
+
+async function copyFileReviewSummary() {
+  await copyText(fileReviewBody, fileReviewMessageElement, "Message format copied.");
+}
+
+async function copyText(text, statusElement, successMessage) {
   try {
-    await navigator.clipboard.writeText(summary);
-    quoteMessageElement.textContent = "Quote summary copied. Attach your model when you send it.";
+    await navigator.clipboard.writeText(text);
+    statusElement.textContent = successMessage;
   } catch (error) {
-    quoteMessageElement.textContent = summary;
+    statusElement.textContent = text;
   }
 }
 
@@ -209,6 +221,13 @@ document.querySelectorAll("[data-change-mode]").forEach(button => button.addEven
 form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
+fileReviewCopyButton.addEventListener("click", copyFileReviewSummary);
+document.querySelectorAll("[data-copy-email]").forEach(button => {
+  button.addEventListener("click", async () => {
+    const statusElement = document.querySelector(`#${button.dataset.statusTarget}`);
+    await copyText(OPERATOR.email, statusElement, "Email address copied.");
+  });
+});
 updateQuote();
 configureFileReviewLinks();
 
