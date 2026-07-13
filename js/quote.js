@@ -1,5 +1,5 @@
 const PRINTER_BUILD_VOLUME = { x: 220, y: 220, z: 250 };
-const OPERATOR = { name: "Peer Printing", email: "si354631@ucf.edu" };
+const OPERATOR = { name: "Peer Printing", email: "silaspowersw2@gmail.com" };
 const pricingDefaults = {
   materialRates: { PLA: 0.10, PETG: 0.13, TPU: 0.16, ABS: 0.14 },
   timeRate: 1.5,
@@ -12,6 +12,7 @@ const pricingDefaults = {
 const form = document.querySelector("#quoteForm");
 const copyQuoteButton = document.querySelector("#copyQuoteButton");
 const emailQuoteButton = document.querySelector("#emailQuoteButton");
+const gmailQuoteButton = document.querySelector("#gmailQuoteButton");
 const quoteMessageElement = document.querySelector("#quoteMessage");
 const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
@@ -88,8 +89,9 @@ function buildQuoteSummary(request) {
     `Estimated range: ${formatRange(request.estimatedPriceRange)}`,
     `Calculated midpoint: ${formatCurrency(request.estimatedPrice)}`,
     `Material and color: ${request.material}, ${request.color}`,
-    `Slicer filament estimate: ${request.estimatedWeightGrams}g`,
-    `Slicer print-time estimate: ${request.estimatedPrintHours} hours`,
+    "Slicer printer profile: Creality K1C",
+    `K1C filament estimate: ${request.estimatedWeightGrams}g`,
+    `K1C print-time estimate: ${request.estimatedPrintHours} hours`,
     `Deadline: ${request.deadlineType}`,
     `Fulfillment: ${request.fulfillmentPreference}`, "",
     "Intended use / fit or strength requirements:", "",
@@ -114,10 +116,35 @@ function updateQuote() {
   currentRequest = createRequest(input, estimate);
   renderEstimate(estimate, input);
   const summary = buildQuoteSummary(currentRequest);
-  emailQuoteButton.href = `mailto:${OPERATOR.email}?subject=${encodeURIComponent("Peer Printing quote request")}&body=${encodeURIComponent(summary)}`;
+  const subject = "Peer Printing quote request";
+  emailQuoteButton.href = buildMailtoUrl(OPERATOR.email, subject, summary);
+  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, subject, summary);
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
   window.currentPeerPrintingRequest = currentRequest;
   try { sessionStorage.setItem("peerPrintingCurrentRequest", JSON.stringify(currentRequest)); } catch (error) { console.warn("Unable to save quote request", error); }
+}
+
+function buildMailtoUrl(recipient, subject, body) {
+  return `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function buildGmailUrl(recipient, subject, body) {
+  const params = new URLSearchParams({ view: "cm", fs: "1", to: recipient, su: subject, body });
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+
+function configureFileReviewLinks() {
+  const subject = "Peer Printing file review";
+  const body = [
+    "Hi,", "", "I'd like a 3D printing quote.", "",
+    "Intended use:",
+    "Deadline:",
+    "Material/color preference:",
+    "Approximate size:", "",
+    "I will attach the STL, 3MF, or STEP file before sending."
+  ].join("\n");
+  document.querySelector("#fileReviewEmailButton").href = buildMailtoUrl(OPERATOR.email, subject, body);
+  document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, subject, body);
 }
 
 async function copyQuoteSummary() {
@@ -148,5 +175,6 @@ form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 updateQuote();
+configureFileReviewLinks();
 
 if (window.location.hash === "#file-only") setMode("file");
