@@ -23,8 +23,8 @@
     <main>
       <section class="page-intro compact-intro">
         <div class="container quote-intro">
-          <div><p class="eyebrow">Ballpark estimate</p><h1>What do you have?</h1><p>Choose the path that matches where you are. You do not need slicer estimates to request a print.</p></div>
-          <div class="quiet-note">The calculator gives a range. Your final price is confirmed after we inspect the actual model.</div>
+          <div><p class="eyebrow">Pricing</p><h1>Get a print estimate.</h1><p>Enter a Creality K1C slicer estimate or email the model.</p></div>
+          <div class="quiet-note"><strong>Final price</strong><span>Confirmed after the model is reviewed.</span></div>
         </div>
       </section>
 
@@ -38,7 +38,7 @@
           <div id="estimateMode">
             <div class="quote-layout">
               <form class="card quote-form" id="quoteForm">
-                <div class="form-head"><span class="note-label">Print details</span><h2>Slice for the Creality K1C.</h2><p>Select the <strong>Creality K1C printer profile</strong> in your slicer, then enter the filament weight and print duration it reports. Estimates from a different printer can be significantly inaccurate.</p></div>
+                <div class="form-head"><span class="note-label">K1C slicer estimate</span><h2>Use the Creality K1C profile.</h2><p>Enter the filament weight and print time reported by that profile. Estimates from other printer profiles will not be accurate.</p></div>
                 <div class="form-grid">
                   <label class="field"><span>Material</span><select id="material" name="material"><option value="PLA" selected>PLA</option><option value="PETG">PETG</option><option value="TPU">TPU</option><option value="ABS">ABS</option></select><small>PLA is the normal default.</small></label>
                   <label class="field"><span>Color</span><select id="color" name="color"><option value="black" selected>Black</option><option value="white">White</option><option value="gray">Gray</option><option value="blue">Blue</option><option value="red">Red</option><option value="custom">Custom / flexible</option></select><small>Special colors may affect timing.</small></label>
@@ -49,7 +49,7 @@
                 </div>
                 <label class="field"><span>Deadline</span><select id="deadlineType" name="deadlineType"><option value="economy">Economy, 7–10 days</option><option value="standard" selected>Standard, 3–5 days</option><option value="priority">Priority, 1–2 days</option><option value="rush">Rush, ASAP review</option></select><small>Faster deadlines increase the estimate and require availability.</small></label>
                 <input id="fulfillmentPreference" name="fulfillmentPreference" type="hidden" value="campus pickup">
-                <div class="machine-spec"><strong>Estimate using: Creality K1C</strong><span>Choose the K1C profile before slicing. Build volume is 220 × 220 × 250 mm. Oversized, multi-part, or differently sliced jobs need manual review.</span></div>
+                <div class="machine-spec"><strong>K1C build volume</strong><span>220 × 220 × 250 mm. Oversized or multi-part jobs require a file review.</span></div>
               </form>
 
               <aside class="results-stack">
@@ -75,7 +75,7 @@
 
           <section class="file-only-panel" id="file-only" hidden>
             <div class="card file-review-card">
-              <div><span class="note-label">No slicer required</span><h2>Send the model for manual review.</h2><p>Attach your STL, 3MF, or STEP file and include three things: what the part is for, when you need it, and whether you have a material or color preference.</p></div>
+              <div><span class="note-label">No slicer estimate</span><h2>Email the model.</h2><p>Attach the STL, 3MF, or STEP file. Include the deadline, intended use, and material or color preference.</p></div>
               <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>Attach the model file</li><li>State the deadline</li><li>Describe any fit or strength requirements</li><li>Include approximate size if known</li></ul></div>
               <a class="button button-primary" id="fileReviewEmailButton" href="mailto:silaspowersw2@gmail.com">Open email app</a>
               <a class="button button-secondary" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Open in Gmail</a>
