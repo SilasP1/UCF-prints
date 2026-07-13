@@ -3,11 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UCF Prints | Guided Quote</title>
-  <meta
-    name="description"
-    content="Enter rough 3D print specs, get a ballpark estimate, and send a final quote request to UCF Prints."
-  >
+  <title>Peer Printing | Estimate a 3D Print</title>
+  <meta name="description" content="Calculate a ballpark 3D printing estimate or send your model for manual review through Peer Printing near UCF.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,146 +14,77 @@
   <div class="site-shell">
     <header class="topbar">
       <div class="container nav-wrap">
-        <a class="brand" href="index.html" aria-label="UCF Prints home">
-          <span class="brand-mark"></span>
-          <span>UCF Prints</span>
-        </a>
+        <a class="brand" href="index.html" aria-label="Peer Printing home"><span class="brand-mark" aria-hidden="true"></span><span>Peer Printing</span></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
-        <nav class="nav" id="siteNav" aria-label="Main navigation">
-          <a class="nav-link" href="index.html">Home</a>
-          <a class="nav-link" href="how-it-works.html">How It Works</a>
-          <a class="nav-link nav-link-highlight active" href="quote.html">Get Started</a>
-        </nav>
+        <nav class="nav" id="siteNav" aria-label="Main navigation"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="how-it-works.html">How It Works</a><a class="nav-link nav-link-highlight active" href="quote.html">Estimate a Print</a></nav>
       </div>
     </header>
 
     <main>
-      <section class="page-intro">
+      <section class="page-intro compact-intro">
         <div class="container quote-intro">
-          <div>
-            <p class="eyebrow">Guided quote</p>
-            <h1>I need something printed.</h1>
-            <p>Enter the printer estimate numbers and the estimate updates automatically. Then copy the request summary and send it with your file.</p>
-          </div>
-          <div class="quiet-note">
-            This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.
-          </div>
+          <div><p class="eyebrow">Ballpark estimate</p><h1>What do you have?</h1><p>Choose the path that matches where you are. You do not need slicer estimates to request a print.</p></div>
+          <div class="quiet-note">The calculator gives a range. Your final price is confirmed after we inspect the actual model.</div>
         </div>
       </section>
 
       <section class="section">
-        <div class="container quote-layout">
-          <form class="card quote-form" id="quoteForm">
-            <div class="form-head">
-              <span class="note-label">Print details</span>
-              <h2>Start with your printer estimate.</h2>
-              <p>The calculator uses filament grams, print time, material, and deadline. It is still only a ballpark until the file is reviewed.</p>
-            </div>
+        <div class="container">
+          <div class="mode-switch" role="tablist" aria-label="Quote starting point">
+            <button class="mode-button is-active" type="button" role="tab" aria-selected="true" data-mode="estimate">I have slicer estimates</button>
+            <button class="mode-button" type="button" role="tab" aria-selected="false" data-mode="file">I only have a file</button>
+          </div>
 
-            <div class="form-grid">
-              <label class="field">
-                <span>Material</span>
-                <select id="material" name="material">
-                  <option value="PLA" selected>PLA</option>
-                  <option value="PETG">PETG</option>
-                  <option value="TPU">TPU</option>
-                  <option value="ABS">ABS</option>
-                </select>
-                <small>Material changes the estimate. PLA is the normal default.</small>
-              </label>
-
-              <label class="field">
-                <span>Color</span>
-                <select id="color" name="color">
-                  <option value="black" selected>Black</option>
-                  <option value="white">White</option>
-                  <option value="gray">Gray</option>
-                  <option value="blue">Blue</option>
-                  <option value="red">Red</option>
-                  <option value="custom">Custom / flexible</option>
-                </select>
-                <small>Color does not change the calculator yet, but it helps with review.</small>
-              </label>
-
-            </div>
-
-            <div class="slicer-estimate-card">
-              <div>
-                <span class="note-label">Printer estimate</span>
-                <h3>Use the filament and time estimate from your slicer.</h3>
-                <p>Print size and print time are based on our printer. You do not need to choose dimensions here.</p>
-              </div>
-              <label class="field">
-                <span>Estimated filament</span>
-                <div class="input-with-unit">
-                  <input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" min="1" value="75">
-                  <span>g</span>
+          <div id="estimateMode">
+            <div class="quote-layout">
+              <form class="card quote-form" id="quoteForm">
+                <div class="form-head"><span class="note-label">Print details</span><h2>Enter the numbers from your slicer.</h2><p>Use the filament weight and print duration shown after slicing your model.</p></div>
+                <div class="form-grid">
+                  <label class="field"><span>Material</span><select id="material" name="material"><option value="PLA" selected>PLA</option><option value="PETG">PETG</option><option value="TPU">TPU</option><option value="ABS">ABS</option></select><small>PLA is the normal default.</small></label>
+                  <label class="field"><span>Color</span><select id="color" name="color"><option value="black" selected>Black</option><option value="white">White</option><option value="gray">Gray</option><option value="blue">Blue</option><option value="red">Red</option><option value="custom">Custom / flexible</option></select><small>Special colors may affect timing.</small></label>
                 </div>
-                <small>Use the grams shown by your slicer, not the model size.</small>
-              </label>
-              <label class="field">
-                <span>Estimated print time</span>
-                <div class="input-with-unit">
-                  <input id="estimatedPrintHours" name="estimatedPrintHours" type="number" min="0.5" step="0.5" value="4">
-                  <span>hrs</span>
+                <div class="slicer-estimate-card">
+                  <label class="field"><span>Estimated filament</span><div class="input-with-unit"><input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" min="1" value="75"><span>g</span></div></label>
+                  <label class="field"><span>Estimated print time</span><div class="input-with-unit"><input id="estimatedPrintHours" name="estimatedPrintHours" type="number" min="0.5" step="0.5" value="4"><span>hrs</span></div></label>
                 </div>
-                <small>Use the printer time estimate in hours.</small>
-              </label>
-              <div class="machine-spec">
-                <strong>Printer print area</strong>
-                <span>220 x 220 x 250 mm max build volume. If your model does not fit this printer, it needs manual review.</span>
-              </div>
+                <label class="field"><span>Deadline</span><select id="deadlineType" name="deadlineType"><option value="economy">Economy, 7–10 days</option><option value="standard" selected>Standard, 3–5 days</option><option value="priority">Priority, 1–2 days</option><option value="rush">Rush, ASAP review</option></select><small>Faster deadlines increase the estimate and require availability.</small></label>
+                <input id="fulfillmentPreference" name="fulfillmentPreference" type="hidden" value="campus pickup">
+                <div class="machine-spec"><strong>Printer size limit</strong><span>220 × 220 × 250 mm. Oversized or multi-part jobs need manual review.</span></div>
+              </form>
+
+              <aside class="results-stack">
+                <section class="card estimate-card">
+                  <span class="note-label">Estimated range</span>
+                  <div class="estimate-main" id="estimatedPriceRange">$20.50–$27.00</div>
+                  <div class="estimate-midpoint">Calculated midpoint: <strong id="estimatedPrice">$22.55</strong></div>
+                  <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3–5 days after review.</div>
+                  <div class="estimate-breakdown" aria-label="Estimate breakdown"><div><span>Material</span><strong id="materialBreakdown">$7.50</strong></div><div><span>Printer time</span><strong id="timeBreakdown">$6.00</strong></div><div><span>Deadline</span><strong id="deadlineBreakdown">1.00×</strong></div><div><span>Handling</span><strong id="handlingBreakdown">+$5.00</strong></div></div>
+                  <p class="disclaimer">Final price may change after reviewing supports, orientation, risk, geometry, and actual print settings.</p>
+                </section>
+                <section class="card final-quote-card">
+                  <span class="note-label">Next step</span><h2>Send this estimate with your file.</h2><p>Your email will be prefilled. Attach the STL, 3MF, or STEP file before sending.</p>
+                  <a class="button button-primary button-full" id="emailQuoteButton" href="mailto:si354631@ucf.edu">Email this quote</a>
+                  <button class="button button-secondary button-full" type="button" id="copyQuoteButton">Copy quote summary</button>
+                  <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
+                </section>
+                <details class="developer-panel" id="developerPanel" hidden><summary>Developer details</summary><pre id="debugOutput"></pre></details>
+              </aside>
             </div>
+          </div>
 
-            <div class="form-grid">
-              <label class="field">
-                <span>Deadline type</span>
-                <select id="deadlineType" name="deadlineType">
-                  <option value="economy">Economy</option>
-                  <option value="standard" selected>Standard, 3-5 days</option>
-                  <option value="priority">Priority, 1-2 days</option>
-                  <option value="rush">Rush, ASAP review</option>
-                </select>
-                <small>Faster deadlines increase the estimate.</small>
-              </label>
-              <input id="fulfillmentPreference" name="fulfillmentPreference" type="hidden" value="pickup">
+          <section class="file-only-panel" id="file-only" hidden>
+            <div class="card file-review-card">
+              <div><span class="note-label">No slicer required</span><h2>Send the model for manual review.</h2><p>Attach your STL, 3MF, or STEP file and include three things: what the part is for, when you need it, and whether you have a material or color preference.</p></div>
+              <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>Attach the model file</li><li>State the deadline</li><li>Describe any fit or strength requirements</li><li>Include approximate size if known</li></ul></div>
+              <a class="button button-primary" href="mailto:si354631@ucf.edu?subject=Peer%20Printing%20file%20review&body=Hi%2C%0A%0AI%27d%20like%20a%203D%20printing%20quote.%0A%0AIntended%20use%3A%20%0ADeadline%3A%20%0AMaterial%2Fcolor%20preference%3A%20%0AApproximate%20size%3A%20%0A%0AI%20will%20attach%20the%20model%20file%20before%20sending.">Open file-review email</a>
+              <p class="fine-print">Email cannot attach the model automatically. Add it before sending.</p>
             </div>
-          </form>
-
-          <aside class="results-stack">
-            <section class="card estimate-card">
-              <span class="note-label">Your rough estimate</span>
-              <div class="estimate-main" id="estimatedPrice">$22.55</div>
-              <div class="estimate-note">Final confirmed prices round up to the nearest half dollar.</div>
-              <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3-5 days after review.</div>
-              <div class="estimate-breakdown" aria-label="Estimate breakdown">
-                <div><span>Material</span><strong id="materialBreakdown">$8</strong></div>
-                <div><span>Printer time</span><strong id="timeBreakdown">$6</strong></div>
-                <div><span>Deadline</span><strong id="deadlineBreakdown">1.00x</strong></div>
-                <div><span>Handling buffer</span><strong id="handlingBreakdown">$5</strong></div>
-              </div>
-              <p class="disclaimer">This is a ballpark estimate. Final price is confirmed after reviewing the file or reference.</p>
-            </section>
-
-            <section class="card final-quote-card">
-              <span class="note-label">Next step</span>
-              <h2>Ready to confirm?</h2>
-              <p>Copy the quote summary and send it with your file or reference. We'll confirm the final price before printing.</p>
-              <a class="contact-link" href="mailto:si354631@ucf.edu">si354631@ucf.edu</a>
-              <button class="button button-primary" type="button" id="copyQuoteButton">Copy quote summary</button>
-              <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
-            </section>
-
-            <details class="developer-panel" id="developerPanel" hidden>
-              <summary>Developer details</summary>
-              <pre id="debugOutput"></pre>
-            </details>
-          </aside>
+          </section>
         </div>
       </section>
     </main>
+    <footer class="site-footer"><div class="container footer-wrap"><div><strong>Peer Printing</strong><p>Independent student-run 3D printing near UCF.</p></div><p>Not affiliated with or endorsed by the University of Central Florida.</p></div></footer>
   </div>
-
   <script src="js/site.js"></script>
   <script src="js/quote.js"></script>
 </body>
