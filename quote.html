@@ -16,26 +16,27 @@
       <div class="container nav-wrap">
         <a class="brand" href="index.html" aria-label="Peer Printing home"><span class="brand-mark" aria-hidden="true"></span><span>Peer Printing</span></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="siteNav">Menu</button>
-        <nav class="nav" id="siteNav" aria-label="Main navigation"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="how-it-works.html">How It Works</a><a class="nav-link nav-link-highlight active" href="quote.html">Estimate a Print</a></nav>
+        <nav class="nav" id="siteNav" aria-label="Main navigation"><a class="nav-link" href="index.html">Home</a><a class="nav-link" href="how-it-works.html">How It Works</a><a class="nav-link nav-link-highlight active" href="quote.html">Get a Quote</a></nav>
       </div>
     </header>
 
     <main>
       <section class="page-intro compact-intro">
         <div class="container quote-intro">
-          <div><p class="eyebrow">Pricing</p><h1>Get a print estimate.</h1><p>Enter a Creality K1C slicer estimate or email the model.</p></div>
+          <div><p class="eyebrow">Quote</p><h1>How do you want to start?</h1><p>Use K1C slicer numbers for an instant estimate, or send the model for a manual quote.</p></div>
           <div class="quiet-note"><strong>Final price</strong><span>Confirmed after the model is reviewed.</span></div>
         </div>
       </section>
 
       <section class="section">
         <div class="container">
-          <div class="mode-switch" role="tablist" aria-label="Quote starting point">
-            <button class="mode-button is-active" type="button" role="tab" aria-selected="true" data-mode="estimate">I have slicer estimates</button>
-            <button class="mode-button" type="button" role="tab" aria-selected="false" data-mode="file">I only have a file</button>
+          <div class="quote-choice-grid" id="quoteChoices" aria-label="Choose a quote method">
+            <button class="quote-choice" type="button" data-mode="estimate"><span class="choice-kicker">Instant estimate</span><strong>I have K1C slicer numbers</strong><small>Enter filament weight and print time.</small></button>
+            <button class="quote-choice" type="button" data-mode="file"><span class="choice-kicker">Manual quote</span><strong>I have an STL or 3MF</strong><small>Open a prefilled email and add the model.</small></button>
           </div>
 
-          <div id="estimateMode">
+          <div id="estimateMode" hidden>
+            <button class="change-method" type="button" data-change-mode>← Change quote method</button>
             <div class="quote-layout">
               <form class="card quote-form" id="quoteForm">
                 <div class="form-head"><span class="note-label">K1C slicer estimate</span><h2>Use the Creality K1C profile.</h2><p>Enter the filament weight and print time reported by that profile. Estimates from other printer profiles will not be accurate.</p></div>
@@ -44,28 +45,28 @@
                   <label class="field"><span>Color</span><select id="color" name="color"><option value="black" selected>Black</option><option value="white">White</option><option value="gray">Gray</option><option value="blue">Blue</option><option value="red">Red</option><option value="custom">Custom / flexible</option></select><small>Special colors may affect timing.</small></label>
                 </div>
                 <div class="slicer-estimate-card">
-                  <label class="field"><span>Estimated filament</span><div class="input-with-unit"><input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" min="1" value="75"><span>g</span></div></label>
-                  <label class="field"><span>Estimated print time</span><div class="input-with-unit"><input id="estimatedPrintHours" name="estimatedPrintHours" type="number" min="0.5" step="0.5" value="4"><span>hrs</span></div></label>
+                  <label class="field"><span>Filament weight</span><div class="input-with-unit"><input id="estimatedWeightGrams" name="estimatedWeightGrams" type="number" inputmode="decimal" min="1" placeholder="75" required><span>g</span></div><small>Shown in the K1C slicer estimate.</small></label>
+                  <label class="field"><span>Print time</span><div class="input-with-unit"><input id="estimatedPrintHours" name="estimatedPrintHours" type="number" inputmode="decimal" min="0.5" step="0.5" placeholder="4" required><span>hrs</span></div><small>Enter total hours, using decimals if needed.</small></label>
                 </div>
                 <label class="field"><span>Deadline</span><select id="deadlineType" name="deadlineType"><option value="economy">Economy, 7–10 days</option><option value="standard" selected>Standard, 3–5 days</option><option value="priority">Priority, 1–2 days</option><option value="rush">Rush, ASAP review</option></select><small>Faster deadlines increase the estimate and require availability.</small></label>
                 <input id="fulfillmentPreference" name="fulfillmentPreference" type="hidden" value="campus pickup">
                 <div class="machine-spec"><strong>K1C build volume</strong><span>220 × 220 × 250 mm. Oversized or multi-part jobs require a file review.</span></div>
               </form>
 
-              <aside class="results-stack">
-                <section class="card estimate-card">
+              <aside class="results-stack" id="quoteResults">
+                <section class="card estimate-card" aria-live="polite">
                   <span class="note-label">Estimated range</span>
-                  <div class="estimate-main" id="estimatedPriceRange">$20.50–$27.00</div>
-                  <div class="estimate-midpoint">Calculated midpoint: <strong id="estimatedPrice">$22.55</strong></div>
-                  <div class="turnaround" id="estimatedTurnaround">Standard turnaround: usually 3–5 days after review.</div>
-                  <div class="estimate-breakdown" aria-label="Estimate breakdown"><div><span>Material</span><strong id="materialBreakdown">$7.50</strong></div><div><span>Printer time</span><strong id="timeBreakdown">$6.00</strong></div><div><span>Deadline</span><strong id="deadlineBreakdown">1.00×</strong></div><div><span>Handling</span><strong id="handlingBreakdown">+$5.00</strong></div></div>
+                  <div class="estimate-main estimate-empty" id="estimatedPriceRange">Enter details</div>
+                  <p class="estimate-status" id="estimateStatus">Add the filament weight and print time to calculate an estimate.</p>
+                  <div class="turnaround" id="estimatedTurnaround"></div>
+                  <details class="estimate-details" id="estimateDetails" hidden><summary>Show price breakdown</summary><div class="estimate-breakdown" aria-label="Estimate breakdown"><div><span>Material</span><strong id="materialBreakdown">—</strong></div><div><span>Printer time</span><strong id="timeBreakdown">—</strong></div><div><span>Deadline</span><strong id="deadlineBreakdown">—</strong></div><div><span>Handling</span><strong id="handlingBreakdown">—</strong></div></div></details>
                   <p class="disclaimer">Final price may change after reviewing supports, orientation, risk, geometry, and actual print settings.</p>
                 </section>
-                <section class="card final-quote-card">
+                <section class="card final-quote-card" id="quoteActions">
                   <span class="note-label">Next step</span><h2>Send this estimate with your file.</h2><p>Your email will be prefilled. Add the STL or 3MF below the quote details.</p>
-                  <a class="button button-primary button-full" id="emailQuoteButton" href="mailto:silaspowersw2@gmail.com">Open email app</a>
-                  <a class="button button-secondary button-full" id="gmailQuoteButton" href="https://mail.google.com/" target="_blank" rel="noopener">Open in Gmail</a>
-                  <button class="button button-secondary button-full" type="button" id="copyQuoteButton">Copy quote summary</button>
+                  <a class="button button-primary button-full is-disabled" id="emailQuoteButton" aria-disabled="true">Create quote email</a>
+                  <a class="secondary-action is-disabled" id="gmailQuoteButton" aria-disabled="true" target="_blank" rel="noopener">Use Gmail instead</a>
+                  <button class="secondary-action" type="button" id="copyQuoteButton" disabled>Copy quote details</button>
                   <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
                 </section>
                 <details class="developer-panel" id="developerPanel" hidden><summary>Developer details</summary><pre id="debugOutput"></pre></details>
@@ -74,11 +75,12 @@
           </div>
 
           <section class="file-only-panel" id="file-only" hidden>
+            <button class="change-method" type="button" data-change-mode>← Change quote method</button>
             <div class="card file-review-card">
               <div><span class="note-label">No slicer estimate</span><h2>Email the model.</h2><p>Include the deadline and material or color preference, then add the STL or 3MF below.</p></div>
               <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>State the deadline</li><li>Choose a material and color</li><li>Include the approximate size if known</li><li>Add the STL or 3MF below the email details</li></ul></div>
-              <a class="button button-primary" id="fileReviewEmailButton" href="mailto:silaspowersw2@gmail.com">Open email app</a>
-              <a class="button button-secondary" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Open in Gmail</a>
+              <a class="button button-primary" id="fileReviewEmailButton" href="mailto:silaspowersw2@gmail.com">Create quote email</a>
+              <a class="secondary-action" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Use Gmail instead</a>
               <p class="fine-print">The model cannot be added automatically. Add it below the email details before sending.</p>
             </div>
           </section>

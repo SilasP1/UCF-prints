@@ -17,6 +17,7 @@ const quoteMessageElement = document.querySelector("#quoteMessage");
 const developerPanel = document.querySelector("#developerPanel");
 const debugOutputElement = document.querySelector("#debugOutput");
 const debugEnabled = new URLSearchParams(window.location.search).has("debug");
+const REQUEST_ID = `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
 let currentRequest = null;
 
 if (developerPanel && debugEnabled) developerPanel.hidden = false;
@@ -72,7 +73,7 @@ function estimateTurnaround(deadlineType) {
 
 function createRequest(input, estimate) {
   return {
-    requestId: `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`,
+    requestId: REQUEST_ID,
     ...input,
     estimatedPrice: estimate.estimatedPrice,
     estimatedPriceRange: estimate.estimatedPriceRange,
@@ -99,17 +100,29 @@ function buildQuoteSummary(request) {
 }
 
 function renderEstimate(estimate, input) {
-  document.querySelector("#estimatedPriceRange").textContent = formatRange(estimate.estimatedPriceRange);
-  document.querySelector("#estimatedPrice").textContent = formatCurrency(estimate.estimatedPrice);
+  const rangeElement = document.querySelector("#estimatedPriceRange");
+  rangeElement.textContent = formatRange(estimate.estimatedPriceRange);
+  rangeElement.classList.remove("estimate-empty");
+  document.querySelector("#estimateStatus").textContent = "Ballpark estimate before file review.";
   document.querySelector("#estimatedTurnaround").textContent = estimateTurnaround(input.deadlineType);
   document.querySelector("#materialBreakdown").textContent = `${formatCurrency(estimate.materialCost)} @ ${formatCurrency(estimate.materialRate)}/g`;
   document.querySelector("#timeBreakdown").textContent = `${formatCurrency(estimate.timeCost)} @ $1.50/hr`;
   document.querySelector("#deadlineBreakdown").textContent = `${estimate.deadlineMultiplier.toFixed(2)}×`;
   document.querySelector("#handlingBreakdown").textContent = `+${formatCurrency(estimate.handlingFee)}`;
+  document.querySelector("#estimateDetails").hidden = false;
 }
 
 function updateQuote() {
   const input = getFormInput();
+  const hasValidEstimate = input.estimatedWeightGrams > 0 && input.estimatedPrintHours >= 0.5;
+
+  if (!hasValidEstimate) {
+    currentRequest = null;
+    renderEmptyEstimate();
+    setQuoteActionsEnabled(false);
+    return;
+  }
+
   const estimate = calculateEstimate(input);
   currentRequest = createRequest(input, estimate);
   renderEstimate(estimate, input);
@@ -117,9 +130,28 @@ function updateQuote() {
   const subject = "Peer Printing quote request";
   emailQuoteButton.href = buildMailtoUrl(OPERATOR.email, subject, summary);
   gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, subject, summary);
+  setQuoteActionsEnabled(true);
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
   window.currentPeerPrintingRequest = currentRequest;
   try { sessionStorage.setItem("peerPrintingCurrentRequest", JSON.stringify(currentRequest)); } catch (error) { console.warn("Unable to save quote request", error); }
+}
+
+function renderEmptyEstimate() {
+  const rangeElement = document.querySelector("#estimatedPriceRange");
+  rangeElement.textContent = "Enter details";
+  rangeElement.classList.add("estimate-empty");
+  document.querySelector("#estimateStatus").textContent = "Add the filament weight and print time to calculate an estimate.";
+  document.querySelector("#estimatedTurnaround").textContent = "";
+  document.querySelector("#estimateDetails").hidden = true;
+}
+
+function setQuoteActionsEnabled(enabled) {
+  [emailQuoteButton, gmailQuoteButton].forEach(link => {
+    link.classList.toggle("is-disabled", !enabled);
+    link.setAttribute("aria-disabled", String(!enabled));
+    if (!enabled) link.removeAttribute("href");
+  });
+  copyQuoteButton.disabled = !enabled;
 }
 
 function buildMailtoUrl(recipient, subject, body) {
@@ -155,19 +187,25 @@ async function copyQuoteSummary() {
   }
 }
 
-function setMode(mode) {
+function setMode(mode, shouldScroll = true) {
   const showFile = mode === "file";
-  document.querySelector("#estimateMode").hidden = showFile;
+  const showEstimate = mode === "estimate";
+  document.querySelector("#quoteChoices").hidden = showFile || showEstimate;
+  document.querySelector("#estimateMode").hidden = !showEstimate;
   document.querySelector("#file-only").hidden = !showFile;
-  document.querySelectorAll("[data-mode]").forEach(button => {
-    const active = button.dataset.mode === mode;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-selected", String(active));
-  });
-  if (showFile) document.querySelector("#file-only").scrollIntoView({ behavior: "smooth", block: "start" });
+
+  if (showEstimate) {
+    document.querySelector("#estimatedWeightGrams").focus({ preventScroll: true });
+    if (shouldScroll) document.querySelector("#estimateMode").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else if (showFile) {
+    if (shouldScroll) document.querySelector("#file-only").scrollIntoView({ behavior: "smooth", block: "start" });
+  } else {
+    if (shouldScroll) document.querySelector("#quoteChoices").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 }
 
 document.querySelectorAll("[data-mode]").forEach(button => button.addEventListener("click", () => setMode(button.dataset.mode)));
+document.querySelectorAll("[data-change-mode]").forEach(button => button.addEventListener("click", () => setMode("choice")));
 form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
@@ -175,3 +213,5 @@ updateQuote();
 configureFileReviewLinks();
 
 if (window.location.hash === "#file-only") setMode("file");
+else if (window.location.hash === "#estimate") setMode("estimate");
+else setMode("choice", false);
