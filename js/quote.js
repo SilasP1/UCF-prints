@@ -13,8 +13,6 @@ const form = document.querySelector("#quoteForm");
 const copyQuoteButton = document.querySelector("#copyQuoteButton");
 const outlookQuoteButton = document.querySelector("#outlookQuoteButton");
 const gmailQuoteButton = document.querySelector("#gmailQuoteButton");
-const requestQuoteButton = document.querySelector("#requestQuoteButton");
-const quoteEmailOptions = document.querySelector("#quoteEmailOptions");
 const quoteMessageElement = document.querySelector("#quoteMessage");
 const fileReviewCopyButton = document.querySelector("#fileReviewCopyButton");
 const fileReviewMessageElement = document.querySelector("#fileReviewMessage");
@@ -107,6 +105,19 @@ function buildQuoteSummary(request) {
   ].join("\n");
 }
 
+function buildQuoteDraft(input) {
+  return [
+    "Peer Printing quote request", "",
+    `Material and color: ${input.material}, ${input.color}`,
+    "Slicer printer profile: Creality K1C",
+    `K1C filament estimate: ${input.estimatedWeightGrams > 0 ? `${input.estimatedWeightGrams}g` : ""}`,
+    `K1C print-time estimate: ${input.estimatedPrintHours >= 0.5 ? `${input.estimatedPrintHours} hours` : ""}`,
+    `Deadline: ${input.deadlineType}`,
+    `Fulfillment: ${input.fulfillmentPreference}`, "",
+    "STL/3MF below:"
+  ].join("\n");
+}
+
 function renderEstimate(estimate, input) {
   const rangeElement = document.querySelector("#estimatedPriceRange");
   rangeElement.textContent = formatRange(estimate.estimatedPriceRange);
@@ -127,7 +138,7 @@ function updateQuote() {
   if (!hasValidEstimate) {
     currentRequest = null;
     renderEmptyEstimate();
-    setQuoteRequestReady(false);
+    configureQuoteLinks(buildQuoteDraft(input));
     return;
   }
 
@@ -135,7 +146,6 @@ function updateQuote() {
   currentRequest = createRequest(input, estimate);
   renderEstimate(estimate, input);
   configureQuoteLinks(buildQuoteSummary(currentRequest));
-  setQuoteRequestReady(true);
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
   window.currentPeerPrintingRequest = currentRequest;
   try { sessionStorage.setItem("peerPrintingCurrentRequest", JSON.stringify(currentRequest)); } catch (error) { console.warn("Unable to save quote request", error); }
@@ -170,22 +180,6 @@ function configureQuoteLinks(body) {
   quoteBody = body;
   outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, QUOTE_SUBJECT, body);
   gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, body);
-}
-
-function setQuoteRequestReady(ready) {
-  requestQuoteButton.disabled = !ready;
-  requestQuoteButton.textContent = ready ? "Request this print" : "Enter weight and time to continue";
-  if (!ready) {
-    quoteEmailOptions.hidden = true;
-    requestQuoteButton.setAttribute("aria-expanded", "false");
-  }
-}
-
-function showQuoteEmailOptions() {
-  if (!currentRequest) return;
-  quoteEmailOptions.hidden = false;
-  requestQuoteButton.setAttribute("aria-expanded", "true");
-  quoteEmailOptions.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 function configureFileReviewLinks() {
@@ -241,7 +235,6 @@ form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 fileReviewCopyButton.addEventListener("click", copyFileReviewSummary);
-requestQuoteButton.addEventListener("click", showQuoteEmailOptions);
 updateQuote();
 configureFileReviewLinks();
 
