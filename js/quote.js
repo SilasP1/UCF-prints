@@ -23,6 +23,7 @@ const REQUEST_ID = `REQ-${Math.random().toString(36).slice(2, 7).toUpperCase()}`
 const QUOTE_SUBJECT = "Peer Printing quote request";
 const FILE_REVIEW_SUBJECT = "Peer Printing file review";
 let currentRequest = null;
+let quoteBody = "";
 let fileReviewBody = "";
 
 if (developerPanel && debugEnabled) developerPanel.hidden = false;
@@ -104,6 +105,19 @@ function buildQuoteSummary(request) {
   ].join("\n");
 }
 
+function buildQuoteDraft(input) {
+  return [
+    "Peer Printing quote request", "",
+    `Material and color: ${input.material}, ${input.color}`,
+    "Slicer printer profile: Creality K1C",
+    `K1C filament estimate: ${input.estimatedWeightGrams > 0 ? `${input.estimatedWeightGrams}g` : ""}`,
+    `K1C print-time estimate: ${input.estimatedPrintHours >= 0.5 ? `${input.estimatedPrintHours} hours` : ""}`,
+    `Deadline: ${input.deadlineType}`,
+    `Fulfillment: ${input.fulfillmentPreference}`, "",
+    "STL/3MF below:"
+  ].join("\n");
+}
+
 function renderEstimate(estimate, input) {
   const rangeElement = document.querySelector("#estimatedPriceRange");
   rangeElement.textContent = formatRange(estimate.estimatedPriceRange);
@@ -124,17 +138,14 @@ function updateQuote() {
   if (!hasValidEstimate) {
     currentRequest = null;
     renderEmptyEstimate();
-    setQuoteActionsEnabled(false);
+    configureQuoteLinks(buildQuoteDraft(input));
     return;
   }
 
   const estimate = calculateEstimate(input);
   currentRequest = createRequest(input, estimate);
   renderEstimate(estimate, input);
-  const summary = buildQuoteSummary(currentRequest);
-  outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, QUOTE_SUBJECT, summary);
-  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, summary);
-  setQuoteActionsEnabled(true);
+  configureQuoteLinks(buildQuoteSummary(currentRequest));
   if (debugEnabled) debugOutputElement.textContent = JSON.stringify({ input, estimate, request: currentRequest }, null, 2);
   window.currentPeerPrintingRequest = currentRequest;
   try { sessionStorage.setItem("peerPrintingCurrentRequest", JSON.stringify(currentRequest)); } catch (error) { console.warn("Unable to save quote request", error); }
@@ -149,27 +160,26 @@ function renderEmptyEstimate() {
   document.querySelector("#estimateDetails").hidden = true;
 }
 
-function setQuoteActionsEnabled(enabled) {
-  [outlookQuoteButton, gmailQuoteButton].forEach(link => {
-    link.classList.toggle("is-disabled", !enabled);
-    link.setAttribute("aria-disabled", String(!enabled));
-    if (!enabled) link.removeAttribute("href");
-  });
-  copyQuoteButton.disabled = !enabled;
+function buildEmailParams(values) {
+  return new URLSearchParams(values).toString().replace(/\+/g, "%20");
 }
 
 function buildOutlookUrl(recipient, subject, body) {
-  const params = new URLSearchParams({ to: recipient, subject, body });
-  return `https://outlook.office.com/mail/deeplink/compose?${params.toString()}`;
+  return `https://outlook.office.com/mail/deeplink/compose?${buildEmailParams({ to: recipient, subject, body })}`;
 }
 
 function buildGmailUrl(recipient, subject, body) {
-  const params = new URLSearchParams({ view: "cm", fs: "1", to: recipient, su: subject, body });
-  return `https://mail.google.com/mail/?${params.toString()}`;
+  return `https://mail.google.com/mail/?${buildEmailParams({ view: "cm", fs: "1", to: recipient, su: subject, body })}`;
 }
 
 function buildCopyInfo(subject, body) {
   return [`To: ${OPERATOR.email}`, `Subject: ${subject}`, "", body].join("\n");
+}
+
+function configureQuoteLinks(body) {
+  quoteBody = body;
+  outlookQuoteButton.href = buildOutlookUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, body);
 }
 
 function configureFileReviewLinks() {
@@ -186,8 +196,7 @@ function configureFileReviewLinks() {
 }
 
 async function copyQuoteSummary() {
-  if (!currentRequest) return;
-  await copyText(buildCopyInfo(QUOTE_SUBJECT, buildQuoteSummary(currentRequest)), quoteMessageElement, "Email info copied.");
+  await copyText(buildCopyInfo(QUOTE_SUBJECT, quoteBody), quoteMessageElement, "Email info copied.");
 }
 
 async function copyFileReviewSummary() {
