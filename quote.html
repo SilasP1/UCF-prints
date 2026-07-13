@@ -67,9 +67,9 @@
                   <details class="quote-request" id="quoteRequestDetails">
                     <summary class="button button-primary button-full">Request this print</summary>
                     <div class="email-options" id="quoteEmailOptions">
-                      <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail and Outlook open a new email with your estimate already filled in.</span></div>
+                      <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail opens in your browser. Email app opens Outlook or your default mail app. Both include your estimate.</span></div>
                       <a class="button button-primary button-full" id="gmailQuoteButton" target="_blank" rel="noopener">Create Gmail</a>
-                      <a class="button button-secondary button-full" id="outlookQuoteButton" target="_blank" rel="noopener">Create Outlook email</a>
+                      <a class="button button-secondary button-full" id="mailAppQuoteButton">Open email app</a>
                       <button class="button button-secondary button-full" type="button" id="copyQuoteButton">Copy info instead</button>
                       <p class="order-notice"><strong>To submit your request:</strong> attach the STL or 3MF, then send the email. Your order is confirmed only after you receive the final price and completion time.</p>
                       <p class="copy-message" id="quoteMessage" role="status" aria-live="polite"></p>
@@ -87,9 +87,9 @@
               <div><span class="note-label">No slicer estimate</span><h2>Email the model.</h2><p>Include the deadline and material or color preference, then add the STL or 3MF below.</p></div>
               <div class="file-checklist"><strong>Before sending</strong><ul class="check-list"><li>State the deadline</li><li>Choose a material and color</li><li>Include the approximate size if known</li><li>Add the STL or 3MF below the email details</li></ul></div>
               <div class="email-options">
-                <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail and Outlook open a new email with the request details already filled in.</span></div>
+                <div class="email-options-head"><strong>Choose how to send your request</strong><span>Gmail opens in your browser. Email app opens Outlook or your default mail app. Both include the request details.</span></div>
                 <a class="button button-primary button-full" id="fileReviewGmailButton" href="https://mail.google.com/" target="_blank" rel="noopener">Create Gmail</a>
-                <a class="button button-secondary button-full" id="fileReviewOutlookButton" href="https://outlook.live.com/mail/0/deeplink/compose" target="_blank" rel="noopener">Create Outlook email</a>
+                <a class="button button-secondary button-full" id="fileReviewMailAppButton" href="mailto:silaspowersw2@gmail.com">Open email app</a>
                 <button class="button button-secondary button-full" type="button" id="fileReviewCopyButton">Copy info instead</button>
                 <p class="order-notice"><strong>To submit your request:</strong> attach the STL or 3MF, then send the email. Your order is confirmed only after you receive the final price and completion time.</p>
                 <p class="copy-message" id="fileReviewMessage" role="status" aria-live="polite"></p>
@@ -102,6 +102,6 @@
     <footer class="site-footer"><div class="container footer-wrap"><div><strong>Peer Printing</strong><p>Independent student-run 3D printing near UCF.</p></div><p>Not affiliated with or endorsed by the University of Central Florida.</p></div></footer>
   </div>
   <script src="js/site.js"></script>
-  <script src="js/quote.js?v=20260713-18"></script>
+  <script src="js/quote.js?v=20260713-19"></script>
 </body>
 </html>
