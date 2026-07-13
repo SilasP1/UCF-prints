@@ -172,6 +172,68 @@ function buildGmailUrl(recipient, subject, body) {
   return `https://mail.google.com/mail/?${buildEmailParams({ view: "cm", fs: "1", to: recipient, su: subject, body })}`;
 }
 
+function buildMailtoUrl(recipient, subject, body) {
+  return `mailto:${recipient}?${buildEmailParams({ subject, body })}`;
+}
+
+function buildMobileGmailUrl(recipient, subject, body) {
+  return `googlegmail://co?${buildEmailParams({ to: recipient, subject, body })}`;
+}
+
+function buildMobileOutlookUrl(recipient, subject, body) {
+  return `ms-outlook://compose?${buildEmailParams({ to: recipient, subject, body })}`;
+}
+
+function isMobileDevice() {
+  const mobileUserAgent = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const iPadDesktopMode = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+  return mobileUserAgent || iPadDesktopMode;
+}
+
+function openMobileComposer(event, provider, subject, body) {
+  if (!isMobileDevice()) return;
+
+  event.preventDefault();
+  const appUrl = provider === "gmail"
+    ? buildMobileGmailUrl(OPERATOR.email, subject, body)
+    : buildMobileOutlookUrl(OPERATOR.email, subject, body);
+  const fallbackUrl = buildMailtoUrl(OPERATOR.email, subject, body);
+  let fallbackTimer;
+
+  const stopFallback = () => {
+    if (!document.hidden) return;
+    window.clearTimeout(fallbackTimer);
+    document.removeEventListener("visibilitychange", stopFallback);
+  };
+
+  document.addEventListener("visibilitychange", stopFallback);
+  fallbackTimer = window.setTimeout(() => {
+    document.removeEventListener("visibilitychange", stopFallback);
+    window.location.href = fallbackUrl;
+  }, 1600);
+  window.location.href = appUrl;
+}
+
+function bindMobileComposer(button, provider, subject, getBody) {
+  button.addEventListener("click", event => openMobileComposer(event, provider, subject, getBody()));
+}
+
+function configureMobileEmailActions() {
+  if (!isMobileDevice()) return;
+
+  [gmailQuoteButton, document.querySelector("#fileReviewGmailButton")].forEach(button => {
+    button.textContent = "Open Gmail app";
+    button.removeAttribute("target");
+  });
+  [outlookWebQuoteButton, document.querySelector("#fileReviewOutlookWebButton")].forEach(button => {
+    button.textContent = "Open Outlook app";
+    button.removeAttribute("target");
+  });
+  document.querySelectorAll(".email-options-head span").forEach(message => {
+    message.textContent = "Choose an email app. A new message should open with the details filled in. If it does not, use Copy info instead.";
+  });
+}
+
 function buildCopyInfo(subject, body) {
   return [`To: ${OPERATOR.email}`, `Subject: ${subject}`, "", body].join("\n");
 }
@@ -235,8 +297,13 @@ form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 fileReviewCopyButton.addEventListener("click", copyFileReviewSummary);
+bindMobileComposer(gmailQuoteButton, "gmail", QUOTE_SUBJECT, () => quoteBody);
+bindMobileComposer(outlookWebQuoteButton, "outlook", QUOTE_SUBJECT, () => quoteBody);
+bindMobileComposer(document.querySelector("#fileReviewGmailButton"), "gmail", FILE_REVIEW_SUBJECT, () => fileReviewBody);
+bindMobileComposer(document.querySelector("#fileReviewOutlookWebButton"), "outlook", FILE_REVIEW_SUBJECT, () => fileReviewBody);
 updateQuote();
 configureFileReviewLinks();
+configureMobileEmailActions();
 
 if (window.location.hash === "#file-only") setMode("file");
 else if (window.location.hash === "#estimate") setMode("estimate");
