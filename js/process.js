@@ -1,60 +1,9 @@
 const processSteps = [
-  {
-    number: "01",
-    title: "Submit Your Print Request",
-    body: "Start by sending your file or project details through the quote form. Include your material preference, color, deadline, and any notes that matter. The more context you give upfront, the easier it is to quote the job accurately.",
-    bullets: [
-      "Upload or send your STL/3MF file if available",
-      "Tell us the material, color, and deadline",
-      "Mention if the part has a functional purpose or tight fit requirement",
-      "Use the calculator first if you want a rough estimate"
-    ]
-  },
-  {
-    number: "02",
-    title: "We Review the File",
-    body: "Before giving a final price, we check the model for print time, material use, supports, size, difficulty, orientation, and deadline feasibility. The calculator is useful for a quick estimate, but the final quote depends on the actual file.",
-    bullets: [
-      "Support-heavy models may cost more",
-      "Large parts may require a custom quote",
-      "Files with high failure risk may need changes before approval",
-      "Rush timing depends on printer capacity"
-    ]
-  },
-  {
-    number: "03",
-    title: "You Get a Quote",
-    body: "After review, we contact you with a confirmed price, estimated completion time, payment details, and pickup option. If the file has print risks or needs changes, we'll tell you before starting.",
-    bullets: [
-      "Final quote is sent after file review",
-      "Calculator price is only an estimate",
-      "You will know the price before printing begins",
-      "No print starts until you approve the quote"
-    ]
-  },
-  {
-    number: "04",
-    title: "You Confirm and Pay",
-    body: "Once you approve the final quote, payment is handled through Zelle or PayPal. After payment is confirmed, your job is added to the print queue. This keeps the queue fair and prevents abandoned jobs.",
-    bullets: [
-      "Payment happens after quote approval",
-      "Payment is required before printing begins",
-      "Zelle and PayPal are currently supported",
-      "Priority and rush jobs may be available depending on capacity"
-    ]
-  },
-  {
-    number: "05",
-    title: "Pick Up on Your Assigned Day",
-    body: "Finished prints are picked up at 12 noon on your assigned pickup day, directly in front of the Student Union. This keeps pickup simple, predictable, and efficient.",
-    bullets: [
-      "Default pickup: 12 noon",
-      "Default location: directly in front of the Student Union",
-      "Pickup day is confirmed when your order is approved",
-      "Special pickup requests may be available, but may cost extra"
-    ],
-    note: "Special accommodations are not guaranteed, but we'll try to work with you when possible. Extra fees may apply."
-  }
+  { number: "01", title: "Submit Your Print Request", body: "Start with the calculator if you know the material, filament weight, and print time. If not, send your STL, 3MF, or STEP file with the deadline and intended use.", bullets: ["Use slicer estimates when available", "Otherwise send the model for manual review", "Include your deadline and material preference", "Mention functional or fit-critical requirements"] },
+  { number: "02", title: "We Review the File", body: "We check size, print time, material use, supports, orientation, geometry, failure risk, and whether your deadline is realistic.", bullets: ["Build volume is 220 × 220 × 250 mm", "Support-heavy models may cost more", "Large or risky models may require changes", "Rush timing depends on current capacity"] },
+  { number: "03", title: "You Receive a Final Quote", body: "After reviewing the actual file, we confirm the final price, estimated completion time, and pickup plan before anything is printed.", bullets: ["Calculator results remain estimates", "You know the final price before printing", "Model concerns are raised before production", "No job starts without approval"] },
+  { number: "04", title: "You Approve and Pay", body: "Once you approve the quote and payment is confirmed, your job enters the print queue.", bullets: ["Payment occurs after quote approval", "Payment is required before printing", "Priority depends on available capacity", "Updates are provided if timing changes"] },
+  { number: "05", title: "Pick Up the Finished Part", body: "Completed orders are collected during the campus pickup window confirmed with your quote.", bullets: ["Pickup is scheduled near the Student Union", "Your pickup day is confirmed in advance", "Inspect the part when you receive it", "Special meeting requests may add a fee"], note: "Peer Printing is an independent student-run service and is not affiliated with or endorsed by UCF." }
 ];
 
 const stepButtons = Array.from(document.querySelectorAll("[data-step-index]"));
@@ -70,47 +19,18 @@ let selectedStep = 0;
 function renderStep(index) {
   selectedStep = Math.max(0, Math.min(index, processSteps.length - 1));
   const step = processSteps[selectedStep];
-
-  stepButtons.forEach((button, buttonIndex) => {
-    const active = buttonIndex === selectedStep;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-selected", String(active));
-  });
-
+  stepButtons.forEach((button, i) => { const active = i === selectedStep; button.classList.toggle("is-active", active); button.setAttribute("aria-selected", String(active)); });
   stepNumber.textContent = step.number;
   stepTitle.textContent = step.title;
   stepBody.textContent = step.body;
-  stepBullets.innerHTML = step.bullets.map((item) => `<li>${item}</li>`).join("");
-
-  if (step.note) {
-    stepNote.textContent = step.note;
-    stepNote.hidden = false;
-  } else {
-    stepNote.textContent = "";
-    stepNote.hidden = true;
-  }
-
+  stepBullets.innerHTML = step.bullets.map(item => `<li>${item}</li>`).join("");
+  stepNote.hidden = !step.note;
+  stepNote.textContent = step.note || "";
   prevButton.disabled = selectedStep === 0;
   nextButton.disabled = selectedStep === processSteps.length - 1;
 }
 
-stepButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    renderStep(Number(button.dataset.stepIndex));
-  });
-});
-
+stepButtons.forEach(button => button.addEventListener("click", () => renderStep(Number(button.dataset.stepIndex))));
 prevButton.addEventListener("click", () => renderStep(selectedStep - 1));
 nextButton.addEventListener("click", () => renderStep(selectedStep + 1));
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowLeft") {
-    renderStep(selectedStep - 1);
-  }
-
-  if (event.key === "ArrowRight") {
-    renderStep(selectedStep + 1);
-  }
-});
-
 renderStep(0);
