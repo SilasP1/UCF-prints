@@ -138,6 +138,11 @@ button { color: inherit; }
 .disclaimer { margin-bottom: 0; font-size: .9rem; }
 .final-quote-card { display: grid; gap: .8rem; }
 .final-quote-card h2, .final-quote-card p { margin: 0; }
+.email-options { display: grid; gap: .8rem; padding-top: .9rem; border-top: 1px solid var(--line); }
+.email-options-head { display: grid; gap: .3rem; }
+.email-options-head span { color: var(--muted); font-size: .9rem; line-height: 1.5; }
+.order-notice { padding: .85rem; border-left: 3px solid var(--gold); background: rgba(255,201,4,.06); font-size: .88rem; }
+.order-notice strong { color: var(--ink); }
 .secondary-action { display: inline-flex; justify-content: center; padding: .45rem; border: 0; background: transparent; color: var(--gold); font-weight: 800; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
 .is-disabled, .secondary-action:disabled { opacity: .42; pointer-events: none; cursor: not-allowed; }
 .button:disabled { opacity: .42; cursor: not-allowed; transform: none; box-shadow: none; }
