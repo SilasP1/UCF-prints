@@ -176,61 +176,26 @@ function buildMailtoUrl(recipient, subject, body) {
   return `mailto:${recipient}?${buildEmailParams({ subject, body })}`;
 }
 
-function buildMobileGmailUrl(recipient, subject, body) {
-  return `googlegmail://co?${buildEmailParams({ to: recipient, subject, body })}`;
-}
-
-function buildMobileOutlookUrl(recipient, subject, body) {
-  return `ms-outlook://compose?${buildEmailParams({ to: recipient, subject, body })}`;
-}
-
 function isMobileDevice() {
   const mobileUserAgent = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   const iPadDesktopMode = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-  return mobileUserAgent || iPadDesktopMode;
-}
-
-function openMobileComposer(event, provider, subject, body) {
-  if (!isMobileDevice()) return;
-
-  event.preventDefault();
-  const appUrl = provider === "gmail"
-    ? buildMobileGmailUrl(OPERATOR.email, subject, body)
-    : buildMobileOutlookUrl(OPERATOR.email, subject, body);
-  const fallbackUrl = buildMailtoUrl(OPERATOR.email, subject, body);
-  let fallbackTimer;
-
-  const stopFallback = () => {
-    if (!document.hidden) return;
-    window.clearTimeout(fallbackTimer);
-    document.removeEventListener("visibilitychange", stopFallback);
-  };
-
-  document.addEventListener("visibilitychange", stopFallback);
-  fallbackTimer = window.setTimeout(() => {
-    document.removeEventListener("visibilitychange", stopFallback);
-    window.location.href = fallbackUrl;
-  }, 1600);
-  window.location.href = appUrl;
-}
-
-function bindMobileComposer(button, provider, subject, getBody) {
-  button.addEventListener("click", event => openMobileComposer(event, provider, subject, getBody()));
+  const touchOnlyDevice = typeof window.matchMedia === "function"
+    && window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  return mobileUserAgent || iPadDesktopMode || touchOnlyDevice;
 }
 
 function configureMobileEmailActions() {
   if (!isMobileDevice()) return;
 
   [gmailQuoteButton, document.querySelector("#fileReviewGmailButton")].forEach(button => {
-    button.textContent = "Open Gmail app";
+    button.textContent = "Open phone email app";
     button.removeAttribute("target");
   });
   [outlookWebQuoteButton, document.querySelector("#fileReviewOutlookWebButton")].forEach(button => {
-    button.textContent = "Open Outlook app";
-    button.removeAttribute("target");
+    button.hidden = true;
   });
   document.querySelectorAll(".email-options-head span").forEach(message => {
-    message.textContent = "Choose an email app. A new message should open with the details filled in. If it does not, use Copy info instead.";
+    message.textContent = "Open your phone's email app with the address and request filled in. If it does not open, use Copy info instead.";
   });
 }
 
@@ -240,8 +205,12 @@ function buildCopyInfo(subject, body) {
 
 function configureQuoteLinks(body) {
   quoteBody = body;
-  outlookWebQuoteButton.href = buildOutlookWebUrl(OPERATOR.email, QUOTE_SUBJECT, body);
-  gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+  if (isMobileDevice()) {
+    gmailQuoteButton.href = buildMailtoUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+  } else {
+    outlookWebQuoteButton.href = buildOutlookWebUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+    gmailQuoteButton.href = buildGmailUrl(OPERATOR.email, QUOTE_SUBJECT, body);
+  }
 }
 
 function configureFileReviewLinks() {
@@ -253,8 +222,12 @@ function configureFileReviewLinks() {
     "STL/3MF below:"
   ].join("\n");
   fileReviewBody = body;
-  document.querySelector("#fileReviewOutlookWebButton").href = buildOutlookWebUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
-  document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+  if (isMobileDevice()) {
+    document.querySelector("#fileReviewGmailButton").href = buildMailtoUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+  } else {
+    document.querySelector("#fileReviewOutlookWebButton").href = buildOutlookWebUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+    document.querySelector("#fileReviewGmailButton").href = buildGmailUrl(OPERATOR.email, FILE_REVIEW_SUBJECT, body);
+  }
 }
 
 async function copyQuoteSummary() {
@@ -297,10 +270,6 @@ form.addEventListener("input", updateQuote);
 form.addEventListener("change", updateQuote);
 copyQuoteButton.addEventListener("click", copyQuoteSummary);
 fileReviewCopyButton.addEventListener("click", copyFileReviewSummary);
-bindMobileComposer(gmailQuoteButton, "gmail", QUOTE_SUBJECT, () => quoteBody);
-bindMobileComposer(outlookWebQuoteButton, "outlook", QUOTE_SUBJECT, () => quoteBody);
-bindMobileComposer(document.querySelector("#fileReviewGmailButton"), "gmail", FILE_REVIEW_SUBJECT, () => fileReviewBody);
-bindMobileComposer(document.querySelector("#fileReviewOutlookWebButton"), "outlook", FILE_REVIEW_SUBJECT, () => fileReviewBody);
 updateQuote();
 configureFileReviewLinks();
 configureMobileEmailActions();
