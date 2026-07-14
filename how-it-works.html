@@ -27,38 +27,97 @@
     <main>
       <section class="page-intro">
         <div class="container quote-intro">
-          <div><p class="eyebrow">How it works</p><h1>From file to pickup.</h1><p>Start with a Creality K1C estimate or send the model. The final price is confirmed before payment.</p><div class="hero-actions"><a class="button button-primary" href="quote.html">Get a quote</a></div></div>
-          <div class="quiet-note"><strong>Standard turnaround</strong><span>Usually 3–5 days after the file and payment are received.</span></div>
+          <div>
+            <p class="eyebrow">How it works</p>
+            <h1>From model to finished part.</h1>
+            <p>Start with a K1C slicer estimate or send the model directly. You receive the final price and timing before anything is printed.</p>
+            <div class="hero-actions"><a class="button button-primary" href="quote.html">Start a quote</a><a class="button button-secondary" href="#order-process">See the full process</a></div>
+          </div>
+          <div class="quiet-note process-summary">
+            <span class="note-label">What to expect</span>
+            <strong>No account or payment up front.</strong>
+            <span>Standard jobs are usually ready 3–5 days after the file is approved and payment is received.</span>
+          </div>
         </div>
       </section>
 
       <section class="section">
         <div class="container">
-          <div class="section-heading"><p class="eyebrow">Order process</p><h2>Four steps.</h2></div>
-          <div class="process-list">
-            <article class="process-item"><span>01</span><div><h3>Send the details</h3><p>Enter K1C slicer numbers or email the STL/3MF.</p></div></article>
-            <article class="process-item"><span>02</span><div><h3>Receive the final quote</h3><p>The model is checked and you receive the final price and completion estimate.</p></div></article>
-            <article class="process-item"><span>03</span><div><h3>Approve and pay</h3><p>The print enters the queue after you approve the quote and pay.</p></div></article>
-            <article class="process-item"><span>04</span><div><h3>Pick up the print</h3><p>Pickup is scheduled near the Student Union after the print is complete.</p></div></article>
+          <div class="section-heading"><p class="eyebrow">Choose a starting point</p><h2>Begin with what you have.</h2><p>Both routes lead to the same manual file review and final quote.</p></div>
+          <div class="start-route-grid">
+            <article class="start-route featured-route">
+              <div class="route-preview calculator-preview" aria-hidden="true">
+                <div class="route-preview-head"><span>K1C slicer estimate</span><span>01</span></div>
+                <div class="route-metrics"><div><small>Filament</small><strong>75 g</strong></div><div><small>Print time</small><strong>4.0 hrs</strong></div></div>
+                <div class="route-preview-result"><span>Ballpark range</span><strong>Calculated instantly</strong></div>
+              </div>
+              <div class="route-copy"><span class="note-label">Fastest route</span><h3>I have K1C slicer numbers</h3><p>Enter the filament weight and print time from the Creality K1C profile to see a ballpark estimate before sending the model.</p><ul class="check-list"><li>Use the K1C printer profile</li><li>Choose material, color, and deadline</li><li>Attach the STL or 3MF when requesting the print</li></ul><a class="button button-primary" href="quote.html#estimate">Use the calculator</a></div>
+            </article>
+
+            <article class="start-route">
+              <div class="route-preview file-preview" aria-hidden="true">
+                <div class="route-preview-head"><span>Manual quote</span><span>01</span></div>
+                <div class="file-preview-row"><span class="file-preview-icon">3D</span><div><small>Model attached</small><strong>project-part.3mf</strong></div><span class="file-preview-check">✓</span></div>
+                <div class="route-preview-result"><span>Details included</span><strong>Deadline + material</strong></div>
+              </div>
+              <div class="route-copy"><span class="note-label">No slicer needed</span><h3>I only have the model</h3><p>Send the STL or 3MF with your deadline and material or color preference. The model will be reviewed before pricing.</p><ul class="check-list"><li>STL or 3MF file</li><li>Deadline and approximate size</li><li>Material and color preference</li></ul><a class="button button-secondary" href="quote.html#file-only">Send the model</a></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-alt" id="order-process">
+        <div class="container">
+          <div class="section-heading"><p class="eyebrow">Order process</p><h2>Your order, start to finish.</h2><p>Select a step to see exactly what happens and what is needed from you.</p></div>
+          <div class="interactive-process">
+            <div class="timeline-steps" role="tablist" aria-label="Print order steps">
+              <button class="timeline-step is-active" type="button" role="tab" aria-selected="true" aria-controls="timelineDetail" data-step-index="0"><span>01</span><small>Send request</small></button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" aria-controls="timelineDetail" data-step-index="1"><span>02</span><small>Review &amp; confirm</small></button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" aria-controls="timelineDetail" data-step-index="2"><span>03</span><small>Pay &amp; print</small></button>
+              <button class="timeline-step" type="button" role="tab" aria-selected="false" aria-controls="timelineDetail" data-step-index="3"><span>04</span><small>Campus pickup</small></button>
+            </div>
+
+            <section class="card timeline-detail" id="timelineDetail" role="tabpanel" aria-live="polite">
+              <div class="timeline-detail-grid">
+                <div>
+                  <span class="step-number" id="timelineStepNumber">01</span>
+                  <h3 id="timelineStepTitle">Send your request</h3>
+                  <p id="timelineStepBody">Use the calculator with K1C slicer numbers, or send the STL or 3MF directly.</p>
+                  <ul class="check-list" id="timelineStepBullets"></ul>
+                  <p class="policy-callout" id="timelineStepNote"></p>
+                </div>
+                <div class="timeline-state" id="timelineState" data-state="request" aria-hidden="true">
+                  <div class="timeline-state-marker"><span id="timelineStateNumber">01</span><i></i></div>
+                  <span class="note-label" id="timelineStateLabel">Request received</span>
+                  <strong id="timelineStateTitle">Details gathered</strong>
+                  <p id="timelineStateBody">Next: file review and final pricing.</p>
+                </div>
+              </div>
+              <div class="timeline-controls"><button class="button button-secondary" id="timelinePrev" type="button">Previous</button><button class="button button-primary" id="timelineNext" type="button">Next step</button></div>
+            </section>
           </div>
         </div>
       </section>
 
       <section class="section section-alt">
         <div class="container">
-          <div class="section-heading"><p class="eyebrow">Before you order</p><h2>Policies</h2></div>
-          <div class="card-grid three-up">
-            <article class="card policy-card"><h3>Quotes and payment</h3><p>The calculator is an estimate. Final pricing follows file review. Payment is required after approval and before printing begins.</p></article>
-            <article class="card policy-card"><h3>Timing and pickup</h3><p>Standard jobs usually take 3–5 days. Pickup is scheduled near the Student Union. Rush and special meeting requests depend on availability.</p></article>
-            <article class="card policy-card"><h3>Models and reprints</h3><p>We review printability, but customers remain responsible for model dimensions and intended function. Reprint decisions depend on whether the print or the supplied model caused the problem.</p></article>
+          <div class="section-heading"><p class="eyebrow">Before you order</p><h2>Common questions.</h2></div>
+          <div class="faq-grid">
+            <details class="faq-item"><summary>What files can I send?</summary><p>STL and 3MF files are preferred. If you have another format, email it and confirm whether it can be reviewed.</p></details>
+            <details class="faq-item"><summary>Why can the final price change?</summary><p>The calculator cannot see supports, orientation, geometry, print risk, or the final machine settings. Those are checked before the price is confirmed.</p></details>
+            <details class="faq-item"><summary>When do I pay?</summary><p>After you receive and approve the final price and completion estimate. Printing begins after payment.</p></details>
+            <details class="faq-item"><summary>How large can the part be?</summary><p>The K1C build volume is 220 × 220 × 250 mm. Larger models may need to be split into multiple parts.</p></details>
+            <details class="faq-item"><summary>How does pickup work?</summary><p>You receive a message when the part is ready, then schedule pickup near the Student Union. Special meeting requests depend on availability.</p></details>
+            <details class="faq-item"><summary>What happens if a print fails?</summary><p>Print-caused failures are evaluated for reprinting. Problems caused by the supplied model or incorrect dimensions may require a revised file and new quote.</p></details>
           </div>
         </div>
       </section>
 
-      <section class="section cta-section"><div class="container cta-band"><div><p class="eyebrow">Ready to order?</p><h2>Start your quote.</h2></div><a class="button button-primary" href="quote.html">Get a quote</a></div></section>
+      <section class="section cta-section"><div class="container cta-band"><div><p class="eyebrow">Ready to start?</p><h2>Get a ballpark estimate or send the file.</h2></div><a class="button button-primary" href="quote.html">Start a quote</a></div></section>
     </main>
     <footer class="site-footer"><div class="container footer-wrap"><div><strong>Peer Printing</strong><p>Independent student-run 3D printing near UCF.</p></div><p>Not affiliated with or endorsed by the University of Central Florida.</p></div></footer>
   </div>
   <script src="js/site.js"></script>
+  <script src="js/process.js?v=20260713-24"></script>
 </body>
 </html>
