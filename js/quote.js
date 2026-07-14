@@ -6,6 +6,7 @@ const pricingDefaults = {
   marginMultiplier: 1.3,
   handlingFee: 5,
   minimumPrice: 12,
+  estimateRangeMultipliers: { low: 0.95, high: 1.08 },
   deadlineMultipliers: { economy: 0.9, standard: 1, priority: 1.35, rush: 1.75 }
 };
 
@@ -56,8 +57,8 @@ function calculateEstimate({ material, estimatedWeightGrams, estimatedPrintHours
   return {
     estimatedPrice,
     estimatedPriceRange: {
-      lowEstimate: roundUpToHalfDollar(estimatedPrice * 0.9),
-      highEstimate: roundUpToHalfDollar(estimatedPrice * 1.2)
+      lowEstimate: roundUpToHalfDollar(Math.max(pricingDefaults.minimumPrice, estimatedPrice * pricingDefaults.estimateRangeMultipliers.low)),
+      highEstimate: roundUpToHalfDollar(Math.max(pricingDefaults.minimumPrice, estimatedPrice * pricingDefaults.estimateRangeMultipliers.high))
     },
     materialRate, materialCost, timeCost, deadlineMultiplier,
     handlingFee: pricingDefaults.handlingFee
